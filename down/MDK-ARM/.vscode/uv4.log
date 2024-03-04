@@ -1,0 +1,13 @@
+*** Using Compiler 'V5.06 update 7 (build 960)', folder: 'D:\Program Files\Keil_v5\ARM\ARMCC\Bin'
+Build target 'down'
+compiling chassis_task.c...
+..\App\Task\chassis_task.c(40): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  		if(Chassis.X_Target > 0.3 &&Chassis.X_Target < 0.3)
+..\App\Task\chassis_task.c(40): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  		if(Chassis.X_Target > 0.3 &&Chassis.X_Target < 0.3)
+..\App\Task\chassis_task.c: 2 warnings, 0 errors
+linking...
+Program Size: Code=22604 RO-data=1432 RW-data=956 ZI-data=19404  
+FromELF: creating hex file...
+"down\down.axf" - 0 Error(s), 2 Warning(s).
+Build Time Elapsed:  00:00:03

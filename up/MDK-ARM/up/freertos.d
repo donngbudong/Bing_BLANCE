@@ -1,0 +1,66 @@
+up\freertos.o: ../Core/Src/freertos.c
+up\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
+up\freertos.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+up\freertos.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+up\freertos.o: ../Core/Inc/FreeRTOSConfig.h
+up\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h
+up\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h
+up\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h
+up\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F/portmacro.h
+up\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h
+up\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h
+up\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h
+up\freertos.o: ../Core/Inc/main.h
+up\freertos.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h
+up\freertos.o: ../Core/Inc/stm32f4xx_hal_conf.h
+up\freertos.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h
+up\freertos.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h
+up\freertos.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h
+up\freertos.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h
+up\freertos.o: ../Drivers/CMSIS/Include/core_cm4.h
+up\freertos.o: ../Drivers/CMSIS/Include/cmsis_version.h
+up\freertos.o: ../Drivers/CMSIS/Include/cmsis_compiler.h
+up\freertos.o: ../Drivers/CMSIS/Include/cmsis_armcc.h
+up\freertos.o: ../Drivers/CMSIS/Include/mpu_armv7.h
+up\freertos.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h
+up\freertos.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h
+up\freertos.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h
+up\freertos.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc_ex.h
+up\freertos.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio.h
+up\freertos.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio_ex.h
+up\freertos.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_exti.h
+up\freertos.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h
+up\freertos.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma_ex.h
+up\freertos.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_cortex.h
+up\freertos.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_can.h
+up\freertos.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash.h
+up\freertos.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash_ex.h
+up\freertos.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash_ramfunc.h
+up\freertos.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr.h
+up\freertos.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h
+up\freertos.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h
+up\freertos.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h
+up\freertos.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
+up\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
+up\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h
+up\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h
+up\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h
+up\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h
+up\freertos.o: ../App/Header/Device.h
+up\freertos.o: ../App/Algorithm/pid.h
+up\freertos.o: ../App/Device/HI229.h
+up\freertos.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+up\freertos.o: ../App/Device/packet.h
+up\freertos.o: ../App/Header/system.h
+up\freertos.o: ../App/Driver/drv_usart.h
+up\freertos.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+up\freertos.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
+up\freertos.o: ../App/Algorithm/crc.h
+up\freertos.o: ../App/Device/remote_control.h
+up\freertos.o: ../App/Device/can_receive.h
+up\freertos.o: ../App/Task/system_task.h
+up\freertos.o: ../App/Task/gimbal_task.h
+up\freertos.o: ../App/Task/shoot_task.h
+up\freertos.o: ../App/Task/vision_task.h
+up\freertos.o: ../App/Task/vofa_task.h
+up\freertos.o: ../Core/Inc/usart.h
