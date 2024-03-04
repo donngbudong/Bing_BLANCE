@@ -7,7 +7,7 @@
 #include "Device.h"
 #include "math.h"
 
-#define CHASSIS_FOLLOW_GIMBAL_ANGLE_ZERO 5730
+#define CHASSIS_FOLLOW_GIMBAL_ANGLE_ZERO 1634
 
 extern CAN_GET_DATA_t Gimbal_YAW;
 extern float angle;//Ðý×ª½Ç¶È
@@ -33,15 +33,15 @@ void Chassis_Task(void)
 		Chassis_Balance();
 		CAN_cmd_chassis(Chassis.iqControl[0],Chassis.iqControl[1]);
 	}
-	if(RC_S2 == 2)
+	else if(RC_S2 == 2)
 	{
-		if(fabs(Chassis.X_Target)>0.1f)
-		{
+//		if(fabs(Chassis.X_Target)>0.1f)
+//		{
 			Chassis_Normal();
-		}else
-		{
-			Chassis_Static();
-		}
+//		}else
+//		{
+//			Chassis_Static();
+//		}
 		CAN_cmd_chassis(Chassis.iqControl[0],Chassis.iqControl[1]);
 	}
 	else{
@@ -135,7 +135,7 @@ void Chassis_Normal(void)
 	Chassis.flag_clear_pose = 0;
 
 	PID_Position(&Chassis.PID.PID_b1, Chassis.target_pose_x, Chassis.pose_x);
-	PID_Position(&Chassis.PID.PID_b2, Chassis.speed_x, Chassis.X_Target);
+	PID_Position(&Chassis.PID.PID_b2, Chassis.X_Target, Chassis.speed_x);
 	/*Æ½ºâ*/
 	PID_Position(&Chassis.PID.PID_b3,0,Chassis.Pitch);
 	PID_Position(&Chassis.PID.PID_b4,0,Chassis.Gyo_y);
