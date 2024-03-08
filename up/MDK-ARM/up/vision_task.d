@@ -38,6 +38,7 @@ up\vision_task.o: ../App/Driver/drv_usart.h
 up\vision_task.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 up\vision_task.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 up\vision_task.o: ../App/Algorithm/crc.h
+up\vision_task.o: ../App/Algorithm/Trajectory_Calculation.h
 up\vision_task.o: ../App/Header/Device.h
 up\vision_task.o: ../Core/Inc/main.h
 up\vision_task.o: ../App/Device/HI229.h
@@ -50,3 +51,4 @@ up\vision_task.o: ../App/Task/gimbal_task.h
 up\vision_task.o: ../App/Task/shoot_task.h
 up\vision_task.o: ../App/Task/vofa_task.h
 up\vision_task.o: ../Core/Inc/usart.h
+up\vision_task.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\math.h

@@ -16,6 +16,8 @@
 "down\drv_can.o"
 "down\drv_usart.o"
 "down\referee.o"
+"down\referee_ui.o"
+"down\diy_control.o"
 "down\system_task.o"
 "down\chassiscontrol_task.o"
 "down\chassis_task.o"

@@ -175,12 +175,12 @@ void Shoot_KEY_Ctrl(void)
 
 void Shoot_Ctrl_FRIC_L(Shoot_Motor_t *str)
 {
-	str->Motor_Data.PID_Speed_target = -500;
+	str->Motor_Data.PID_Speed_target = 7500;
 	str->Motor_Data.PID_Speed = str->Motor_Data.CAN_GetData.Motor_Speed;
 }
 void Shoot_Ctrl_FRIC_R(Shoot_Motor_t *str)
 {
-	str->Motor_Data.PID_Speed_target = 500;
+	str->Motor_Data.PID_Speed_target = -7500;
 	str->Motor_Data.PID_Speed = str->Motor_Data.CAN_GetData.Motor_Speed;
 }
 void Shoot_Ctrl_DRIVER(Shoot_Motor_t *str)
@@ -215,8 +215,8 @@ float Shoot_GetOutPut(Shoot_Motor_t *str)
 void Shoot_CanOutPut(void)
 {
 	static int16_t pid_out[2] = {0,0};
-	pid_out[FRIC_L] = -(int16_t)Shoot_GetOutPut(&Shoot.Motor_Data[FRIC_L]);
-	pid_out[FRIC_R] = -(int16_t)Shoot_GetOutPut(&Shoot.Motor_Data[FRIC_R]);
+	pid_out[FRIC_L] = (int16_t)Shoot_GetOutPut(&Shoot.Motor_Data[FRIC_L]);
+	pid_out[FRIC_R] = (int16_t)Shoot_GetOutPut(&Shoot.Motor_Data[FRIC_R]);
 
 	CAN_cmd_shoot (pid_out[FRIC_L],	pid_out[FRIC_R]);
 }

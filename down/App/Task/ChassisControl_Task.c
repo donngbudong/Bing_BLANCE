@@ -19,12 +19,13 @@ void Chassis_GET_Info(void)
 
 	Chassis.Pitch 	= IMU_Get_Data.IMU_Eular[0];
 	Chassis.Yaw 	= IMU_Get_Data.IMU_Eular[2];
+
 	Chassis.Gyo_y	= IMU_Get_Data.IMU_Gyo[1]/10;//除10
 	Chassis.Gyo_z = IMU_Get_Data.IMU_Gyo[2]/10;
 	Chassis.speed_x = -(Chassis.Motor_Date[0].Speed - Chassis.Motor_Date[1].Speed) /57.29578f*Diameter_weel/2.0f/2.0f;
 	Chassis.omega_z =  (Chassis.Motor_Date[0].Speed + Chassis.Motor_Date[1].Speed) /57.29578f*Diameter_weel/2.0f/2.0f;
 	Chassis.pose_x += 	Chassis.speed_x * 0.01f;
-	Chassis.X_Target = 	RC_CH3 * 10.0 / 660 ;
+	Chassis.X_Target = 	RC_CH3 * 6.0 / 660 ;
 	Chassis.Y_Target =	RC_CH2 * 2.5 / 660;
 	Chassis.Z_Target =  RC_CH0 * 2.5 / 660;
 	Chassis.move_speed = sqrt(Chassis.X_Target*Chassis.X_Target + Chassis.Y_Target*Chassis.Y_Target);

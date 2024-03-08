@@ -240,7 +240,7 @@ void SHOOT_TASK(void const * argument)
   for(;;)
   {
 		currentTime = xTaskGetTickCount();
-//		Shoot_Task();
+		Shoot_Task();
 		vTaskDelayUntil(&currentTime, 3);//绝对延时    
   }
   /* USER CODE END SHOOT_TASK */
@@ -261,7 +261,7 @@ void VISUAL_TASK(void const * argument)
   for(;;)
   {
 		currentTime = xTaskGetTickCount();
-		Visual_Task();
+//		Visual_Task();
 		vTaskDelayUntil(&currentTime, 3);//绝对延时    
   }
   /* USER CODE END VISUAL_TASK */

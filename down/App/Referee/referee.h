@@ -126,10 +126,10 @@ typedef enum
 	LEN_referee_warning        					=	2, 	//0x0104	裁判系统警告
 	LEN_dart_remaining_time 						=	1, 	//0x0105	飞镖发射时间数据
 	
-	LEN_robot_status    								= 27,	//0x0201	机器人性能体系数据
+	LEN_robot_status    								= 12,	//0x0201	机器人性能体系数据
 	LEN_power_heat_data   							= 16,	//0x0202	实时功率热量数据
-	LEN_robot_pos        								= 16,	//0x0203	机器人位置数据
-	LEN_buff        										= 1,	//0x0204	机器人增益数据
+	LEN_robot_pos        								= 12,	//0x0203	机器人位置数据
+	LEN_buff        										= 6,	//0x0204	机器人增益数据
 	LEN_air_support_data        				= 1,	//0x0205	空中支援时间数据
 	LEN_hurt_data        								= 1,	//0x0206	伤害状态数据
 	LEN_shoot_data       								= 7,	//0x0207	实时射击数据
@@ -222,35 +222,29 @@ typedef __packed struct
 /* ID: 0x0201  Byte: 27		机器人性能体系数据 */
 typedef __packed struct
 {
-	uint8_t robot_id;
-	uint8_t robot_level;
-	uint16_t current_HP;
-	uint16_t maximum_HP;
-	uint16_t shooter_id1_17mm_barrel_cooling_value;
-	uint16_t shooter_id1_17mm_barrel_heat_limit;
-	uint16_t shooter_id1_17mm_initial_launching_speed_limit;
-	uint16_t shooter_id2_17mm_barrel_cooling_valuecooling_rate;
-	uint16_t shooter_id2_17mm_barrel_heatcooling_limit; 
-	uint16_t shooter_id2_17mm_initial_launching_speed_limit;
-	uint16_t shooter_id1_42mm_barrel_cooling_value;
-	uint16_t shooter_id1_42mm_barrel_heat_cooling_limit;
-	uint16_t shooter_id1_42mm_initial_launching_speed_limit;
-	uint16_t chassis_power_limit;
-	uint8_t power_management_gimbal_output : 1;
-	uint8_t power_management_chassis_output : 1;
-	uint8_t power_management_shooter_output : 1;
+	uint8_t robot_id; 
+  uint8_t robot_level; 
+  uint16_t current_HP;  
+  uint16_t maximum_HP; 
+  uint16_t shooter_barrel_cooling_value; 
+  uint16_t shooter_barrel_heat_limit; 
+  uint16_t chassis_power_limit;  
+ 
+  uint8_t power_management_gimbal_output : 1; 
+  uint8_t power_management_chassis_output : 1;  
+  uint8_t power_management_shooter_output : 1; 
 }robot_status_t;
 
 /* ID: 0X0202  Byte: 16    实时功率热量数据 */
 typedef __packed struct
 {
-	uint16_t chassis_voltage;
-	uint16_t chassis_current;
-	float chassis_power;
-	uint16_t buffer_energy;
-	uint16_t shooter_17mm_1_barrel_heat;
-	uint16_t shooter_17mm_2_barrel_heat;
-	uint16_t shooter_42mm_barrel_heat;
+	uint16_t chassis_voltage; 
+  uint16_t chassis_current; 
+  float chassis_power; 
+  uint16_t buffer_energy; 									//缓存功率
+  uint16_t shooter_17mm_1_barrel_heat;			//热量	 
+  uint16_t shooter_17mm_2_barrel_heat; 
+  uint16_t shooter_42mm_barrel_heat; 
 }power_heat_data_t;
 
 /* ID: 0x0203  Byte: 16    机器人位置数据 */
@@ -258,17 +252,17 @@ typedef __packed struct
 {
 	float x;
 	float y;
-	float z;
 	float angle;
 }robot_pos_t;
 
 /* ID: 0x0204  Byte:  5    机器人增益数据 */
 typedef __packed struct
 {
- uint8_t recovery_buff;
- uint8_t cooling_buff;
- uint8_t defence_buff;
- uint16_t attack_buff;
+	uint8_t recovery_buff;  
+  uint8_t cooling_buff;  
+  uint8_t defence_buff;  
+  uint8_t vulnerability_buff; 
+  uint16_t attack_buff; 
 }buff_t;
 
 /* ID: 0x0205  Byte:  1    空中支援时间数据 */
@@ -309,7 +303,6 @@ typedef __packed struct
 	uint32_t rfid_status;
 }rfid_status_t;
 
-
 /* 
 	
 	交互数据，包括一个统一的数据段头结构，
@@ -347,7 +340,7 @@ typedef __packed struct
 	uint16_t data_cmd_id;
 	uint16_t sender_id;
 	uint16_t receiver_id;
-//	uint8_t user_data[x];
+	uint8_t user_data[50];
 }robot_interaction_data_t;
 
 
@@ -494,7 +487,7 @@ typedef struct judge_info_struct
 	power_heat_data_t								Power_Heat_Data;					// 0x0202         实时功率热量数据
 	robot_pos_t											Robot_Pos;								// 0x0203         机器人位置数据
 	buff_t													Buff;											// 0x0204     		机器人增益数据
-	air_support_data_t							Air_Support_date;					// 0x0205         空中支援时间数据
+//	air_support_data_t							Air_Support_date;					// 0x0205         空中支援时间数据
 	hurt_data_t											Hurt_Date;								// 0x0206         伤害状态数据
 	shoot_data_t										Shoot_Data;								// 0x0207         实时射击信息(射频  射速  子弹信息)
 	projectile_allowance_t					Projectile_allowance;			// 0x0208	        允许发弹量

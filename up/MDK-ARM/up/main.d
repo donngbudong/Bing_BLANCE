@@ -70,3 +70,4 @@ up\main.o: ../App/Task/gimbal_task.h
 up\main.o: ../App/Task/shoot_task.h
 up\main.o: ../App/Task/vision_task.h
 up\main.o: ../App/Task/vofa_task.h
+up\main.o: ../App/Algorithm/Trajectory_Calculation.h

@@ -147,7 +147,9 @@ void Chassis_Normal(void)
 	
 	Chassis.torque_speed   = (-Chassis.PID.PID_b1.PID_Output - Chassis.PID.PID_b2.PID_Output) * Chassis.torque_const;
 	Chassis.torque_balance = (-Chassis.PID.PID_b3.PID_Output - Chassis.PID.PID_b4.PID_Output) * Chassis.torque_const;
-	Chassis.torque_revolve = -Chassis.PID.PID_b6.PID_Output * Chassis.torque_const;				//航行锁定
+//	Chassis.torque_revolve = -Chassis.PID.PID_b6.PID_Output * Chassis.torque_const;				//航行锁定
+	Chassis.torque_revolve = -100.0f;				//航行锁定
+
 	PID_Position(&Chassis.PID.Chasssis_OUT, Chassis.torque_speed + Chassis.torque_balance,0);
 	
 	

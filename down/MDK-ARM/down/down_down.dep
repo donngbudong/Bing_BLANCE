@@ -62,7 +62,7 @@ I (../App/Header/System.h)(0x656728BF)
 I (D:\Program Files\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (D:\Program Files\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
 I (../App/Algorithm/crc.h)(0x652415F8)
-I (../App/Referee/referee.h)(0x65E1E647)
+I (../App/Referee/referee.h)(0x65E9B674)
 I (../App/Device/remote_control.h)(0x65672B64)
 I (../App/Device/can_receive.h)(0x6597C712)
 I (../App/Algorithm/pid.h)(0x659451CA)
@@ -159,7 +159,7 @@ I (../App/Driver/drv_usart.h)(0x650FF000)
 I (D:\Program Files\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (D:\Program Files\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
 I (../App/Algorithm/crc.h)(0x652415F8)
-I (../App/Referee/referee.h)(0x65E1E647)
+I (../App/Referee/referee.h)(0x65E9B674)
 I (../App/Device/remote_control.h)(0x65672B64)
 I (../App/Device/can_receive.h)(0x6597C712)
 I (../App/Algorithm/pid.h)(0x659451CA)
@@ -311,7 +311,7 @@ I (../App/Driver/drv_usart.h)(0x650FF000)
 I (D:\Program Files\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (D:\Program Files\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
 I (../App/Algorithm/crc.h)(0x652415F8)
-I (../App/Referee/referee.h)(0x65E1E647)
+I (../App/Referee/referee.h)(0x65E9B674)
 I (../App/Device/remote_control.h)(0x65672B64)
 I (../App/Device/can_receive.h)(0x6597C712)
 I (../App/Algorithm/pid.h)(0x659451CA)
@@ -428,7 +428,7 @@ I (../App/Driver/drv_usart.h)(0x650FF000)
 I (D:\Program Files\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (D:\Program Files\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
 I (../App/Algorithm/crc.h)(0x652415F8)
-I (../App/Referee/referee.h)(0x65E1E647)
+I (../App/Referee/referee.h)(0x65E9B674)
 I (../App/Header/Device.h)(0x65E2E1EE)
 I (../App/Device/remote_control.h)(0x65672B64)
 I (../App/Task/system_task.h)(0x65672E74)
@@ -475,7 +475,7 @@ I (../App/Driver/drv_usart.h)(0x650FF000)
 I (D:\Program Files\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (D:\Program Files\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
 I (../App/Algorithm/crc.h)(0x652415F8)
-I (../App/Referee/referee.h)(0x65E1E647)
+I (../App/Referee/referee.h)(0x65E9B674)
 I (../App/Header/Device.h)(0x65E2E1EE)
 I (../App/Device/remote_control.h)(0x65672B64)
 I (../App/Device/can_receive.h)(0x6597C712)
@@ -556,7 +556,7 @@ I (../App/Driver/drv_usart.h)(0x650FF000)
 I (D:\Program Files\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (D:\Program Files\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
 I (../App/Algorithm/crc.h)(0x652415F8)
-I (../App/Referee/referee.h)(0x65E1E647)
+I (../App/Referee/referee.h)(0x65E9B674)
 I (D:\Program Files\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
 I (../App/Header/Device.h)(0x65E2E1EE)
 I (../Core/Inc/main.h)(0x65666F54)
@@ -645,7 +645,7 @@ I (../App/Driver/drv_usart.h)(0x650FF000)
 I (D:\Program Files\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (D:\Program Files\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
 I (../App/Algorithm/crc.h)(0x652415F8)
-I (../App/Referee/referee.h)(0x65E1E647)
+I (../App/Referee/referee.h)(0x65E9B674)
 I (../App/Device/remote_control.h)(0x65672B64)
 I (../App/Device/can_receive.h)(0x6597C712)
 I (../App/Algorithm/pid.h)(0x659451CA)
@@ -653,7 +653,7 @@ I (../App/Task/system_task.h)(0x65672E74)
 I (../App/Task/chassis_task.h)(0x65E2C4DC)
 I (../App/Task/vofa_task.h)(0x6532A336)
 I (../Core/Inc/can.h)(0x65666F54)
-F (..\App\Driver\drv_usart.c)(0x65E1E6A3)(--c99 -c --cpu Cortex-M4.fp.sp -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../App/Device -I ../App/Driver -I ../App/Header -I ../App/Algorithm -I ../App/Referee -I ../App/Task-I.\RTE\_down-IC:\Users\Dong\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\Dong\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.16.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F405xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F405xx-o down\drv_usart.o --omf_browse down\drv_usart.crf --depend down\drv_usart.d)
+F (..\App\Driver\drv_usart.c)(0x65E9A5EA)(--c99 -c --cpu Cortex-M4.fp.sp -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../App/Device -I ../App/Driver -I ../App/Header -I ../App/Algorithm -I ../App/Referee -I ../App/Task-I.\RTE\_down-IC:\Users\Dong\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\Dong\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.16.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F405xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F405xx-o down\drv_usart.o --omf_browse down\drv_usart.crf --depend down\drv_usart.d)
 I (../App/Header/Device.h)(0x65E2E1EE)
 I (../Core/Inc/main.h)(0x65666F54)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h)(0x654363AC)
@@ -695,15 +695,15 @@ I (../App/Driver/drv_usart.h)(0x650FF000)
 I (D:\Program Files\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (D:\Program Files\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
 I (../App/Algorithm/crc.h)(0x652415F8)
-I (../App/Referee/referee.h)(0x65E1E647)
+I (../App/Referee/referee.h)(0x65E9B674)
 I (../App/Device/remote_control.h)(0x65672B64)
 I (../App/Device/can_receive.h)(0x6597C712)
 I (../App/Algorithm/pid.h)(0x659451CA)
 I (../App/Task/system_task.h)(0x65672E74)
 I (../App/Task/chassis_task.h)(0x65E2C4DC)
 I (../App/Task/vofa_task.h)(0x6532A336)
-F (..\App\Referee\referee.c)(0x65E2244D)(--c99 -c --cpu Cortex-M4.fp.sp -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../App/Device -I ../App/Driver -I ../App/Header -I ../App/Algorithm -I ../App/Referee -I ../App/Task-I.\RTE\_down-IC:\Users\Dong\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\Dong\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.16.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F405xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F405xx-o down\referee.o --omf_browse down\referee.crf --depend down\referee.d)
-I (..\App\Referee\referee.h)(0x65E1E647)
+F (..\App\Referee\referee.c)(0x65E9AC8F)(--c99 -c --cpu Cortex-M4.fp.sp -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../App/Device -I ../App/Driver -I ../App/Header -I ../App/Algorithm -I ../App/Referee -I ../App/Task-I.\RTE\_down-IC:\Users\Dong\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\Dong\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.16.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F405xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F405xx-o down\referee.o --omf_browse down\referee.crf --depend down\referee.d)
+I (..\App\Referee\referee.h)(0x65E9B674)
 I (D:\Program Files\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
 I (../App/Header/System.h)(0x656728BF)
 I (../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h)(0x6543635E)
@@ -741,7 +741,9 @@ I (../App/Driver/drv_usart.h)(0x650FF000)
 I (D:\Program Files\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (D:\Program Files\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
 I (../App/Algorithm/crc.h)(0x652415F8)
-I (../App/Referee/referee.h)(0x65E1E647)
+I (../App/Referee/referee.h)(0x65E9B674)
+F (..\App\Referee\referee_UI.c)(0x65E9B674)(--c99 -c --cpu Cortex-M4.fp.sp -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../App/Device -I ../App/Driver -I ../App/Header -I ../App/Algorithm -I ../App/Referee -I ../App/Task-I.\RTE\_down-IC:\Users\Dong\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\Dong\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.16.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F405xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F405xx-o down\referee_ui.o --omf_browse down\referee_ui.crf --depend down\referee_ui.d)
+F (..\App\Referee\DIY_control.c)(0x65E9AC31)(--c99 -c --cpu Cortex-M4.fp.sp -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../App/Device -I ../App/Driver -I ../App/Header -I ../App/Algorithm -I ../App/Referee -I ../App/Task-I.\RTE\_down-IC:\Users\Dong\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\Dong\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.16.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F405xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F405xx-o down\diy_control.o --omf_browse down\diy_control.crf --depend down\diy_control.d)
 F (..\App\Task\system_task.c)(0x65674B74)(--c99 -c --cpu Cortex-M4.fp.sp -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../App/Device -I ../App/Driver -I ../App/Header -I ../App/Algorithm -I ../App/Referee -I ../App/Task-I.\RTE\_down-IC:\Users\Dong\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\Dong\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.16.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F405xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F405xx-o down\system_task.o --omf_browse down\system_task.crf --depend down\system_task.d)
 I (..\App\Task\system_task.h)(0x65672E74)
 I (../App/Header/System.h)(0x656728BF)
@@ -780,9 +782,9 @@ I (../App/Driver/drv_usart.h)(0x650FF000)
 I (D:\Program Files\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (D:\Program Files\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
 I (../App/Algorithm/crc.h)(0x652415F8)
-I (../App/Referee/referee.h)(0x65E1E647)
+I (../App/Referee/referee.h)(0x65E9B674)
 I (D:\Program Files\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
-F (..\App\Task\ChassisControl_Task.c)(0x65E5EE05)(--c99 -c --cpu Cortex-M4.fp.sp -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../App/Device -I ../App/Driver -I ../App/Header -I ../App/Algorithm -I ../App/Referee -I ../App/Task-I.\RTE\_down-IC:\Users\Dong\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\Dong\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.16.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F405xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F405xx-o down\chassiscontrol_task.o --omf_browse down\chassiscontrol_task.crf --depend down\chassiscontrol_task.d)
+F (..\App\Task\ChassisControl_Task.c)(0x65EA02AB)(--c99 -c --cpu Cortex-M4.fp.sp -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../App/Device -I ../App/Driver -I ../App/Header -I ../App/Algorithm -I ../App/Referee -I ../App/Task-I.\RTE\_down-IC:\Users\Dong\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\Dong\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.16.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F405xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F405xx-o down\chassiscontrol_task.o --omf_browse down\chassiscontrol_task.crf --depend down\chassiscontrol_task.d)
 I (..\App\Task\ChassisControl_Task.h)(0x65A599A4)
 I (..\App\Task\chassis_task.h)(0x65E2C4DC)
 I (../App/Header/Device.h)(0x65E2E1EE)
@@ -826,7 +828,7 @@ I (../App/Driver/drv_usart.h)(0x650FF000)
 I (D:\Program Files\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (D:\Program Files\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
 I (../App/Algorithm/crc.h)(0x652415F8)
-I (../App/Referee/referee.h)(0x65E1E647)
+I (../App/Referee/referee.h)(0x65E9B674)
 I (../App/Device/remote_control.h)(0x65672B64)
 I (../App/Device/can_receive.h)(0x6597C712)
 I (../App/Algorithm/pid.h)(0x659451CA)
@@ -834,7 +836,7 @@ I (../App/Task/system_task.h)(0x65672E74)
 I (../App/Task/chassis_task.h)(0x65E2C4DC)
 I (../App/Task/vofa_task.h)(0x6532A336)
 I (D:\Program Files\Keil_v5\ARM\ARMCC\include\math.h)(0x60252378)
-F (..\App\Task\chassis_task.c)(0x65E5EE79)(--c99 -c --cpu Cortex-M4.fp.sp -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../App/Device -I ../App/Driver -I ../App/Header -I ../App/Algorithm -I ../App/Referee -I ../App/Task-I.\RTE\_down-IC:\Users\Dong\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\Dong\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.16.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F405xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F405xx-o down\chassis_task.o --omf_browse down\chassis_task.crf --depend down\chassis_task.d)
+F (..\App\Task\chassis_task.c)(0x65EA02DF)(--c99 -c --cpu Cortex-M4.fp.sp -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../App/Device -I ../App/Driver -I ../App/Header -I ../App/Algorithm -I ../App/Referee -I ../App/Task-I.\RTE\_down-IC:\Users\Dong\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\Dong\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.16.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F405xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F405xx-o down\chassis_task.o --omf_browse down\chassis_task.crf --depend down\chassis_task.d)
 I (..\App\Task\chassis_task.h)(0x65E2C4DC)
 I (../App/Header/Device.h)(0x65E2E1EE)
 I (../Core/Inc/main.h)(0x65666F54)
@@ -877,7 +879,7 @@ I (../App/Driver/drv_usart.h)(0x650FF000)
 I (D:\Program Files\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (D:\Program Files\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
 I (../App/Algorithm/crc.h)(0x652415F8)
-I (../App/Referee/referee.h)(0x65E1E647)
+I (../App/Referee/referee.h)(0x65E9B674)
 I (../App/Device/remote_control.h)(0x65672B64)
 I (../App/Device/can_receive.h)(0x6597C712)
 I (../App/Algorithm/pid.h)(0x659451CA)
@@ -931,7 +933,7 @@ I (../App/Driver/drv_usart.h)(0x650FF000)
 I (D:\Program Files\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (D:\Program Files\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
 I (../App/Algorithm/crc.h)(0x652415F8)
-I (../App/Referee/referee.h)(0x65E1E647)
+I (../App/Referee/referee.h)(0x65E9B674)
 F (..\App\Algorithm\crc.c)(0x6524164A)(--c99 -c --cpu Cortex-M4.fp.sp -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../App/Device -I ../App/Driver -I ../App/Header -I ../App/Algorithm -I ../App/Referee -I ../App/Task-I.\RTE\_down-IC:\Users\Dong\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\Dong\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.16.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F405xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F405xx-o down\crc.o --omf_browse down\crc.crf --depend down\crc.d)
 I (../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h)(0x6543635E)
 I (../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h)(0x6543635E)
@@ -1010,7 +1012,7 @@ I (../App/Driver/drv_usart.h)(0x650FF000)
 I (D:\Program Files\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (D:\Program Files\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
 I (../App/Algorithm/crc.h)(0x652415F8)
-I (../App/Referee/referee.h)(0x65E1E647)
+I (../App/Referee/referee.h)(0x65E9B674)
 I (../App/Device/remote_control.h)(0x65672B64)
 I (../App/Device/can_receive.h)(0x6597C712)
 I (../App/Task/system_task.h)(0x65672E74)

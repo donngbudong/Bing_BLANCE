@@ -130,7 +130,7 @@ PID_Parameter_t PID_Speed_Param[MOTOR_TYPE_CNT][PID_TYPE_CNT]={
       .D = 0,
     },
 			[RC]   = {
-      .P = 8,
+      .P = 6,
       .I = 0,
       .D = 0,
     },
@@ -190,7 +190,7 @@ PID_Parameter_t PID_Angle_Param[MOTOR_TYPE_CNT][PID_TYPE_CNT]={
       .D = 0,
     },
 			[RC]   = {
-      .P = 8,
+      .P = 6,
       .I = 0,
       .D = 0,
     },

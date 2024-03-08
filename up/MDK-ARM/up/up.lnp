@@ -23,6 +23,7 @@
 "up\vofa_task.o"
 "up\crc.o"
 "up\pid.o"
+"up\trajectory_calculation.o"
 "up\startup_stm32f405xx.o"
 "up\stm32f4xx_hal_can.o"
 "up\stm32f4xx_hal_rcc.o"

@@ -55,7 +55,7 @@ void Referee_Decode(uint8_t *referee_buf )
 							break;
 					
 					case ID_robot_status:    //0x0201
-               				Determine_ID();
+               Determine_ID();
 							memcpy(&REF.Robot_Status, (referee_buf + DATA), LEN_robot_status);
 							break;
 				
@@ -71,9 +71,9 @@ void Referee_Decode(uint8_t *referee_buf )
 							memcpy(&REF.Buff, (referee_buf + DATA), LEN_buff);
 							break;
 					
-					case ID_air_support_data:    //0x0205
-							memcpy(&REF.Air_Support_date, (referee_buf + DATA), LEN_air_support_data);
-							break;
+//					case ID_air_support_data:    //0x0205
+//							memcpy(&REF.Air_Support_date, (referee_buf + DATA), LEN_air_support_data);
+//							break;
 					
 					case ID_hurt_data:      			//0x0206
 							memcpy(&REF.Hurt_Date, (referee_buf + DATA), LEN_hurt_data);
@@ -87,8 +87,8 @@ void Referee_Decode(uint8_t *referee_buf )
 							break;
           
 					case ID_rfid_status: //0x0209
-               				memcpy(&REF.Rfid_Status, (referee_buf+DATA), LEN_rfid_status);
-               				break;
+							memcpy(&REF.Rfid_Status, (referee_buf+DATA), LEN_rfid_status);
+							break;
 	
 				}
 					
@@ -249,7 +249,7 @@ void Determine_ID(void)//判断自己是哪个队伍
 		REF.ids.client_hero 		 	 = 0x0165;
 		REF.ids.client_engineer    = 0x0166;
 		REF.ids.client_infantry3	 = 0x0167;
-		REF.ids.client_infantry4 	 =0x0168;
+		REF.ids.client_infantry4 	 = 0x0168;
 		REF.ids.client_infantry5 	 = 0x0169;
 		REF.ids.client_plane			 = 0x016A;
 		
@@ -265,7 +265,6 @@ void Determine_ID(void)//判断自己是哪个队伍
 			REF.self_client = REF.ids.client_infantry5;
 		else if(REF.Robot_Status.robot_id == plane_blue)
 			REF.self_client = REF.ids.client_plane;
-		
 	}
 }
 

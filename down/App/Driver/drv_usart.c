@@ -86,6 +86,7 @@ void UART_IRQHandler_IT(UART_HandleTypeDef *huart)
 			__HAL_UART_CLEAR_IDLEFLAG(&huart1);
 			HAL_UART_DMAStop(&huart1);
 			HAL_UART_Receive_DMA(&huart1,Judge_Buffer,128);
+			
 			Referee_Decode(Judge_Buffer);
 			memset(Judge_Buffer, 0, 128);//Çå³ý½ÓÊÕ»º´æ
 		}
