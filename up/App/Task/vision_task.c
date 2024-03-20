@@ -9,10 +9,6 @@
 #include <stdio.h>
 
 extern DMA_HandleTypeDef hdma_uart4_tx;
-
-//extern uint8_t visual_mode;								//视觉模式（普通|哨兵）
-//extern uint8_t Visual_Date_t;							//视觉是否识别
-
 //Visual_data From_Vision_Data;
 //Visual_data Visual_Data;
 Vision_Date_t Vision = {
@@ -21,15 +17,111 @@ Vision_Date_t Vision = {
 	.MAX =  10,
 	.MIN = -10,
 };
+Vision_Info_t Vision_cj;
+//float aim_x = 0, aim_y = 10, aim_z = 0; // aim point 落点，传回上位机用于可视化
+//float pitch = 0; //输出控制量 pitch绝对角度 弧度
+//float yaw = 0;   //输出控制量 yaw绝对角度 弧度
+
+extern DMA_HandleTypeDef hdma_uart4_rx;
+//------------------------驱动层------------------------
+void Vision_Init(void)
+{
+  Vision_cj.VisionRTx.AutoAim_Rx.LEN.LEN_RX_DATA = sizeof(AutoAim_Rx_Data_t);
+  Vision_cj.VisionRTx.AutoAim_Rx.LEN.LEN_RX_PACKET = sizeof(AutoAim_Rx_Packet_t);
+  
+  Vision_cj.VisionRTx.AutoAim_Tx.LEN.LEN_TX_DATA = sizeof(AutoAim_Tx_Data_t);
+  Vision_cj.VisionRTx.AutoAim_Tx.LEN.LEN_TX_PACKET = sizeof(AutoAim_Tx_Packet_t);
+  Vision_cj.VisionRTx.AutoAim_Tx.LEN.TX_CRC16 = sizeof(AutoAim_Tx_Packet_t) - 2;
+}
 
 
-
+uint8_t Vision_Tx_Buffer[VISION_TX_BUFFER_LEN];
+AutoAim_Tx_Info_t  VISON;
 void Visual_Task(void)
 {
 //	VSIION_State_Report();//离线判断
-	Visual_SendData();
+//	Visual_SendData();
+	AUTO_AIM_Ctrl();
+	VISION_SendData();
+//	uint8_t VISON[26]={0x5A,0x03,
+//	roll_t.input[0],roll_t.input[1],roll_t.input[2],roll_t.input[3],
+//	pitch_t.input[0],pitch_t.input[1],pitch_t.input[2],pitch_t.input[3],
+//	yaw_t.input[0],yaw_t.input[1],yaw_t.input[2],yaw_t.input[3],
+//	aim_x_t.input[0],aim_x_t.input[1],aim_x_t.input[2],aim_x_t.input[3],
+//	aim_y_t.input[0],aim_y_t.input[1],aim_y_t.input[2],aim_y_t.input[3],
+//	aim_z_t.input[0],aim_z_t.input[1],aim_z_t.input[2],aim_z_t.input[3],
+//	};
+
+
 }
-//static uint8_t exe[7] = {0x80,0x01,0x02,0x02,0x03,0x04,0x7f}; 
+void AUTO_AIM_Ctrl(void)
+{
+  Vision_cj.VisionRTx.AutoAim_Tx.Packet.TxData.detect_color = 0x01;
+  Vision_cj.VisionRTx.AutoAim_Tx.Packet.TxData.roll = IMU_Get_Data.IMU_Eular[1];
+  Vision_cj.VisionRTx.AutoAim_Tx.Packet.TxData.pitch = IMU_Get_Data.IMU_Eular[0];
+	Vision_cj.VisionRTx.AutoAim_Tx.Packet.TxData.yaw = IMU_Get_Data.IMU_Eular[2];
+
+}
+/**
+ *	@brief	cj发送视觉通信数据
+ *	@note	uart4发送
+ */
+void VISION_SendData(void)
+{
+  AutoAim_Tx_Info_t *AUTO = &Vision_cj.VisionRTx.AutoAim_Tx;
+  int len = 0;
+
+	len = AUTO->LEN.LEN_TX_PACKET;
+	/* 写入帧头 */
+	Vision_Tx_Buffer[SOF_Vision] = VISION_FRAME_HEADER;
+	/* 数据段填充 */
+	memcpy( &Vision_Tx_Buffer[DATA_Vision], 
+					&AUTO->Packet.TxData, 
+					 AUTO->LEN.LEN_TX_DATA );
+	/* 写入帧尾CRC16 */
+	Append_CRC16_Check_Sum( Vision_Tx_Buffer, len);
+	
+	/* 数据同步 */
+//	memcpy(&AUTO->Packet , Vision_Tx_Buffer , len);
+  /* 发送数据 */
+	
+//	autoSolveTrajectory(&Vision_cj.VisionRTx.AutoAim_Tx.Packet.TxData.pitch,	
+//											&Vision_cj.VisionRTx.AutoAim_Tx.Packet.TxData.yaw,	
+//											&Vision_cj.VisionRTx.AutoAim_Tx.Packet.TxData.aim_x,	
+//											&Vision_cj.VisionRTx.AutoAim_Tx.Packet.TxData.aim_y,	
+//											&Vision_cj.VisionRTx.AutoAim_Tx.Packet.TxData.aim_z);
+	
+  /* DMA发送  */
+	UART1_TX_DMA_Send(Vision_Tx_Buffer,len);
+	/* 发送数据包清零 */
+//	memset(Vision_Tx_Buffer, 0, VISION_TX_BUFFER_LEN);
+}
+
+/**
+ *	@brief	cj读取视觉通信数据
+ *	@note	uart4.c中IRQ调用
+ */
+void VISION_ReadData(uint8_t *rxBuf)
+{
+  AutoAim_Rx_Info_t *AUTO = &Vision_cj.VisionRTx.AutoAim_Rx;
+  bool res = false;
+	/* 帧首字节是否为0xA5 */
+	if(rxBuf[SOF_Vision] == 0xA5) 
+	{	
+			if(Verify_CRC16_Check_Sum( rxBuf, AUTO->LEN.LEN_RX_PACKET ))
+      {    /* 数据正确则拷贝接收包 */
+				memcpy(&AUTO->Packet, rxBuf, AUTO->LEN.LEN_RX_PACKET);  
+      }
+			else 
+				res = false;
+  }else 
+	res = false;
+    
+}
+
+/*
+@brief yhp数据发送
+*/
 void Visual_SendData(void)
 {
 	Vision.TX_Pitch.output = IMU_Get_Data.IMU_Eular[PITCH];
@@ -38,13 +130,16 @@ void Visual_SendData(void)
 							Vision.TX_Pitch.input[0],Vision.TX_Pitch.input[1],Vision.TX_Pitch.input[2],Vision.TX_Pitch.input[3],
 							Vision.TX_Yaw.input[0],Vision.TX_Yaw.input[1],Vision.TX_Yaw.input[2],Vision.TX_Yaw.input[3],
 							112,0x7f}; 
+	
 	for(uint8_t i = 0; i<13; i++)
 	{
 		HAL_UART_Transmit(&huart4,&exe[i],1,100);
 	}
 }
 
-
+/*
+@brief yhp数据解算
+*/
 void Vision_read_data(uint8_t *data)
 {
 	 if(*data==0x70 && (*(data+12))==0x6F)
@@ -275,83 +370,15 @@ void autoSolveTrajectory(float *pitch, float *yaw, float *aim_x, float *aim_y, f
 //  return res;
 //}
 
-//void visual_date(uint8_t *data)
-//{
-//	 if(*data==0x70 && (*(data+12))==0x6F)
-// {
-//	 visual_rc visual_pitch;
-//	 visual_rc visual_yaw;
+void UART1_TX_DMA_Send(uint8_t *buffer, uint16_t length)
+{
+    //等待上一次的数据发送完毕
+	while(HAL_DMA_GetState(&hdma_uart4_tx) != HAL_DMA_STATE_READY)
+    //while(__HAL_DMA_GET_COUNTER(&hdma_usart1_tx));
+	
+    //关闭DMA
+    __HAL_DMA_DISABLE(&hdma_uart4_tx);
 
-//	 for(int i=0;i<4;i++)
-//	 {
-//		 visual_yaw.date_t[i]=*(data+1+i);
-//	 }
-//	 
-//	 	 for(int i=0;i<4;i++)
-//	 {
-//		 visual_pitch.date_t[i]=*(data+5+i);
-//	 }
-
-//	From_Vision_Data.distance[0]=*(data+9);
-//	From_Vision_Data.distance[1]=*(data+10);
-//	From_Vision_Data.distance[2]=From_Vision_Data.distance[0]*100+From_Vision_Data.distance[1];
-//	From_Vision_Data.Visual_State=*(data+11);//状态  默认0		1自启成功无数据		2有数据
-//	From_Vision_Data.Vision_Pitch = visual_pitch.date*Vision_Coff;
-//	From_Vision_Data.Vision_Yaw  =visual_yaw.date*Vision_Coff; 
-
-////Yaw
-//		 if(From_Vision_Data.Vision_Yaw<-10)
-//		{
-//			Visual_Data.Vision_Yaw=-10;
-//		}
-//		else if(From_Vision_Data.Vision_Yaw>10)
-//				{
-//			Visual_Data.Vision_Pitch=10;
-//		}
-//		else
-//		{
-//			Visual_Data.Vision_Yaw=From_Vision_Data.Vision_Yaw;
-//		}
-////Pitch
-//		if(From_Vision_Data.Vision_Pitch<-10)
-//		{
-//			Visual_Data.Vision_Pitch=-10;
-//		}
-//		else if(From_Vision_Data.Vision_Pitch>10)
-//				{
-//			Visual_Data.Vision_Pitch=10;
-//		}
-//		else
-//		{
-//			Visual_Data.Vision_Pitch=From_Vision_Data.Vision_Pitch;
-//		}
-//		
-// }
-//}
-
-//visual_send send[3];
-//void visual_send_date(void)
-//{
-//	uint8_t state;
-//	float speed;
-//	uint16_t i;
-//	send[0].date=Eular[0];
-//	send[1].date=Eular[2];
-//	if(REF.GameRobotStat.robot_id < 10){
-//		state=BLUE;//0//BLUR
-//	}
-//	else{
-//		state=RED;//1//RED
-//	}
-//		
-//	speed=(uint8_t)(REF_FOOT_Shoot_Speed()*10);//实时弹速
-//	uint8_t exe[13] = {0x80,state,speed,
-//								send[0].date_t[0],send[0].date_t[1],send[0].date_t[2],send[0].date_t[3],
-//								send[1].date_t[0],send[1].date_t[1],send[1].date_t[2],send[1].date_t[3],
-//										visual_mode,0x7f}; 
-////百位 1正常   2 哨兵   十位 1 普通   2 预测    个位 1  15m/s    2  30m/s 
-//	for(i = 0; i<13; i++)
-//	{
-//		HAL_UART_Transmit(&huart4,&exe[i],1,100);
-//	}
-//}
+    //开始发送数据
+    HAL_UART_Transmit_DMA(&huart4, buffer, length);
+}

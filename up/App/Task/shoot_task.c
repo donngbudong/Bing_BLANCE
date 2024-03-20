@@ -175,12 +175,12 @@ void Shoot_KEY_Ctrl(void)
 
 void Shoot_Ctrl_FRIC_L(Shoot_Motor_t *str)
 {
-	str->Motor_Data.PID_Speed_target = 7500;
+	str->Motor_Data.PID_Speed_target = 6800;
 	str->Motor_Data.PID_Speed = str->Motor_Data.CAN_GetData.Motor_Speed;
 }
 void Shoot_Ctrl_FRIC_R(Shoot_Motor_t *str)
 {
-	str->Motor_Data.PID_Speed_target = -7500;
+	str->Motor_Data.PID_Speed_target = -6800;
 	str->Motor_Data.PID_Speed = str->Motor_Data.CAN_GetData.Motor_Speed;
 }
 void Shoot_Ctrl_DRIVER(Shoot_Motor_t *str)

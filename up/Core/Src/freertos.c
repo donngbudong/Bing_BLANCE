@@ -155,8 +155,8 @@ void StartDefaultTask(void const * argument)
   /* Infinite loop */
   for(;;)
   {
-		HAL_Delay(500);
-    HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_9);
+//		HAL_Delay(500);
+//    HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_9);
 		osDelay(1);
   }
   /* USER CODE END StartDefaultTask */
@@ -261,8 +261,8 @@ void VISUAL_TASK(void const * argument)
   for(;;)
   {
 		currentTime = xTaskGetTickCount();
-//		Visual_Task();
-		vTaskDelayUntil(&currentTime, 3);//绝对延时    
+		Visual_Task();
+		vTaskDelayUntil(&currentTime, 5);//绝对延时    
   }
   /* USER CODE END VISUAL_TASK */
 }

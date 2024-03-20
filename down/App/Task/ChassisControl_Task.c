@@ -7,7 +7,6 @@
 
 
 extern CHASSIS_Date_t Chassis;
-float angle;
 /**
 * @brief 底盘信息获取
 * @param 
@@ -25,15 +24,76 @@ void Chassis_GET_Info(void)
 	Chassis.speed_x = -(Chassis.Motor_Date[0].Speed - Chassis.Motor_Date[1].Speed) /57.29578f*Diameter_weel/2.0f/2.0f;
 	Chassis.omega_z =  (Chassis.Motor_Date[0].Speed + Chassis.Motor_Date[1].Speed) /57.29578f*Diameter_weel/2.0f/2.0f;
 	Chassis.pose_x += 	Chassis.speed_x * 0.01f;
+	if(RC_S1 == 1)
+	{
+		Chassis_RC_Ctrl();
+	}else if(RC_S1 == 2)
+	{
+		Chassis_KEY_Ctrl();
+	}
+	
+
+	
+	Chassis.move_speed = sqrt(Chassis.X_Target*Chassis.X_Target + Chassis.Y_Target*Chassis.Y_Target);
+	if(Chassis.chassis_direction == CHASSIS_BACK)Chassis.move_speed *= -1;
+	Chassis.move_direction = atan2f(Chassis.Y_Target,Chassis.X_Target);
+
+	
+	Chassis.GIM_Yaw = Gimbal_YAW.Motor_Angle*360/8192;
+	YAW_Angle_Over_Zero(&Chassis.GIM_Yaw);
+}
+
+
+
+void XY_Speed(float *speed, float MAX,float MIX)
+{
+	if(*speed > MAX){
+		*speed = MAX;
+	}
+	if(*speed < MIX){ 
+	*speed = MIX;
+	}
+}
+/**
+  * @brief  底盘遥控控制
+  * @param  none
+  * @retval none
+  */
+void Chassis_RC_Ctrl(void)
+{
 	Chassis.X_Target = 	RC_CH3 * 6.0 / 660 ;
 	Chassis.Y_Target =	RC_CH2 * 2.5 / 660;
 	Chassis.Z_Target =  RC_CH0 * 2.5 / 660;
-	Chassis.move_speed = sqrt(Chassis.X_Target*Chassis.X_Target + Chassis.Y_Target*Chassis.Y_Target);
-	Chassis.move_direction = atan2f(Chassis.Y_Target,Chassis.X_Target);
-	if(Chassis.chassis_direction == CHASSIS_BACK)Chassis.move_speed *= -1;
-
-	angle -= RC_CH0 * 0.0005;
-	YAW_Angle_Over_Zero(&angle);
+}
+/**
+  * @brief  底盘键鼠控制
+  * @param  none
+  * @retval none
+  */
+void Chassis_KEY_Ctrl(void)
+{
+	if(KEY_W == 1)
+	{
+		Chassis.X_Target += 0.01;
+	}else if(KEY_S == 1)
+	{
+		Chassis.X_Target -=0.01;
+	}else
+	{
+		if(Chassis.X_Target > 0)
+		{
+			Chassis.X_Target-=0.01;
+		}
+		else if(Chassis.X_Target < 0)
+		{
+			Chassis.X_Target+=0.01;
+			
+		}
+		else if(Chassis.X_Target == 0){
+			Chassis.X_Target = 0;
+		}
+	}
+	XY_Speed(&Chassis.X_Target,3,-3);
 	
 }
 /**
@@ -105,7 +165,8 @@ float speed_control(float speed_in,float direction)
   * @brief  速度灵敏度调节
   * @retval 速度灵敏度
   */
-//裁判系统地盘限制
+
+
 //float speed_sen_adjust()
 //{
 //	float speed_sen;
@@ -132,6 +193,7 @@ float speed_control(float speed_in,float direction)
 //		
 //	return speed_sen;
 //}
+
 
 	
 /**
@@ -234,11 +296,11 @@ float limit(float data, float min, float max)
  */
 float YAW_Angle_Over_Zero(float *Angle)
 {
-	if(*Angle - Chassis.Yaw > IMU_180)    
+	if(*Angle - Chassis.GIM_Yaw > IMU_180)    
 	{
 		*Angle =*Angle - IMU_360;        
 	}
-	else if(*Angle - Chassis.Yaw < -IMU_180)
+	else if(*Angle - Chassis.GIM_Yaw < -IMU_180)
 	{
 		*Angle =*Angle + IMU_360;
 	}

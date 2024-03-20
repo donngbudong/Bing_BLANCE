@@ -15,15 +15,6 @@ typedef union
 
 
 
-typedef struct
-{
-	
-	Vofa_Date	Chassis_LF;
-	Vofa_Date	Chassis_RF;
-	Vofa_Date	Chassis_LB;
-	Vofa_Date	Chassis_RB;
-}Vofa_Motor_t;
-//void vofa_send(void);
 
 #endif
 

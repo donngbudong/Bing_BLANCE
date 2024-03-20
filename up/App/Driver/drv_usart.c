@@ -2,8 +2,11 @@
 #include "Device.h"
 #include "system.h"
 
+#define    VISION_BUFFER_LEN         50u
+
 uint8_t Dbus_Buffer[2][SBUS_RX_BUF_NUM];
-uint8_t Visual_Buffer[VISUAL_BUFFER_LEN];	//数据类型长度
+uint8_t Vision_Buffer[ VISION_BUFFER_LEN ] = {0};	//视觉发过来的数据暂存在这里
+
 uint8_t IMU_Buffer  [128];
 uint8_t DIY_Bing[4];
 
@@ -15,6 +18,7 @@ extern UART_HandleTypeDef huart5;/*陀螺仪*/
 extern UART_HandleTypeDef huart6;/*Vofa*/
 
 extern DMA_HandleTypeDef hdma_usart2_rx;
+//extern DMA_HandleTypeDef hdma_uart4_rx;
 
 
 //static void RC_Init(uint8_t *rx1_buf, uint8_t *rx2_buf, uint16_t dma_buf_num);
@@ -33,6 +37,7 @@ void USART_Init(void)
 	__HAL_UART_ENABLE_IT(&huart4,UART_IT_IDLE);//VISUAL	
 	__HAL_UART_ENABLE_IT(&huart5,UART_IT_IDLE);//IMU
 	__HAL_UART_ENABLE_IT(&huart6,UART_IT_IDLE);//VOFA
+		HAL_UART_Receive_DMA(&huart4,Vision_Buffer,VISION_BUFFER_LEN);
 }
 
 /**
@@ -70,6 +75,8 @@ void RC_Init(uint8_t *rx1_buf, uint8_t *rx2_buf, uint16_t dma_buf_num)
 	SET_BIT(hdma_usart2_rx.Instance->CR, DMA_SxCR_DBM);
     //使能DMA
 	__HAL_DMA_ENABLE(&hdma_usart2_rx);
+	
+	
 		
 }
 
@@ -135,14 +142,18 @@ void UART_IRQHandler_IT(UART_HandleTypeDef *huart)
 	}
 	else if(huart==&huart4)//Vision
 	{
+	uint32_t temp;
 		if(__HAL_UART_GET_FLAG(&huart4,UART_FLAG_IDLE)!=RESET) 
 		{
-			__HAL_UART_CLEAR_IDLEFLAG(&huart4);
-			HAL_UART_DMAStop(&huart4);
-			Vision_read_data(Visual_Buffer);								//读取视觉数据
-			HAL_UART_Receive_DMA(&huart4,Visual_Buffer,VISUAL_BUFFER_LEN);
-//			memset(Visual_Buffer, 0, 16);
-//			Vision_time = micros() + 20000;
+			if(__HAL_UART_GET_FLAG(&huart4,UART_FLAG_IDLE)!=RESET) 
+			{
+				__HAL_UART_CLEAR_IDLEFLAG(&huart4);
+				HAL_UART_DMAStop(&huart4);
+				VISION_ReadData(Vision_Buffer);
+//				Vision_read_data(Vision_Buffer);								//读取视觉数据
+				HAL_UART_Receive_DMA(&huart4,Vision_Buffer,VISION_BUFFER_LEN);
+	//			memset(Visual_Buffer, 0, 16);
+			}
 		}
 	}
 	else if(huart==&huart5)//Imu

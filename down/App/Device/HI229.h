@@ -27,6 +27,7 @@ typedef  struct
 {
   float   IMU_Eular[EULAR_CNT];
   int16_t IMU_Gyo[Gyo_CNT];
+	
 }IMU_GET_DATA_t;
 
 

@@ -112,40 +112,35 @@ int main(void)
 	Driver_Init();
 	Motor_Init();
   Time_Init();
+	Vision_Init();
 	HAL_TIM_PWM_Start(&htim3,TIM_CHANNEL_2);//定时器初始化
 
-//	float aim_x = 0, aim_y = 10, aim_z = 0; // aim point 落点，传回上位机用于可视化
-//	float pitch = 0; //输出控制量 pitch绝对角度 弧度
-//	float yaw = 0;   //输出控制量 yaw绝对角度 弧度
 
-//	//定义参数
-//	st.k = 0.092f;
-//	st.bullet_type =  BULLET_17;
-//	st.current_v = 18;
-//	st.current_pitch = 0;
-//	st.current_yaw = 0;
-//	st.xw = 3.0;
-//	// st.yw = 0.0159;
-//	st.yw = 0;
-//	// st.zw = -0.2898;
-//	st.zw = 1.5;
+	//定义参数
+	st.k = 0.092f;
+	st.bullet_type =  BULLET_17;
+	st.current_v = 18;
+	st.current_pitch = 0;
+	st.current_yaw = 0;
+	st.xw = 3.0;
+	// st.yw = 0.0159;
+	st.yw = 0;
+	// st.zw = -0.2898;
+	st.zw = 1.5;
 
-//	st.vxw = 0;
-//	st.vyw = 0;
-//	st.vzw = 0;
-//	st.v_yaw = 0;
-//	st.tar_yaw = 0.09131;
-//	st.r1 = 0.5;
-//	st.r2 = 0.5;
-//	st.dz = 0.1;
-//	st.bias_time = 100;
-//	st.s_bias = 0.19133;
-//	st.z_bias = 0.21265;
-//	st.armor_id = ARMOR_INFANTRY3;
-//	st.armor_num = ARMOR_NUM_NORMAL;
-
-
-//	autoSolveTrajectory(&pitch, &yaw, &aim_x, &aim_y, &aim_z);
+	st.vxw = 0;
+	st.vyw = 0;
+	st.vzw = 0;
+	st.v_yaw = 0;
+	st.tar_yaw = 0.09131;
+	st.r1 = 0.5;
+	st.r2 = 0.5;
+	st.dz = 0.1;
+	st.bias_time = 100;
+	st.s_bias = 0.19133;
+	st.z_bias = 0.21265;
+	st.armor_id = ARMOR_INFANTRY3;
+	st.armor_num = ARMOR_NUM_NORMAL;
 
   /* USER CODE END 2 */
 

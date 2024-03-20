@@ -77,5 +77,7 @@ float angle_z_min_err_get(float target_ang);
 float ramp_control(float ref ,float set,float accel);
 
 float YAW_Angle_Over_Zero(float *Angle);
+void Chassis_RC_Ctrl(void);
+void Chassis_KEY_Ctrl(void);
 
 #endif

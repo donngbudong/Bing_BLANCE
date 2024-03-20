@@ -95,11 +95,11 @@ void PID_clear(PID_Loop_t *pid)
 PID_Parameter_t Param_1 = {0,	0, 0};
 PID_Parameter_t Param_2 = {400,10.5, 0};
 
-PID_Parameter_t Param_3 = {210,	0,	0};
-PID_Parameter_t Param_4 = {8,	0,	0};
+PID_Parameter_t Param_3 = {250,	0,	0};
+PID_Parameter_t Param_4 = {15,	0,	0};
 
-PID_Parameter_t Param_5 = {1,	0,	0};
-PID_Parameter_t Param_6 = {2	,	0,	1};
+PID_Parameter_t Param_5 = {13,	0,	0};
+PID_Parameter_t Param_6 = {3	,	0,	0};
 
 PID_Parameter_t Chasssis_OUT = {1,0,0};
 
@@ -195,7 +195,7 @@ void MF_9028_PID_56(PID_Loop_t *str)
   str->PID_I_Out_Max = 0; 
   str->PID_P_Out_Max = 16000;
   str->PID_Output_Max = 12000;
-  str->PID_Err_Dead = 0;
+  str->PID_Err_Dead = 5;
 }
 /**
  * @brief PIDÏŞ·ùÉèÖÃ 
