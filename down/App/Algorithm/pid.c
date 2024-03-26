@@ -93,12 +93,12 @@ void PID_clear(PID_Loop_t *pid)
 
 //PID_Parameter_t Param_1 = {800,	0, 110000};
 PID_Parameter_t Param_1 = {0,	0, 0};
-PID_Parameter_t Param_2 = {400,10.5, 0};
+PID_Parameter_t Param_2 = {450,18, 0};
 
-PID_Parameter_t Param_3 = {250,	0,	0};
-PID_Parameter_t Param_4 = {15,	0,	0};
+PID_Parameter_t Param_3 = {280,	0,	0};
+PID_Parameter_t Param_4 = {18,	0,	0};
 
-PID_Parameter_t Param_5 = {13,	0,	0};
+PID_Parameter_t Param_5 = {5 	,	0,	0};
 PID_Parameter_t Param_6 = {3	,	0,	0};
 
 PID_Parameter_t Chasssis_OUT = {1,0,0};
@@ -149,7 +149,7 @@ void MF_9028_Balance_1(PID_Loop_t *str)
 void MF_9028_Balance_2(PID_Loop_t *str)
 {
   /* 这里只针对速度环 */
-  str->I_Limit_Max = 80;
+  str->I_Limit_Max = 60;
   str->PID_I_Out_Max = 2500; 
   str->PID_P_Out_Max = 16000;
   str->PID_Output_Max = 5000;

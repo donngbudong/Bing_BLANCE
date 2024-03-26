@@ -1,6 +1,7 @@
 #ifndef __CHASSISCONTROL_TASK_H
 #define __CHASSISCONTROL_TASK_H
 
+#include "stm32f4xx_hal.h"
 
 //定义PI 值
 #ifndef PI
@@ -77,6 +78,8 @@ float angle_z_min_err_get(float target_ang);
 float ramp_control(float ref ,float set,float accel);
 
 float YAW_Angle_Over_Zero(float *Angle);
+float YAW_MotorAngle_Proc(int16_t Angle);
+
 void Chassis_RC_Ctrl(void);
 void Chassis_KEY_Ctrl(void);
 

@@ -27,6 +27,7 @@ down\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_can.h
 down\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash.h
 down\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash_ex.h
 down\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash_ramfunc.h
+down\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_iwdg.h
 down\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr.h
 down\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h
 down\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h
@@ -48,6 +49,7 @@ down\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h
 down\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h
 down\main.o: ../Core/Inc/can.h
 down\main.o: ../Core/Inc/dma.h
+down\main.o: ../Core/Inc/iwdg.h
 down\main.o: ../Core/Inc/usart.h
 down\main.o: ../Core/Inc/gpio.h
 down\main.o: ../App/Driver/driver.h
@@ -70,3 +72,4 @@ down\main.o: ../App/Task/system_task.h
 down\main.o: ../App/Task/chassis_task.h
 down\main.o: ../App/Header/Device.h
 down\main.o: ../App/Task/vofa_task.h
+down\main.o: ../App/Referee/referee_UI.h

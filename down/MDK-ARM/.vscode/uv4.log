@@ -1,13 +1,83 @@
 *** Using Compiler 'V5.06 update 7 (build 960)', folder: 'D:\Program Files\Keil_v5\ARM\ARMCC\Bin'
 Build target 'down'
-compiling chassis_task.c...
-..\App\Task\chassis_task.c(40): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-  		if(Chassis.X_Target > 0.3 &&Chassis.X_Target < 0.3)
-..\App\Task\chassis_task.c(40): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-  		if(Chassis.X_Target > 0.3 &&Chassis.X_Target < 0.3)
-..\App\Task\chassis_task.c: 2 warnings, 0 errors
-linking...
-Program Size: Code=22604 RO-data=1432 RW-data=956 ZI-data=19404  
-FromELF: creating hex file...
-"down\down.axf" - 0 Error(s), 2 Warning(s).
-Build Time Elapsed:  00:00:03
+compiling referee_UI.c...
+..\App\Referee\referee_UI.c(32): error:  #20: identifier "UI_Graph_Line" is undefined
+  	Graph->graphic_tpye    = UI_Graph_Line;
+..\App\Referee\referee_UI.c(57): error:  #20: identifier "UI_Graph_Rectangle" is undefined
+  	Graph->graphic_tpye    = UI_Graph_Rectangle;
+..\App\Referee\referee_UI.c(81): error:  #20: identifier "UI_Graph_Circle" is undefined
+  	Graph->graphic_tpye    = UI_Graph_Circle;
+..\App\Referee\referee_UI.c(105): error:  #20: identifier "UI_Graph_Ellipse" is undefined
+  	Graph->graphic_tpye    = UI_Graph_Ellipse;
+..\App\Referee\referee_UI.c(132): error:  #20: identifier "UI_Graph_Arc" is undefined
+  	Graph->graphic_tpye    = UI_Graph_Arc;
+..\App\Referee\referee_UI.c(160): error:  #20: identifier "UI_Graph_Float" is undefined
+  	Graph->graphic_tpye    = UI_Graph_Float;
+..\App\Referee\referee_UI.c(189): error:  #20: identifier "UI_Graph_Int" is undefined
+  	Graph->graphic_tpye    = UI_Graph_Int;
+..\App\Referee\referee_UI.c(217): error:  #20: identifier "UI_Graph_String" is undefined
+  	String->graphic_tpye   = UI_Graph_String;
+..\App\Referee\referee_UI.c(241): error:  #20: identifier "HEADER_SOF" is undefined
+  	Graph->Referee_Transmit_Header.SOF  = HEADER_SOF;
+..\App\Referee\referee_UI.c(247): warning:  #223-D: function "CRC08_Calculate" declared implicitly
+  	Graph->Referee_Transmit_Header.CRC8 = CRC08_Calculate((uint8_t *)(&Graph->Referee_Transmit_Header), 4);
+..\App\Referee\referee_UI.c(250): error:  #20: identifier "STUDENT_INTERACTIVE_DATA_CMD_ID" is undefined
+  	Graph->CMD_ID = STUDENT_INTERACTIVE_DATA_CMD_ID;
+..\App\Referee\referee_UI.c(253): error:  #20: identifier "UI_DataID_Draw1" is undefined
+  	     if(Counter == 1) Graph->Interactive_Header.data_cmd_id = UI_DataID_Draw1;
+..\App\Referee\referee_UI.c(254): error:  #20: identifier "UI_DataID_Draw2" is undefined
+  	else if(Counter == 2) Graph->Interactive_Header.data_cmd_id = UI_DataID_Draw2;
+..\App\Referee\referee_UI.c(255): error:  #20: identifier "UI_DataID_Draw5" is undefined
+  	else if(Counter == 5) Graph->Interactive_Header.data_cmd_id = UI_DataID_Draw5;
+..\App\Referee\referee_UI.c(256): error:  #20: identifier "UI_DataID_Draw7" is undefined
+  	else if(Counter == 7) Graph->Interactive_Header.data_cmd_id = UI_DataID_Draw7;
+..\App\Referee\referee_UI.c(257): error:  #136: struct "<unnamed>"  has no field "sender_ID"
+  	Graph->Interactive_Header.sender_ID   = RobotID ;      //当前机器人ID
+..\App\Referee\referee_UI.c(258): error:  #136: struct "<unnamed>"  has no field "receiver_ID"
+  	Graph->Interactive_Header.receiver_ID = RobotID + 256; //对应操作手ID
+..\App\Referee\referee_UI.c(264): warning:  #223-D: function "CRC16_Calculate" declared implicitly
+  		Graph1->CRC16 = CRC16_Calculate((uint8_t *)Graph1, sizeof(UI_Graph1_t) - 2);
+..\App\Referee\referee_UI.c(269): warning:  #223-D: function "CRC16_Calculate" declared implicitly
+  		Graph2->CRC16 = CRC16_Calculate((uint8_t *)Graph2, sizeof(UI_Graph2_t) - 2);
+..\App\Referee\referee_UI.c(274): warning:  #223-D: function "CRC16_Calculate" declared implicitly
+  		Graph5->CRC16 = CRC16_Calculate((uint8_t *)Graph5, sizeof(UI_Graph5_t) - 2);
+..\App\Referee\referee_UI.c(279): warning:  #223-D: function "CRC16_Calculate" declared implicitly
+  		Graph7->CRC16 = CRC16_Calculate((uint8_t *)Graph7, sizeof(UI_Graph7_t) - 2);
+..\App\Referee\referee_UI.c(283): error:  #20: identifier "Referee_UART" is undefined
+  	     if(Counter == 1) HAL_UART_Transmit_DMA(&Referee_UART, (uint8_t *)Graph, sizeof(UI_Graph1_t));
+..\App\Referee\referee_UI.c(284): error:  #20: identifier "Referee_UART" is undefined
+  	else if(Counter == 2) HAL_UART_Transmit_DMA(&Referee_UART, (uint8_t *)Graph, sizeof(UI_Graph2_t));
+..\App\Referee\referee_UI.c(285): error:  #20: identifier "Referee_UART" is undefined
+  	else if(Counter == 5) HAL_UART_Transmit_DMA(&Referee_UART, (uint8_t *)Graph, sizeof(UI_Graph5_t));
+..\App\Referee\referee_UI.c(286): error:  #20: identifier "Referee_UART" is undefined
+  	else if(Counter == 7) HAL_UART_Transmit_DMA(&Referee_UART, (uint8_t *)Graph, sizeof(UI_Graph7_t));
+..\App\Referee\referee_UI.c(292): error:  #20: identifier "HEADER_SOF" is undefined
+  	String->Referee_Transmit_Header.SOF  = HEADER_SOF;
+..\App\Referee\referee_UI.c(295): warning:  #223-D: function "CRC08_Calculate" declared implicitly
+  	String->Referee_Transmit_Header.CRC8 = CRC08_Calculate((uint8_t *)(&String->Referee_Transmit_Header), 4);
+..\App\Referee\referee_UI.c(298): error:  #20: identifier "STUDENT_INTERACTIVE_DATA_CMD_ID" is undefined
+  	String->CMD_ID = STUDENT_INTERACTIVE_DATA_CMD_ID;
+..\App\Referee\referee_UI.c(301): error:  #20: identifier "UI_DataID_DrawChar" is undefined
+  	String->Interactive_Header.data_cmd_id = UI_DataID_DrawChar;
+..\App\Referee\referee_UI.c(302): error:  #136: struct "<unnamed>"  has no field "sender_ID"
+  	String->Interactive_Header.sender_ID   = RobotID ;      //当前机器人ID
+..\App\Referee\referee_UI.c(303): error:  #136: struct "<unnamed>"  has no field "receiver_ID"
+  	String->Interactive_Header.receiver_ID = RobotID + 256; //对应操作手ID
+..\App\Referee\referee_UI.c(306): warning:  #223-D: function "CRC16_Calculate" declared implicitly
+  	String->CRC16 = CRC16_Calculate((uint8_t *)String, sizeof(UI_String_t) - 2);
+..\App\Referee\referee_UI.c(309): error:  #20: identifier "Referee_UART" is undefined
+  	HAL_UART_Transmit_DMA(&Referee_UART, (uint8_t *)String, sizeof(UI_String_t));
+..\App\Referee\referee_UI.c(315): error:  #20: identifier "HEADER_SOF" is undefined
+  	Delete->Referee_Transmit_Header.SOF  = HEADER_SOF;
+..\App\Referee\referee_UI.c(318): warning:  #223-D: function "CRC08_Calculate" declared implicitly
+  	Delete->Referee_Transmit_Header.CRC8 = CRC08_Calculate((uint8_t *)(&Delete->Referee_Transmit_Header), 4);
+..\App\Referee\referee_UI.c(321): error:  #20: identifier "STUDENT_INTERACTIVE_DATA_CMD_ID" is undefined
+  	Delete->CMD_ID = STUDENT_INTERACTIVE_DATA_CMD_ID;
+..\App\Referee\referee_UI.c(324): error:  #20: identifier "UI_DataID_Delete" is undefined
+  	Delete->Interactive_Header.data_cmd_id = UI_DataID_Delete;
+..\App\Referee\referee_UI.c(325): error:  #136: struct "<unnamed>"  has no field "sender_ID"
+  	Delete->Interactive_Header.sender_ID   = RobotID ;      //当前机器人ID
+..\App\Referee\referee_UI.c: 8 warnings, 30 errors
+"down\down.axf" - 30 Error(s), 8 Warning(s).
+Target not created.
+Build Time Elapsed:  00:00:02

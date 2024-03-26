@@ -1,5 +1,5 @@
 /***      
-《 视觉接收代码 》
+《 视觉处理 》
 ***/
 #include "vision_task.h"
 #include "Trajectory_Calculation.h"
@@ -9,8 +9,7 @@
 #include <stdio.h>
 
 extern DMA_HandleTypeDef hdma_uart4_tx;
-//Visual_data From_Vision_Data;
-//Visual_data Visual_Data;
+
 Vision_Date_t Vision = {
 	.Vs_State = VS_LOST,
 	.ratio = 0.6,
@@ -18,10 +17,6 @@ Vision_Date_t Vision = {
 	.MIN = -10,
 };
 Vision_Info_t Vision_cj;
-//float aim_x = 0, aim_y = 10, aim_z = 0; // aim point 落点，传回上位机用于可视化
-//float pitch = 0; //输出控制量 pitch绝对角度 弧度
-//float yaw = 0;   //输出控制量 yaw绝对角度 弧度
-
 extern DMA_HandleTypeDef hdma_uart4_rx;
 //------------------------驱动层------------------------
 void Vision_Init(void)
@@ -37,31 +32,78 @@ void Vision_Init(void)
 
 uint8_t Vision_Tx_Buffer[VISION_TX_BUFFER_LEN];
 AutoAim_Tx_Info_t  VISON;
+float aim_x =0 , aim_y = 0, aim_z = 0; // aim point 落点，传回上位机用于可视化
+float pitch = 0; //输出控制量 pitch绝对角度 弧度
+float yaw = 0;   	//输出控制量 yaw绝对角度 弧度
+struct SolveTrajectoryParams st;
+
 void Visual_Task(void)
 {
-//	VSIION_State_Report();//离线判断
+	
 //	Visual_SendData();
 	AUTO_AIM_Ctrl();
 	VISION_SendData();
-//	uint8_t VISON[26]={0x5A,0x03,
-//	roll_t.input[0],roll_t.input[1],roll_t.input[2],roll_t.input[3],
-//	pitch_t.input[0],pitch_t.input[1],pitch_t.input[2],pitch_t.input[3],
-//	yaw_t.input[0],yaw_t.input[1],yaw_t.input[2],yaw_t.input[3],
-//	aim_x_t.input[0],aim_x_t.input[1],aim_x_t.input[2],aim_x_t.input[3],
-//	aim_y_t.input[0],aim_y_t.input[1],aim_y_t.input[2],aim_y_t.input[3],
-//	aim_z_t.input[0],aim_z_t.input[1],aim_z_t.input[2],aim_z_t.input[3],
-//	};
-
-
+	RM_Vision_Init();
 }
-void AUTO_AIM_Ctrl(void)
+
+
+/**
+ *	@brief	cj发送数据填充
+ *	@note	uart4发送
+ */
+void AUTO_AIM_Ctrl(void)	
 {
-  Vision_cj.VisionRTx.AutoAim_Tx.Packet.TxData.detect_color = 0x01;
-  Vision_cj.VisionRTx.AutoAim_Tx.Packet.TxData.roll = IMU_Get_Data.IMU_Eular[1];
-  Vision_cj.VisionRTx.AutoAim_Tx.Packet.TxData.pitch = IMU_Get_Data.IMU_Eular[0];
-	Vision_cj.VisionRTx.AutoAim_Tx.Packet.TxData.yaw = IMU_Get_Data.IMU_Eular[2];
-
+	//发送
+	Vision_cj.VisionRTx.AutoAim_Tx.Packet.TxData.detect_color = 0x01;
+  Vision_cj.VisionRTx.AutoAim_Tx.Packet.TxData.roll = IMU_Get_Data.IMU_Eular[1]*PI/180;
+  Vision_cj.VisionRTx.AutoAim_Tx.Packet.TxData.pitch = IMU_Get_Data.IMU_Eular[0]*PI/180;
+	Vision_cj.VisionRTx.AutoAim_Tx.Packet.TxData.yaw = IMU_Get_Data.IMU_Eular[2]*PI/180;
+	
+	Vision_cj.VisionRTx.AutoAim_Tx.Packet.TxData.aim_x = Vision_cj.VisionRTx.AutoAim_Rx.Packet.RxData.x;
+	Vision_cj.VisionRTx.AutoAim_Tx.Packet.TxData.aim_y = Vision_cj.VisionRTx.AutoAim_Rx.Packet.RxData.y;
+	Vision_cj.VisionRTx.AutoAim_Tx.Packet.TxData.aim_z = Vision_cj.VisionRTx.AutoAim_Rx.Packet.RxData.z;
 }
+
+
+void RM_Vision_Init(void)
+{
+	st.xw = Vision_cj.VisionRTx.AutoAim_Rx.Packet.RxData.x;
+	st.yw = Vision_cj.VisionRTx.AutoAim_Rx.Packet.RxData.y;
+	st.zw = Vision_cj.VisionRTx.AutoAim_Rx.Packet.RxData.z;
+
+	st.vxw = Vision_cj.VisionRTx.AutoAim_Rx.Packet.RxData.vx;
+	st.vyw = Vision_cj.VisionRTx.AutoAim_Rx.Packet.RxData.vy;
+	st.vzw = Vision_cj.VisionRTx.AutoAim_Rx.Packet.RxData.vz;
+	
+	st.v_yaw = Vision_cj.VisionRTx.AutoAim_Rx.Packet.RxData.v_yaw;
+	st.tar_yaw = Vision_cj.VisionRTx.AutoAim_Rx.Packet.RxData.yaw;
+	
+	st.r1 = Vision_cj.VisionRTx.AutoAim_Rx.Packet.RxData.r1;
+	st.r2 = Vision_cj.VisionRTx.AutoAim_Rx.Packet.RxData.r2;
+	st.dz = Vision_cj.VisionRTx.AutoAim_Rx.Packet.RxData.dz;
+}
+
+
+
+/**
+ *	@brief	cj读取视觉通信数据
+ *	@note	uart4.c中IRQ调用
+ */
+void VISION_ReadData(uint8_t *rxBuf)
+{
+  AutoAim_Rx_Info_t *AUTO = &Vision_cj.VisionRTx.AutoAim_Rx;
+	/* 帧首字节是否为0xA5 */
+	if(rxBuf[SOF_Vision] == 0xA5) 
+	{	
+			if(Verify_CRC16_Check_Sum( rxBuf, AUTO->LEN.LEN_RX_PACKET ))
+      {    /* 数据正确则拷贝接收包 */
+				memcpy(&AUTO->Packet, rxBuf, AUTO->LEN.LEN_RX_PACKET);
+				autoSolveTrajectory(&st.current_pitch,&st.current_yaw,&st.xw,&st.yw,&st.zw);
+      }
+  }
+}
+
+
 /**
  *	@brief	cj发送视觉通信数据
  *	@note	uart4发送
@@ -73,119 +115,29 @@ void VISION_SendData(void)
 
 	len = AUTO->LEN.LEN_TX_PACKET;
 	/* 写入帧头 */
-	Vision_Tx_Buffer[SOF_Vision] = VISION_FRAME_HEADER;
+	Vision_Tx_Buffer[SOF_Vision] = 0x5A;
 	/* 数据段填充 */
 	memcpy( &Vision_Tx_Buffer[DATA_Vision], 
 					&AUTO->Packet.TxData, 
 					 AUTO->LEN.LEN_TX_DATA );
 	/* 写入帧尾CRC16 */
-	Append_CRC16_Check_Sum( Vision_Tx_Buffer, len);
+	Append_CRC16_Check_Sum(Vision_Tx_Buffer, len);
 	
 	/* 数据同步 */
 //	memcpy(&AUTO->Packet , Vision_Tx_Buffer , len);
   /* 发送数据 */
-	
-//	autoSolveTrajectory(&Vision_cj.VisionRTx.AutoAim_Tx.Packet.TxData.pitch,	
-//											&Vision_cj.VisionRTx.AutoAim_Tx.Packet.TxData.yaw,	
-//											&Vision_cj.VisionRTx.AutoAim_Tx.Packet.TxData.aim_x,	
-//											&Vision_cj.VisionRTx.AutoAim_Tx.Packet.TxData.aim_y,	
-//											&Vision_cj.VisionRTx.AutoAim_Tx.Packet.TxData.aim_z);
-	
   /* DMA发送  */
-	UART1_TX_DMA_Send(Vision_Tx_Buffer,len);
+	HAL_UART_Transmit_DMA(&huart4,Vision_Tx_Buffer,len);
+//	UART1_TX_DMA_Send(Vision_Tx_Buffer,30);
 	/* 发送数据包清零 */
 //	memset(Vision_Tx_Buffer, 0, VISION_TX_BUFFER_LEN);
 }
-
-/**
- *	@brief	cj读取视觉通信数据
- *	@note	uart4.c中IRQ调用
- */
-void VISION_ReadData(uint8_t *rxBuf)
-{
-  AutoAim_Rx_Info_t *AUTO = &Vision_cj.VisionRTx.AutoAim_Rx;
-  bool res = false;
-	/* 帧首字节是否为0xA5 */
-	if(rxBuf[SOF_Vision] == 0xA5) 
-	{	
-			if(Verify_CRC16_Check_Sum( rxBuf, AUTO->LEN.LEN_RX_PACKET ))
-      {    /* 数据正确则拷贝接收包 */
-				memcpy(&AUTO->Packet, rxBuf, AUTO->LEN.LEN_RX_PACKET);  
-      }
-			else 
-				res = false;
-  }else 
-	res = false;
-    
-}
-
-/*
-@brief yhp数据发送
-*/
-void Visual_SendData(void)
-{
-	Vision.TX_Pitch.output = IMU_Get_Data.IMU_Eular[PITCH];
-	Vision.TX_Yaw.output = IMU_Get_Data.IMU_Eular[YAW];
-	uint8_t exe[13] = {0x80,1,30,
-							Vision.TX_Pitch.input[0],Vision.TX_Pitch.input[1],Vision.TX_Pitch.input[2],Vision.TX_Pitch.input[3],
-							Vision.TX_Yaw.input[0],Vision.TX_Yaw.input[1],Vision.TX_Yaw.input[2],Vision.TX_Yaw.input[3],
-							112,0x7f}; 
-	
-	for(uint8_t i = 0; i<13; i++)
-	{
-		HAL_UART_Transmit(&huart4,&exe[i],1,100);
-	}
-}
-
-/*
-@brief yhp数据解算
-*/
-void Vision_read_data(uint8_t *data)
-{
-	 if(*data==0x70 && (*(data+12))==0x6F)
-	 {		//yaw
-			for(uint8_t i=0;i<4;i++){
-				Vision.yaw.input[i]=*((data+1)+i);
-			}//pitch
-			 for(int i=0;i<4;i++){
-				Vision.pitch.input[i]=*((data+5)+i);
-			}
-			Vision.distance[0]=*(data+9);
-			Vision.distance[1]=*(data+10);
-			Vision.distance[2]=Vision.distance[0]*100+Vision.distance[1];
-			Vision.STATE = *(data+11);
-			Vision.RX_Pitch = Vision.pitch.output ;
-			Vision.RX_Yaw	  = Vision.yaw.output ;
-	 }
-	 //YAW
-		 if(Vision.RX_Yaw > Vision.MAX)
-		{
-			Vision.RX_Yaw = Vision.MAX;
-		}
-		else if(Vision.RX_Yaw < Vision.MIN)
-		{
-			Vision.RX_Yaw = Vision.MIN;
-		}
-	 //PITCH
-		 if(Vision.RX_Pitch > Vision.MAX)
-		{
-			Vision.RX_Pitch = Vision.MAX;
-		}
-		else if(Vision.RX_Pitch < Vision.MIN)
-		{
-			Vision.RX_Pitch = Vision.MIN;
-		}
-}
-
-
 /*
 @brief: 弹道解算 适配陈君的rm_vision
 @author: CodeAlan  华南师大Vanguard战队
 */
-struct SolveTrajectoryParams st;
 struct tar_pos tar_position[4]; //最多只有四块装甲板
 float t = 0.5f; // 飞行时间
-
 /*
 @brief 单方向空气阻力弹道模型
 @param s:m 距离
@@ -242,7 +194,6 @@ float pitchTrajectoryCompensation(float s, float z, float v)
 */
 void autoSolveTrajectory(float *pitch, float *yaw, float *aim_x, float *aim_y, float *aim_z)
 {
-
     // 线性预测
     float timeDelay = st.bias_time/1000.0 + t;
     st.tar_yaw += st.v_yaw * timeDelay;
@@ -381,4 +332,63 @@ void UART1_TX_DMA_Send(uint8_t *buffer, uint16_t length)
 
     //开始发送数据
     HAL_UART_Transmit_DMA(&huart4, buffer, length);
+}
+
+
+/*
+@brief yhp数据发送
+*/
+void Visual_SendData(void)
+{
+	Vision.TX_Pitch.output = IMU_Get_Data.IMU_Eular[PITCH];
+	Vision.TX_Yaw.output = IMU_Get_Data.IMU_Eular[YAW];
+	uint8_t exe[13] = {0x80,1,30,
+							Vision.TX_Pitch.input[0],Vision.TX_Pitch.input[1],Vision.TX_Pitch.input[2],Vision.TX_Pitch.input[3],
+							Vision.TX_Yaw.input[0],Vision.TX_Yaw.input[1],Vision.TX_Yaw.input[2],Vision.TX_Yaw.input[3],
+							112,0x7f}; 
+	
+	for(uint8_t i = 0; i<13; i++)
+	{
+		HAL_UART_Transmit(&huart4,&exe[i],1,100);
+	}
+}
+
+/*
+@brief yhp数据解算
+*/
+void Vision_read_data(uint8_t *data)
+{
+	 if(*data==0x70 && (*(data+12))==0x6F)
+	 {		//yaw
+			for(uint8_t i=0;i<4;i++){
+				Vision.yaw.input[i]=*((data+1)+i);
+			}//pitch
+			 for(int i=0;i<4;i++){
+				Vision.pitch.input[i]=*((data+5)+i);
+			}
+			Vision.distance[0]=*(data+9);
+			Vision.distance[1]=*(data+10);
+			Vision.distance[2]=Vision.distance[0]*100+Vision.distance[1];
+			Vision.STATE = *(data+11);
+			Vision.RX_Pitch = Vision.pitch.output ;
+			Vision.RX_Yaw	  = Vision.yaw.output ;
+	 }
+	 //YAW
+		 if(Vision.RX_Yaw > Vision.MAX)
+		{
+			Vision.RX_Yaw = Vision.MAX;
+		}
+		else if(Vision.RX_Yaw < Vision.MIN)
+		{
+			Vision.RX_Yaw = Vision.MIN;
+		}
+	 //PITCH
+		 if(Vision.RX_Pitch > Vision.MAX)
+		{
+			Vision.RX_Pitch = Vision.MAX;
+		}
+		else if(Vision.RX_Pitch < Vision.MIN)
+		{
+			Vision.RX_Pitch = Vision.MIN;
+		}
 }

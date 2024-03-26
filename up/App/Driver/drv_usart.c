@@ -142,7 +142,6 @@ void UART_IRQHandler_IT(UART_HandleTypeDef *huart)
 	}
 	else if(huart==&huart4)//Vision
 	{
-	uint32_t temp;
 		if(__HAL_UART_GET_FLAG(&huart4,UART_FLAG_IDLE)!=RESET) 
 		{
 			if(__HAL_UART_GET_FLAG(&huart4,UART_FLAG_IDLE)!=RESET) 

@@ -33,14 +33,12 @@ void Chassis_GET_Info(void)
 	}
 	
 
-	
 	Chassis.move_speed = sqrt(Chassis.X_Target*Chassis.X_Target + Chassis.Y_Target*Chassis.Y_Target);
 	if(Chassis.chassis_direction == CHASSIS_BACK)Chassis.move_speed *= -1;
 	Chassis.move_direction = atan2f(Chassis.Y_Target,Chassis.X_Target);
 
-	
-	Chassis.GIM_Yaw = Gimbal_YAW.Motor_Angle*360/8192;
-	YAW_Angle_Over_Zero(&Chassis.GIM_Yaw);
+	Chassis.GIM_Yaw_t = Gimbal_YAW.Motor_Angle*360/8192;
+	Chassis.GIM_Yaw = YAW_Angle_Over_Zero(&Chassis.GIM_Yaw_t);
 }
 
 
@@ -61,7 +59,7 @@ void XY_Speed(float *speed, float MAX,float MIX)
   */
 void Chassis_RC_Ctrl(void)
 {
-	Chassis.X_Target = 	RC_CH3 * 6.0 / 660 ;
+	Chassis.X_Target = 	RC_CH3 * 8.0 / 660 ;
 	Chassis.Y_Target =	RC_CH2 * 2.5 / 660;
 	Chassis.Z_Target =  RC_CH0 * 2.5 / 660;
 }
@@ -72,28 +70,44 @@ void Chassis_RC_Ctrl(void)
   */
 void Chassis_KEY_Ctrl(void)
 {
+	/*速度控制*/
 	if(KEY_W == 1)
 	{
-		Chassis.X_Target += 0.01;
+		Chassis.X_Target += 0.01f;
 	}else if(KEY_S == 1)
 	{
-		Chassis.X_Target -=0.01;
+		Chassis.X_Target -=0.01f;
 	}else
 	{
 		if(Chassis.X_Target > 0)
 		{
-			Chassis.X_Target-=0.01;
+			Chassis.X_Target-=0.01f;
 		}
 		else if(Chassis.X_Target < 0)
 		{
-			Chassis.X_Target+=0.01;
+			Chassis.X_Target+=0.01f;
 			
 		}
 		else if(Chassis.X_Target == 0){
 			Chassis.X_Target = 0;
 		}
 	}
-	XY_Speed(&Chassis.X_Target,3,-3);
+	XY_Speed(&Chassis.X_Target,4.5,-4.5);
+	/*四面切换*/
+	
+	
+	if(KEY_A == 1)
+	{
+		Chassis.follow_gimbal_zero = -20;
+	}
+	else if(KEY_D == 1)
+	{
+		Chassis.follow_gimbal_zero = 160;
+	}
+	else{
+		Chassis.follow_gimbal_zero = 70;}
+	
+	
 	
 }
 /**
@@ -238,6 +252,17 @@ float angle_z_min_err_get(float target_ang)
 }
 
 /**
+  * @brief  四面对敌
+  * @param  目标方向
+  * @retval 方向偏差
+  */
+//void angle_z()
+//{
+//	float AngErr_front,AngErr_back,AngErr_left,AngErr_right;
+//	
+//	
+//}
+/**
   * @brief  梯形控制
   * @param  反馈；设定；加速度
   * @retval 输出值
@@ -296,13 +321,27 @@ float limit(float data, float min, float max)
  */
 float YAW_Angle_Over_Zero(float *Angle)
 {
-	if(*Angle - Chassis.GIM_Yaw > IMU_180)    
+	if(*Angle < CHASSIS_FOLLOW_GIMBAL_ANGLE_ZERO - 180)    
 	{
-		*Angle =*Angle - IMU_360;        
+		*Angle += 360;
 	}
-	else if(*Angle - Chassis.GIM_Yaw < -IMU_180)
+	else if(*Angle > CHASSIS_FOLLOW_GIMBAL_ANGLE_ZERO + 180)
 	{
-		*Angle =*Angle + IMU_360;
+		*Angle -= 360;
 	}
 	return *Angle;
+}
+
+/**
+ * @brief 底盘YAW轴跟随处理
+ * @param 
+ */
+float YAW_MotorAngle_Proc(int16_t Angle)
+{
+	if(Angle < CHASSIS_FOLLOW_GIMBAL_ANGLE_ZERO - 4096)
+		Angle += 8192;
+	if(Angle > CHASSIS_FOLLOW_GIMBAL_ANGLE_ZERO + 4096)
+		Angle -= 8192;
+	
+  return (float)Angle;
 }

@@ -340,7 +340,7 @@ typedef __packed struct
 	uint16_t data_cmd_id;
 	uint16_t sender_id;
 	uint16_t receiver_id;
-	uint8_t user_data[50];
+//	uint8_t user_data[113];
 }robot_interaction_data_t;
 
 
@@ -389,20 +389,6 @@ typedef __packed struct
 	uint16_t mouse_right:4;
 	uint16_t reserved;
 }custom_client_data_t;
-
-
-/*
-	子内容	ID			内容数据段长度 				功能说明
-0x0200~0x02FF 		x≤113 						机器人之间通信
-0x0100 						2 								选手端删除图层
-0x0101						15 								选手端绘制一个图形
-0x0102 						30 								选手端绘制两个图形
-0x0103 						75 								选手端绘制五个图形
-0x0104 						105 							选手端绘制七个图形
-0x0110 						5 								选手端绘制字符图形
-*/
-
-
 
 
 enum judge_robot_ID{

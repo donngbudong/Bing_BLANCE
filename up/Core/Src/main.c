@@ -119,7 +119,7 @@ int main(void)
 	//定义参数
 	st.k = 0.092f;
 	st.bullet_type =  BULLET_17;
-	st.current_v = 18;
+	st.current_v = 25;
 	st.current_pitch = 0;
 	st.current_yaw = 0;
 	st.xw = 3.0;

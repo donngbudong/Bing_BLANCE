@@ -7,9 +7,11 @@ extern CAN_HandleTypeDef hcan2;
 static CAN_TxHeaderTypeDef  chassis_tx_message;
 static uint8_t              chassis_can_send_data[8];
 
-static CAN_TxHeaderTypeDef  capacitance_tx_message;
+static CAN_TxHeaderTypeDef  down_uptx_message;
 static uint8_t              capacitance_can_send_data[8];
 
+static CAN_TxHeaderTypeDef  capacitance_tx_message;
+static uint8_t              capacitance_can_send_data[8];
 
 CAN_GET_DATA_t Gimbal_YAW;
 
@@ -139,3 +141,36 @@ int Cacapacitance_Rong(void)
 {
 	  return super_capacitor.rong;
 }
+
+
+
+
+///**
+//* @brief 遥控器发送
+//* @param 
+//*/
+//void CAN_cmd_RC1(int16_t ch0,int16_t ch1,int16_t ch2,int16_t ch3)
+//{
+//    rc_tx_message.StdId = 0x567;
+//    rc_tx_message.IDE = CAN_ID_STD;
+//    rc_tx_message.RTR = CAN_RTR_DATA;
+//    rc_tx_message.DLC = 0x08;
+//    
+//    rc_can_send_data[0] = ch0 >> 8;
+//    rc_can_send_data[1] = ch0;
+//		rc_can_send_data[2] = ch1 >> 8;
+//		rc_can_send_data[3] = ch1;
+//		rc_can_send_data[4] = ch2 >> 8;
+//		rc_can_send_data[5] = ch2;
+//		rc_can_send_data[6] = ch3 >> 8;
+//		rc_can_send_data[7] = ch3;
+
+//	//找到空的发送邮箱，把数据发送出去
+//	if(HAL_CAN_AddTxMessage(&hcan2, &rc_tx_message,rc_can_send_data, (uint32_t*)CAN_TX_MAILBOX0) != HAL_OK) //
+//	{
+//	if(HAL_CAN_AddTxMessage(&hcan2, &rc_tx_message,rc_can_send_data, (uint32_t*)CAN_TX_MAILBOX1) != HAL_OK) //
+//	{
+//		HAL_CAN_AddTxMessage(&hcan2, &rc_tx_message,rc_can_send_data, (uint32_t*)CAN_TX_MAILBOX2);
+//	}
+//	}
+//}

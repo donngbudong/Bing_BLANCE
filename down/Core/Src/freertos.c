@@ -127,7 +127,7 @@ void MX_FREERTOS_Init(void) {
   imu_taskHandle = osThreadCreate(osThread(imu_task), NULL);
 
   /* definition and creation of judge_task */
-  osThreadDef(judge_task, JUDGE_TASK, osPriorityHigh, 0, 128);
+  osThreadDef(judge_task, JUDGE_TASK, osPriorityHigh, 0, 256);
   judge_taskHandle = osThreadCreate(osThread(judge_task), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
@@ -167,7 +167,6 @@ void SYSTEM_STATE_TASK(void const * argument)
   /* Infinite loop */
   for(;;)
   {
-		Chassis_Task();
     osDelay(1);
   }
   /* USER CODE END SYSTEM_STATE_TASK */
@@ -186,6 +185,7 @@ void CHASSIS_TASK(void const * argument)
   /* Infinite loop */
   for(;;)
   {
+		Chassis_Task();
     osDelay(1);
   }
   /* USER CODE END CHASSIS_TASK */
@@ -221,11 +221,11 @@ void JUDGE_TASK(void const * argument)
 {
   /* USER CODE BEGIN JUDGE_TASK */
   /* Infinite loop */
-  for(;;)
-  {
-//		VOFA_SendDate();
-    osDelay(1);
-  }
+//  for(;;)
+//  {
+	referee_usart1_task();
+//    osDelay(1);
+//  }
   /* USER CODE END JUDGE_TASK */
 }
 

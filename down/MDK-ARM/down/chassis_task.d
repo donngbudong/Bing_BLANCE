@@ -29,6 +29,7 @@ down\chassis_task.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_can.h
 down\chassis_task.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash.h
 down\chassis_task.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash_ex.h
 down\chassis_task.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash_ramfunc.h
+down\chassis_task.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_iwdg.h
 down\chassis_task.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr.h
 down\chassis_task.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h
 down\chassis_task.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h
@@ -50,5 +51,6 @@ down\chassis_task.o: ../App/Algorithm/pid.h
 down\chassis_task.o: ../App/Task/system_task.h
 down\chassis_task.o: ../App/Task/chassis_task.h
 down\chassis_task.o: ../App/Task/vofa_task.h
+down\chassis_task.o: ../App/Referee/referee_UI.h
 down\chassis_task.o: ..\App\Task\ChassisControl_Task.h
 down\chassis_task.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\math.h

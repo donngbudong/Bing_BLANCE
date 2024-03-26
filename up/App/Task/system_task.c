@@ -56,6 +56,7 @@ void System_Task(void)
 	RC_State_Report();
 	IMU_State_Report();
 	PID_Switch();
+	shoot_pc_R();
 }
 
 
@@ -92,8 +93,9 @@ void System_State(void)
   {
     System.System_State = SYSTEM_LOST;
   }
-	__HAL_TIM_SET_COMPARE(&htim3,TIM_CHANNEL_2,xy123); //相当于一个周期内（20ms）有0.5ms高脉冲
-
+	
+//	__HAL_TIM_SET_COMPARE(&htim3,TIM_CHANNEL_2,1800); //相当于一个周期内（20ms）有0.5ms高脉冲
+	
 }
 
 
@@ -174,4 +176,36 @@ void State_LED(void)
 //    ws2812_set_RGB(0x00, 0x22, 0x00, 7);
     HAL_TIM_PWM_Start_DMA(&htim1,TIM_CHANNEL_1,(uint32_t *)RGB_buffur,(232)); //272 = 80 + 24 * LED_NUMS(6)
 //    HAL_Delay(50);
+}
+/**弹舱开关**/
+//780关//1800开
+
+uint16_t magazine=1;//开关弹舱
+void shoot_pc_R(void)
+{
+	static uint8_t helm=1;
+	if (helm==1&&KEY_R)
+		{	
+			HAL_Delay(20);		
+			if (KEY_R)
+			{	
+				helm=0;
+				if(magazine==0)
+				{magazine=1;}
+				else	
+				{magazine=0;}
+			}
+		}
+		if(helm==0 && RC_Ctrl.kb.bit.R==0)
+		{
+			helm=1;
+		}
+			if(magazine==0)
+		{
+			__HAL_TIM_SET_COMPARE(&htim3,TIM_CHANNEL_2,750);
+		}
+		else
+		{
+			__HAL_TIM_SET_COMPARE(&htim3,TIM_CHANNEL_2,1800);
+		}	
 }

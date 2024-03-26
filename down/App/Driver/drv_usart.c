@@ -1,5 +1,6 @@
 #include "Device.h"
 #include "system.h"
+#include "iwdg.h"
 
 uint8_t Judge_Buffer[200] = {0};
 uint8_t Dbus_Buffer[2][SBUS_RX_BUF_NUM];
@@ -155,7 +156,8 @@ void UART_IRQHandler_IT(UART_HandleTypeDef *huart)
 			}
 			HAL_UART_Receive_DMA(huart,IMU_Buffer,128);	
 			memset(IMU_Buffer, 0, 128);
-			Imu_time=micros() + 30000;
+			HAL_IWDG_Refresh(&hiwdg);	//Î¹¹·
+//			Imu_time=micros() + 30000;
 		}
 	}
 
