@@ -32,6 +32,9 @@ up\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h
 up\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h
 up\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h
 up\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
+up\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pcd.h
+up\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_usb.h
+up\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pcd_ex.h
 up\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
 up\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
 up\main.o: ../Core/Inc/FreeRTOSConfig.h
@@ -50,6 +53,12 @@ up\main.o: ../Core/Inc/can.h
 up\main.o: ../Core/Inc/dma.h
 up\main.o: ../Core/Inc/tim.h
 up\main.o: ../Core/Inc/usart.h
+up\main.o: ../USB_DEVICE/App/usb_device.h
+up\main.o: ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_def.h
+up\main.o: ../USB_DEVICE/Target/usbd_conf.h
+up\main.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+up\main.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+up\main.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 up\main.o: ../Core/Inc/gpio.h
 up\main.o: ../App/Driver/driver.h
 up\main.o: ../App/Driver/drv_can.h
@@ -57,10 +66,8 @@ up\main.o: ../App/Driver/drv_usart.h
 up\main.o: ../App/Header/device.h
 up\main.o: ../App/Algorithm/pid.h
 up\main.o: ../App/Device/HI229.h
-up\main.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 up\main.o: ../App/Device/packet.h
 up\main.o: ../App/Header/system.h
-up\main.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 up\main.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 up\main.o: ../App/Algorithm/crc.h
 up\main.o: ../App/Device/remote_control.h

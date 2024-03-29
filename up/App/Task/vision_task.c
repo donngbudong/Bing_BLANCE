@@ -7,6 +7,7 @@
 #include "usart.h"
 #include <math.h>
 #include <stdio.h>
+#include "cmsis_os.h"
 
 extern DMA_HandleTypeDef hdma_uart4_tx;
 
@@ -128,6 +129,7 @@ void VISION_SendData(void)
   /* 发送数据 */
   /* DMA发送  */
 	HAL_UART_Transmit_DMA(&huart4,Vision_Tx_Buffer,len);
+//	osDelay(3);
 //	UART1_TX_DMA_Send(Vision_Tx_Buffer,30);
 	/* 发送数据包清零 */
 //	memset(Vision_Tx_Buffer, 0, VISION_TX_BUFFER_LEN);

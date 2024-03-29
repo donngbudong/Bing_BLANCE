@@ -34,6 +34,9 @@ up\vision_task.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h
 up\vision_task.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h
 up\vision_task.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h
 up\vision_task.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
+up\vision_task.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pcd.h
+up\vision_task.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_usb.h
+up\vision_task.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pcd_ex.h
 up\vision_task.o: ../App/Driver/drv_usart.h
 up\vision_task.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 up\vision_task.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
@@ -52,3 +55,17 @@ up\vision_task.o: ../App/Task/shoot_task.h
 up\vision_task.o: ../App/Task/vofa_task.h
 up\vision_task.o: ../Core/Inc/usart.h
 up\vision_task.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+up\vision_task.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
+up\vision_task.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
+up\vision_task.o: ../Core/Inc/FreeRTOSConfig.h
+up\vision_task.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h
+up\vision_task.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h
+up\vision_task.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h
+up\vision_task.o: ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F/portmacro.h
+up\vision_task.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h
+up\vision_task.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h
+up\vision_task.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h
+up\vision_task.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h
+up\vision_task.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h
+up\vision_task.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h
+up\vision_task.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h
