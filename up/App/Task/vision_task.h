@@ -45,14 +45,14 @@ typedef struct
 typedef unsigned char uint8_t;
 enum ARMOR_ID
 {
-    ARMOR_OUTPOST = 0,
-    ARMOR_HERO = 1,
-    ARMOR_ENGINEER = 2,
+    ARMOR_OUTPOST		= 0,
+    ARMOR_HERO 			= 1,
+    ARMOR_ENGINEER	= 2,
     ARMOR_INFANTRY3 = 3,
     ARMOR_INFANTRY4 = 4,
     ARMOR_INFANTRY5 = 5,
-    ARMOR_GUARD = 6,
-    ARMOR_BASE = 7
+    ARMOR_GUARD 		= 6,
+    ARMOR_BASE 			= 7
 };
 
 enum ARMOR_NUM
@@ -95,9 +95,13 @@ struct SolveTrajectoryParams
     int bias_time;        //偏置时间
     float s_bias;         //枪口前推的距离
     float z_bias;         //yaw轴电机到枪口水平面的垂直距离
+
     enum ARMOR_ID armor_id;     //装甲板类型  0-outpost 6-guard 7-base
                                 //1-英雄 2-工程 3-4-5-步兵 
     enum ARMOR_NUM armor_num;   //装甲板数字  2-balance 3-outpost 4-normal
+
+		float yaw;
+		float pitch;
 };
 
 //用于存储目标装甲板的信息
@@ -145,11 +149,10 @@ typedef struct {
 /* 接收数据段格式 */
 typedef __packed struct 
 {
-//	bool tracking : 1;
-//  uint8_t id : 3;          	// 0-outpost 6-guard 7-base
-//  uint8_t armors_num : 3;  	// 2-balance 3-outpost 4-normal
-//  uint8_t reserved : 1;			//保留
-	uint8_t check;
+	bool tracking : 1;
+  uint8_t id : 3;          	// 0-outpost 6-guard 7-base
+  uint8_t armors_num : 3;  	// 2-balance 3-outpost 4-normal
+  uint8_t reserved : 1;			//保留
   float x;
   float y;
   float z;
@@ -166,9 +169,9 @@ typedef __packed struct
 /* 发送数据段格式 */ 
 typedef __packed struct
 {
-	uint8_t detect_color  ;  // 0-red 1-blue
-//  bool reset_tracker : 1;
-//  uint8_t reserved : 6;
+	uint8_t detect_color : 1 ;  // 0-red 1-blue
+  bool reset_tracker : 1;
+  uint8_t reserved : 6;
   float roll;
   float pitch;
   float yaw;
@@ -256,7 +259,9 @@ void VISION_ReadData(uint8_t *rxBuf);
 void AUTO_AIM_Ctrl(void);
 void RM_Vision_Init(void);
 
-void UART1_TX_DMA_Send(uint8_t *buffer, uint16_t length);
 
 extern Vision_Date_t Vision;
+extern Vision_Info_t Vision_cj;
+extern struct SolveTrajectoryParams st;
+
 #endif

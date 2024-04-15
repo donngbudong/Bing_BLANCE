@@ -27,6 +27,7 @@ void Chassis_GET_Info(void)
 	if(RC_S1 == 1)
 	{
 		Chassis_RC_Ctrl();
+		
 	}else if(RC_S1 == 2)
 	{
 		Chassis_KEY_Ctrl();
@@ -59,6 +60,7 @@ void XY_Speed(float *speed, float MAX,float MIX)
   */
 void Chassis_RC_Ctrl(void)
 {
+	
 	Chassis.X_Target = 	RC_CH3 * 8.0 / 660 ;
 	Chassis.Y_Target =	RC_CH2 * 2.5 / 660;
 	Chassis.Z_Target =  RC_CH0 * 2.5 / 660;
@@ -73,10 +75,10 @@ void Chassis_KEY_Ctrl(void)
 	/*速度控制*/
 	if(KEY_W == 1)
 	{
-		Chassis.X_Target += 0.01f;
+		Chassis.X_Target += 0.03f;
 	}else if(KEY_S == 1)
 	{
-		Chassis.X_Target -=0.01f;
+		Chassis.X_Target -=0.03f;
 	}else
 	{
 		if(Chassis.X_Target > 0)
@@ -92,17 +94,30 @@ void Chassis_KEY_Ctrl(void)
 			Chassis.X_Target = 0;
 		}
 	}
+	
+//	if(REF.Power_Heat_Data.chassis_power == 45
+//	|| REF.Power_Heat_Data.chassis_power == 50
+//	|| REF.Power_Heat_Data.chassis_power == 50
+//	|| REF.Power_Heat_Data.chassis_power == 60
+//	)
+//	{	
+//		XY_Speed(&Chassis.X_Target,3,-3);
+//	}
+//	else if(REF.Power_Heat_Data.chassis_power >= 80){
+
+//		XY_Speed(&Chassis.X_Target,3.5,-3.5);
+//	}
 	XY_Speed(&Chassis.X_Target,4.5,-4.5);
 	/*四面切换*/
 	
-	
+//252
 	if(KEY_A == 1)
 	{
-		Chassis.follow_gimbal_zero = -20;
+		Chassis.follow_gimbal_zero = -19;
 	}
 	else if(KEY_D == 1)
 	{
-		Chassis.follow_gimbal_zero = 160;
+		Chassis.follow_gimbal_zero = 161;
 	}
 	else{
 		Chassis.follow_gimbal_zero = 70;}

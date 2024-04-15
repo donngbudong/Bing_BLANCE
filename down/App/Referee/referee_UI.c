@@ -1,244 +1,245 @@
 #include "referee_UI.h"
-#include "stm32f4xx.h"                  // Device header
-#include "usart.h"
+#include "crc.h"
+#define Referee_UART huart1
+extern UART_HandleTypeDef huart1;
 
 /*==============================================================================
-              ##### UIåŸºæœ¬å›¾å½¢ç»˜åˆ¶å‡½æ•° #####
+              ##### UI»ù±¾Í¼ĞÎ»æÖÆº¯Êı #####
   ==============================================================================
-    [..]  è¯¥éƒ¨åˆ†æä¾›å¦‚ä¸‹å‡½æ•°:
-		  (+) ç»˜åˆ¶ç›´çº¿ UI_Draw_Line
-      (+) ç»˜åˆ¶çŸ©å½¢ UI_Draw_Rectangle
-      (+) ç»˜åˆ¶æ•´åœ† UI_Draw_Circle
-      (+) ç»˜åˆ¶æ¤­åœ† UI_Draw_Ellipse
-      (+) ç»˜åˆ¶åœ†å¼§ UI_Draw_Arc
-      (+) ç»˜åˆ¶å°æ•° UI_Draw_Float
-      (+) ç»˜åˆ¶æ•´æ•° UI_Draw_Int
-      (+) ç»˜åˆ¶å­—ç¬¦ UI_Draw_String
+    [..]  ¸Ã²¿·ÖÌá¹©ÈçÏÂº¯Êı:
+		  (+) »æÖÆÖ±Ïß UI_Draw_Line
+      (+) »æÖÆ¾ØĞÎ UI_Draw_Rectangle
+      (+) »æÖÆÕûÔ² UI_Draw_Circle
+      (+) »æÖÆÍÖÔ² UI_Draw_Ellipse
+      (+) »æÖÆÔ²»¡ UI_Draw_Arc
+      (+) »æÖÆĞ¡Êı UI_Draw_Float
+      (+) »æÖÆÕûÊı UI_Draw_Int
+      (+) »æÖÆ×Ö·û UI_Draw_String
 */
-void UI_Draw_Line(graphic_data_struct_t *Graph,        //UIå›¾å½¢æ•°æ®ç»“æ„ä½“æŒ‡é’ˆ
-	                char                   GraphName[3], //å›¾å½¢å ä½œä¸ºå®¢æˆ·ç«¯çš„ç´¢å¼•
-									uint8_t                GraphOperate, //UIå›¾å½¢æ“ä½œ å¯¹åº”UI_Graph_XXXçš„4ç§æ“ä½œ
-									uint8_t                Layer,        //UIå›¾å½¢å›¾å±‚ [0,9]
-									uint8_t                Color,        //UIå›¾å½¢é¢œè‰² å¯¹åº”UI_Color_XXXçš„9ç§é¢œè‰²
-									uint16_t               Width,        //çº¿å®½
-									uint16_t               StartX,       //èµ·å§‹åæ ‡X
-									uint16_t               StartY,       //èµ·å§‹åæ ‡Y
-									uint16_t               EndX,         //æˆªæ­¢åæ ‡X
-									uint16_t               EndY)         //æˆªæ­¢åæ ‡Y
+void UI_Draw_Line(graphic_data_struct_t *Graph,        //UIÍ¼ĞÎÊı¾İ½á¹¹ÌåÖ¸Õë
+	                char                   GraphName[3], //Í¼ĞÎÃû ×÷Îª¿Í»§¶ËµÄË÷Òı
+									uint8_t                GraphOperate, //UIÍ¼ĞÎ²Ù×÷ ¶ÔÓ¦UI_Graph_XXXµÄ4ÖÖ²Ù×÷
+									uint8_t                Layer,        //UIÍ¼ĞÎÍ¼²ã [0,9]
+									uint8_t                Color,        //UIÍ¼ĞÎÑÕÉ« ¶ÔÓ¦UI_Color_XXXµÄ9ÖÖÑÕÉ«
+									uint16_t               Width,        //Ïß¿í
+									uint16_t               StartX,       //ÆğÊ¼×ø±êX
+									uint16_t               StartY,       //ÆğÊ¼×ø±êY
+									uint16_t               EndX,         //½ØÖ¹×ø±êX
+									uint16_t               EndY)         //½ØÖ¹×ø±êY
 {
-	Graph->figure_name[0]  = GraphName[0];
-	Graph->figure_name[1]  = GraphName[1];
-	Graph->figure_name[2]  = GraphName[2];
+	Graph->graphic_name[0] = GraphName[0];
+	Graph->graphic_name[1] = GraphName[1];
+	Graph->graphic_name[2] = GraphName[2];
 	Graph->operate_tpye    = GraphOperate;
-	Graph->figure_tpye		 = UI_Graph_Line;
+	Graph->graphic_tpye    = UI_Graph_Line;
 	Graph->layer           = Layer;
 	Graph->color           = Color;
 	Graph->width           = Width;
 	Graph->start_x         = StartX;
 	Graph->start_y         = StartY;
-	Graph->details_d       = EndX;
-	Graph->details_e       = EndY;
+	Graph->end_x           = EndX;
+	Graph->end_y           = EndY;
 }
 
-void UI_Draw_Rectangle(graphic_data_struct_t *Graph,        //UIå›¾å½¢æ•°æ®ç»“æ„ä½“æŒ‡é’ˆ
-	                     char                   GraphName[3], //å›¾å½¢å ä½œä¸ºå®¢æˆ·ç«¯çš„ç´¢å¼•
-									     uint8_t                GraphOperate, //UIå›¾å½¢æ“ä½œ å¯¹åº”UI_Graph_XXXçš„4ç§æ“ä½œ
-									     uint8_t                Layer,        //UIå›¾å½¢å›¾å±‚ [0,9]
-							     	 	 uint8_t                Color,        //UIå›¾å½¢é¢œè‰² å¯¹åº”UI_Color_XXXçš„9ç§é¢œè‰²
-							     	   uint16_t               Width,        //çº¿å®½
-							     		 uint16_t               StartX,       //èµ·å§‹åæ ‡X
-							     		 uint16_t               StartY,       //èµ·å§‹åæ ‡Y
-							     		 uint16_t               EndX,         //æˆªæ­¢åæ ‡X
-							     		 uint16_t               EndY)         //æˆªæ­¢åæ ‡Y
+void UI_Draw_Rectangle(graphic_data_struct_t *Graph,        //UIÍ¼ĞÎÊı¾İ½á¹¹ÌåÖ¸Õë
+	                     char                   GraphName[3], //Í¼ĞÎÃû ×÷Îª¿Í»§¶ËµÄË÷Òı
+									     uint8_t                GraphOperate, //UIÍ¼ĞÎ²Ù×÷ ¶ÔÓ¦UI_Graph_XXXµÄ4ÖÖ²Ù×÷
+									     uint8_t                Layer,        //UIÍ¼ĞÎÍ¼²ã [0,9]
+							     	 	 uint8_t                Color,        //UIÍ¼ĞÎÑÕÉ« ¶ÔÓ¦UI_Color_XXXµÄ9ÖÖÑÕÉ«
+							     	   uint16_t               Width,        //Ïß¿í
+							     		 uint16_t               StartX,       //ÆğÊ¼×ø±êX
+							     		 uint16_t               StartY,       //ÆğÊ¼×ø±êY
+							     		 uint16_t               EndX,         //½ØÖ¹×ø±êX
+							     		 uint16_t               EndY)         //½ØÖ¹×ø±êY
 {
-	Graph->figure_name[0] = GraphName[0];
-	Graph->figure_name[1] = GraphName[1];
-	Graph->figure_name[2] = GraphName[2];
+	Graph->graphic_name[0] = GraphName[0];
+	Graph->graphic_name[1] = GraphName[1];
+	Graph->graphic_name[2] = GraphName[2];
 	Graph->operate_tpye    = GraphOperate;
-	Graph->figure_tpye     = UI_Graph_Rectangle;
+	Graph->graphic_tpye    = UI_Graph_Rectangle;
 	Graph->layer           = Layer;
 	Graph->color           = Color;
 	Graph->width           = Width;
 	Graph->start_x         = StartX;
 	Graph->start_y         = StartY;
-	Graph->details_d       = EndX;
-	Graph->details_d       = EndY;
+	Graph->end_x           = EndX;
+	Graph->end_y           = EndY;
 }
 
-void UI_Draw_Circle(graphic_data_struct_t *Graph,        //UIå›¾å½¢æ•°æ®ç»“æ„ä½“æŒ‡é’ˆ
-	                  char                   GraphName[3], //å›¾å½¢å ä½œä¸ºå®¢æˆ·ç«¯çš„ç´¢å¼•
-									  uint8_t                GraphOperate, //UIå›¾å½¢æ“ä½œ å¯¹åº”UI_Graph_XXXçš„4ç§æ“ä½œ
-									  uint8_t                Layer,        //UIå›¾å½¢å›¾å±‚ [0,9]
-							     	uint8_t                Color,        //UIå›¾å½¢é¢œè‰² å¯¹åº”UI_Color_XXXçš„9ç§é¢œè‰²
-										uint16_t               Width,        //çº¿å®½
-										uint16_t               CenterX,      //åœ†å¿ƒåæ ‡X
-							      uint16_t               CenterY,      //åœ†å¿ƒåæ ‡Y
-										uint16_t               Radius)       //åŠå¾„
+void UI_Draw_Circle(graphic_data_struct_t *Graph,        //UIÍ¼ĞÎÊı¾İ½á¹¹ÌåÖ¸Õë
+	                  char                   GraphName[3], //Í¼ĞÎÃû ×÷Îª¿Í»§¶ËµÄË÷Òı
+									  uint8_t                GraphOperate, //UIÍ¼ĞÎ²Ù×÷ ¶ÔÓ¦UI_Graph_XXXµÄ4ÖÖ²Ù×÷
+									  uint8_t                Layer,        //UIÍ¼ĞÎÍ¼²ã [0,9]
+							     	uint8_t                Color,        //UIÍ¼ĞÎÑÕÉ« ¶ÔÓ¦UI_Color_XXXµÄ9ÖÖÑÕÉ«
+										uint16_t               Width,        //Ïß¿í
+										uint16_t               CenterX,      //Ô²ĞÄ×ø±êX
+							      uint16_t               CenterY,      //Ô²ĞÄ×ø±êY
+										uint16_t               Radius)       //°ë¾¶
 {
-	Graph->figure_name[0] = GraphName[0];
-	Graph->figure_name[1] = GraphName[1];
-	Graph->figure_name[2] = GraphName[2];
+	Graph->graphic_name[0] = GraphName[0];
+	Graph->graphic_name[1] = GraphName[1];
+	Graph->graphic_name[2] = GraphName[2];
 	Graph->operate_tpye    = GraphOperate;
-	Graph->figure_tpye    = UI_Graph_Circle;
+	Graph->graphic_tpye    = UI_Graph_Circle;
 	Graph->layer           = Layer;
 	Graph->color           = Color;
 	Graph->width           = Width;
 	Graph->start_x         = CenterX;
 	Graph->start_y         = CenterY;
-	Graph->details_c          = Radius;
+	Graph->radius          = Radius;
 }
 
-void UI_Draw_Ellipse(graphic_data_struct_t *Graph,        //UIå›¾å½¢æ•°æ®ç»“æ„ä½“æŒ‡é’ˆ
-	                   char                   GraphName[3], //å›¾å½¢å ä½œä¸ºå®¢æˆ·ç«¯çš„ç´¢å¼•
-									   uint8_t                GraphOperate, //UIå›¾å½¢æ“ä½œ å¯¹åº”UI_Graph_XXXçš„4ç§æ“ä½œ
-									   uint8_t                Layer,        //UIå›¾å½¢å›¾å±‚ [0,9]
-							     	 uint8_t                Color,        //UIå›¾å½¢é¢œè‰² å¯¹åº”UI_Color_XXXçš„9ç§é¢œè‰²
-										 uint16_t               Width,        //çº¿å®½
-										 uint16_t               CenterX,      //åœ†å¿ƒåæ ‡X
-							       uint16_t               CenterY,      //åœ†å¿ƒåæ ‡Y
-										 uint16_t               XHalfAxis,    //XåŠè½´é•¿
-										 uint16_t               YHalfAxis)    //YåŠè½´é•¿
+void UI_Draw_Ellipse(graphic_data_struct_t *Graph,        //UIÍ¼ĞÎÊı¾İ½á¹¹ÌåÖ¸Õë
+	                   char                   GraphName[3], //Í¼ĞÎÃû ×÷Îª¿Í»§¶ËµÄË÷Òı
+									   uint8_t                GraphOperate, //UIÍ¼ĞÎ²Ù×÷ ¶ÔÓ¦UI_Graph_XXXµÄ4ÖÖ²Ù×÷
+									   uint8_t                Layer,        //UIÍ¼ĞÎÍ¼²ã [0,9]
+							     	 uint8_t                Color,        //UIÍ¼ĞÎÑÕÉ« ¶ÔÓ¦UI_Color_XXXµÄ9ÖÖÑÕÉ«
+										 uint16_t               Width,        //Ïß¿í
+										 uint16_t               CenterX,      //Ô²ĞÄ×ø±êX
+							       uint16_t               CenterY,      //Ô²ĞÄ×ø±êY
+										 uint16_t               XHalfAxis,    //X°ëÖá³¤
+										 uint16_t               YHalfAxis)    //Y°ëÖá³¤
 {
-	Graph->figure_name[0] = GraphName[0];
-	Graph->figure_name[1] = GraphName[1];
-	Graph->figure_name[2] = GraphName[2];
+	Graph->graphic_name[0] = GraphName[0];
+	Graph->graphic_name[1] = GraphName[1];
+	Graph->graphic_name[2] = GraphName[2];
 	Graph->operate_tpye    = GraphOperate;
-	Graph->figure_tpye    = UI_Graph_Ellipse;
+	Graph->graphic_tpye    = UI_Graph_Ellipse;
 	Graph->layer           = Layer;
 	Graph->color           = Color;
 	Graph->width           = Width;
 	Graph->start_x         = CenterX;
 	Graph->start_y         = CenterY;
-	Graph->details_d           = XHalfAxis;
-	Graph->details_e           = YHalfAxis;
+	Graph->end_x           = XHalfAxis;
+	Graph->end_y           = YHalfAxis;
 }
 
-void UI_Draw_Arc(graphic_data_struct_t *Graph,        //UIå›¾å½¢æ•°æ®ç»“æ„ä½“æŒ‡é’ˆ
-	               char                   GraphName[3], //å›¾å½¢å ä½œä¸ºå®¢æˆ·ç«¯çš„ç´¢å¼•
-							   uint8_t                GraphOperate, //UIå›¾å½¢æ“ä½œ å¯¹åº”UI_Graph_XXXçš„4ç§æ“ä½œ
-								 uint8_t                Layer,        //UIå›¾å½¢å›¾å±‚ [0,9]
-							   uint8_t                Color,        //UIå›¾å½¢é¢œè‰² å¯¹åº”UI_Color_XXXçš„9ç§é¢œè‰²
-								 uint16_t               StartAngle,   //èµ·å§‹è§’åº¦ [0,360]
-								 uint16_t               EndAngle,     //æˆªæ­¢è§’åº¦ [0,360]
-								 uint16_t               Width,        //çº¿å®½
-								 uint16_t               CenterX,      //åœ†å¿ƒåæ ‡X
-							   uint16_t               CenterY,      //åœ†å¿ƒåæ ‡Y
-								 uint16_t               XHalfAxis,    //XåŠè½´é•¿
-								 uint16_t               YHalfAxis)    //YåŠè½´é•¿
+void UI_Draw_Arc(graphic_data_struct_t *Graph,        //UIÍ¼ĞÎÊı¾İ½á¹¹ÌåÖ¸Õë
+	               char                   GraphName[3], //Í¼ĞÎÃû ×÷Îª¿Í»§¶ËµÄË÷Òı
+							   uint8_t                GraphOperate, //UIÍ¼ĞÎ²Ù×÷ ¶ÔÓ¦UI_Graph_XXXµÄ4ÖÖ²Ù×÷
+								 uint8_t                Layer,        //UIÍ¼ĞÎÍ¼²ã [0,9]
+							   uint8_t                Color,        //UIÍ¼ĞÎÑÕÉ« ¶ÔÓ¦UI_Color_XXXµÄ9ÖÖÑÕÉ«
+								 uint16_t               StartAngle,   //ÆğÊ¼½Ç¶È [0,360]
+								 uint16_t               EndAngle,     //½ØÖ¹½Ç¶È [0,360]
+								 uint16_t               Width,        //Ïß¿í
+								 uint16_t               CenterX,      //Ô²ĞÄ×ø±êX
+							   uint16_t               CenterY,      //Ô²ĞÄ×ø±êY
+								 uint16_t               XHalfAxis,    //X°ëÖá³¤
+								 uint16_t               YHalfAxis)    //Y°ëÖá³¤
 {
-	Graph->figure_name[0] = GraphName[0];
-	Graph->figure_name[1] = GraphName[1];
-	Graph->figure_name[2] = GraphName[2];
+	Graph->graphic_name[0] = GraphName[0];
+	Graph->graphic_name[1] = GraphName[1];
+	Graph->graphic_name[2] = GraphName[2];
 	Graph->operate_tpye    = GraphOperate;
-	Graph->figure_tpye    = UI_Graph_Arc;
+	Graph->graphic_tpye    = UI_Graph_Arc;
 	Graph->layer           = Layer;
 	Graph->color           = Color;
-	Graph->details_a     = StartAngle;
-	Graph->details_b       = EndAngle;
+	Graph->start_angle     = StartAngle;
+	Graph->end_angle       = EndAngle;
 	Graph->width           = Width;
 	Graph->start_x         = CenterX;
 	Graph->start_y         = CenterY;
-	Graph->details_d           = XHalfAxis;
-	Graph->details_e           = YHalfAxis;
+	Graph->end_x           = XHalfAxis;
+	Graph->end_y           = YHalfAxis;
 }
 
-void UI_Draw_Float(graphic_data_struct_t *Graph,        //UIå›¾å½¢æ•°æ®ç»“æ„ä½“æŒ‡é’ˆ
-	                 char                   GraphName[3], //å›¾å½¢å ä½œä¸ºå®¢æˆ·ç«¯çš„ç´¢å¼•
-							     uint8_t                GraphOperate, //UIå›¾å½¢æ“ä½œ å¯¹åº”UI_Graph_XXXçš„4ç§æ“ä½œ
-								   uint8_t                Layer,        //UIå›¾å½¢å›¾å±‚ [0,9]
-							     uint8_t                Color,        //UIå›¾å½¢é¢œè‰² å¯¹åº”UI_Color_XXXçš„9ç§é¢œè‰²
-									 uint16_t               NumberSize,   //å­—ä½“å¤§å°
-									 uint16_t               Significant,  //æœ‰æ•ˆä½æ•°
-									 uint16_t               Width,        //çº¿å®½
-							     uint16_t               StartX,       //èµ·å§‹åæ ‡X
-							     uint16_t               StartY,       //èµ·å§‹åæ ‡Y
-									 float                  FloatData)    //æ•°å­—å†…å®¹
+void UI_Draw_Float(graphic_data_struct_t *Graph,        //UIÍ¼ĞÎÊı¾İ½á¹¹ÌåÖ¸Õë
+	                 char                   GraphName[3], //Í¼ĞÎÃû ×÷Îª¿Í»§¶ËµÄË÷Òı
+							     uint8_t                GraphOperate, //UIÍ¼ĞÎ²Ù×÷ ¶ÔÓ¦UI_Graph_XXXµÄ4ÖÖ²Ù×÷
+								   uint8_t                Layer,        //UIÍ¼ĞÎÍ¼²ã [0,9]
+							     uint8_t                Color,        //UIÍ¼ĞÎÑÕÉ« ¶ÔÓ¦UI_Color_XXXµÄ9ÖÖÑÕÉ«
+									 uint16_t               NumberSize,   //×ÖÌå´óĞ¡
+									 uint16_t               Significant,  //ÓĞĞ§Î»Êı
+									 uint16_t               Width,        //Ïß¿í
+							     uint16_t               StartX,       //ÆğÊ¼×ø±êX
+							     uint16_t               StartY,       //ÆğÊ¼×ø±êY
+									 float                  FloatData)    //Êı×ÖÄÚÈİ
 {
-	Graph->figure_name[0] = GraphName[0];
-	Graph->figure_name[1] = GraphName[1];
-	Graph->figure_name[2] = GraphName[2];
+	Graph->graphic_name[0] = GraphName[0];
+	Graph->graphic_name[1] = GraphName[1];
+	Graph->graphic_name[2] = GraphName[2];
 	Graph->operate_tpye    = GraphOperate;
-	Graph->figure_tpye    = UI_Graph_Float;
+	Graph->graphic_tpye    = UI_Graph_Float;
 	Graph->layer           = Layer;
 	Graph->color           = Color;
-	Graph->details_a     = NumberSize;
-	Graph->details_b       = Significant;//æ— æ•ˆä½
+	Graph->start_angle     = NumberSize;
+	Graph->end_angle       = Significant;
 	Graph->width           = Width;
 	Graph->start_x         = StartX;
 	Graph->start_y         = StartY;
 	int32_t IntData = FloatData * 1000;
-	Graph->details_c        = (IntData & 0x000003ff) >>  0;
-	Graph->details_d        = (IntData & 0x001ffc00) >> 10;
-	Graph->details_e        = (IntData & 0xffe00000) >> 21;
+	Graph->radius          = (IntData & 0x000003ff) >>  0;
+	Graph->end_x           = (IntData & 0x001ffc00) >> 10;
+	Graph->end_y           = (IntData & 0xffe00000) >> 21;
 }
 
-void UI_Draw_Int(graphic_data_struct_t *Graph,        //UIå›¾å½¢æ•°æ®ç»“æ„ä½“æŒ‡é’ˆ
-	               char                   GraphName[3], //å›¾å½¢å ä½œä¸ºå®¢æˆ·ç«¯çš„ç´¢å¼•
-							   uint8_t                GraphOperate, //UIå›¾å½¢æ“ä½œ å¯¹åº”UI_Graph_XXXçš„4ç§æ“ä½œ
-								 uint8_t                Layer,        //UIå›¾å½¢å›¾å±‚ [0,9]
-							   uint8_t                Color,        //UIå›¾å½¢é¢œè‰² å¯¹åº”UI_Color_XXXçš„9ç§é¢œè‰²
-								 uint16_t               NumberSize,   //å­—ä½“å¤§å°
-								 uint16_t               Width,        //çº¿å®½
-							   uint16_t               StartX,       //èµ·å§‹åæ ‡X
-							   uint16_t               StartY,       //èµ·å§‹åæ ‡Y
-								 int32_t                IntData)      //æ•°å­—å†…å®¹
+void UI_Draw_Int(graphic_data_struct_t *Graph,        //UIÍ¼ĞÎÊı¾İ½á¹¹ÌåÖ¸Õë
+	               char                   GraphName[3], //Í¼ĞÎÃû ×÷Îª¿Í»§¶ËµÄË÷Òı
+							   uint8_t                GraphOperate, //UIÍ¼ĞÎ²Ù×÷ ¶ÔÓ¦UI_Graph_XXXµÄ4ÖÖ²Ù×÷
+								 uint8_t                Layer,        //UIÍ¼ĞÎÍ¼²ã [0,9]
+							   uint8_t                Color,        //UIÍ¼ĞÎÑÕÉ« ¶ÔÓ¦UI_Color_XXXµÄ9ÖÖÑÕÉ«
+								 uint16_t               NumberSize,   //×ÖÌå´óĞ¡
+								 uint16_t               Width,        //Ïß¿í
+							   uint16_t               StartX,       //ÆğÊ¼×ø±êX
+							   uint16_t               StartY,       //ÆğÊ¼×ø±êY
+								 int32_t                IntData)      //Êı×ÖÄÚÈİ
 {
-	Graph->figure_name[0] = GraphName[0];
-	Graph->figure_name[1] = GraphName[1];
-	Graph->figure_name[2] = GraphName[2];
+	Graph->graphic_name[0] = GraphName[0];
+	Graph->graphic_name[1] = GraphName[1];
+	Graph->graphic_name[2] = GraphName[2];
 	Graph->operate_tpye    = GraphOperate;
-	Graph->figure_tpye    = UI_Graph_Int;
+	Graph->graphic_tpye    = UI_Graph_Int;
 	Graph->layer           = Layer;
 	Graph->color           = Color;
-	Graph->details_a     = NumberSize;
+	Graph->start_angle     = NumberSize;
 	Graph->width           = Width;
 	Graph->start_x         = StartX;
 	Graph->start_y         = StartY;
-	Graph->details_c          = (IntData & 0x000003ff) >>  0;
-	Graph->details_d           = (IntData & 0x001ffc00) >> 10;
-	Graph->details_e           = (IntData & 0xffe00000) >> 21;
+	Graph->radius          = (IntData & 0x000003ff) >>  0;
+	Graph->end_x           = (IntData & 0x001ffc00) >> 10;
+	Graph->end_y           = (IntData & 0xffe00000) >> 21;
 }
 
-void UI_Draw_String(graphic_data_struct_t *String,        //UIå›¾å½¢æ•°æ®ç»“æ„ä½“æŒ‡é’ˆ
-	                  char                  StringName[3], //å›¾å½¢å ä½œä¸ºå®¢æˆ·ç«¯çš„ç´¢å¼•
-							      uint8_t               StringOperate, //UIå›¾å½¢æ“ä½œ å¯¹åº”UI_Graph_XXXçš„4ç§æ“ä½œ
-								    uint8_t               Layer,         //UIå›¾å½¢å›¾å±‚ [0,9]
-							      uint8_t               Color,         //UIå›¾å½¢é¢œè‰² å¯¹åº”UI_Color_XXXçš„9ç§é¢œè‰²
-										uint16_t              CharSize,      //å­—ä½“å¤§å°
-									  uint16_t              StringLength,  //å­—ç¬¦ä¸²é•¿åº¦
-									  uint16_t              Width,         //çº¿å®½
-							      uint16_t              StartX,        //èµ·å§‹åæ ‡X
-							      uint16_t              StartY,        //èµ·å§‹åæ ‡Y
-										char                 *StringData)    //å­—ç¬¦ä¸²å†…å®¹
+void UI_Draw_String(string_data_struct_t *String,        //UIÍ¼ĞÎÊı¾İ½á¹¹ÌåÖ¸Õë
+	                  char                  StringName[3], //Í¼ĞÎÃû ×÷Îª¿Í»§¶ËµÄË÷Òı
+							      uint8_t               StringOperate, //UIÍ¼ĞÎ²Ù×÷ ¶ÔÓ¦UI_Graph_XXXµÄ4ÖÖ²Ù×÷
+								    uint8_t               Layer,         //UIÍ¼ĞÎÍ¼²ã [0,9]
+							      uint8_t               Color,         //UIÍ¼ĞÎÑÕÉ« ¶ÔÓ¦UI_Color_XXXµÄ9ÖÖÑÕÉ«
+										uint16_t              CharSize,      //×ÖÌå´óĞ¡
+									  uint16_t              StringLength,  //×Ö·û´®³¤¶È
+									  uint16_t              Width,         //Ïß¿í
+							      uint16_t              StartX,        //ÆğÊ¼×ø±êX
+							      uint16_t              StartY,        //ÆğÊ¼×ø±êY
+										char                 *StringData)    //×Ö·û´®ÄÚÈİ
 {
-	String->figure_name[0] = StringName[0];
-	String->figure_name[1] = StringName[1];
-	String->figure_name[2] = StringName[2];
+	String->string_name[0] = StringName[0];
+	String->string_name[1] = StringName[1];
+	String->string_name[2] = StringName[2];
 	String->operate_tpye   = StringOperate;
-	String->figure_tpye   = UI_Graph_String;
+	String->graphic_tpye   = UI_Graph_String;
 	String->layer          = Layer;
 	String->color          = Color;
-	String->details_a    = CharSize;
-	String->details_b      = StringLength;
+	String->start_angle    = CharSize;
+	String->end_angle      = StringLength;
 	String->width          = Width;
 	String->start_x        = StartX;
 	String->start_y        = StartY;
-//	for(int i = 0; i < StringLength; i ++) String->stringdata[i] = *StringData ++;
+	for(int i = 0; i < StringLength; i ++) String->stringdata[i] = *StringData ++;
 }
 
 /*==============================================================================
-              ##### UIå®Œæ•´å›¾æ¡ˆæ¨é€å‡½æ•° #####
+              ##### UIÍêÕûÍ¼°¸ÍÆËÍº¯Êı #####
   ==============================================================================
-    [..]  è¯¥éƒ¨åˆ†æä¾›å¦‚ä¸‹å‡½æ•°:
-		  (+) æ¨é€å›¾æ¡ˆ UI_PushUp_Graphs
-			(+) æ¨é€å­—ç¬¦ UI_PushUp_String
-			(+) åˆ é™¤å›¾å±‚ UI_PushUp_Delete
+    [..]  ¸Ã²¿·ÖÌá¹©ÈçÏÂº¯Êı:
+		  (+) ÍÆËÍÍ¼°¸ UI_PushUp_Graphs
+			(+) ÍÆËÍ×Ö·û UI_PushUp_String
+			(+) É¾³ıÍ¼²ã UI_PushUp_Delete
 */
-void UI_PushUp_Graphs(uint8_t Counter /* 1,2,5,7 */, void *Graphs /* ä¸Counterç›¸ä¸€è‡´çš„UI_Graphxç»“æ„ä½“å¤´æŒ‡é’ˆ */, uint8_t RobotID)
+void UI_PushUp_Graphs(uint8_t Counter /* 1,2,5,7 */, void *Graphs /* ÓëCounterÏàÒ»ÖÂµÄUI_Graphx½á¹¹ÌåÍ·Ö¸Õë */, uint8_t RobotID)
 {
-	UI_Graph1_t *Graph = (UI_Graph1_t *)Graphs; //å‡è®¾åªå‘ä¸€ä¸ªåŸºæœ¬å›¾å½¢
+	UI_Graph1_t *Graph = (UI_Graph1_t *)Graphs; //¼ÙÉèÖ»·¢Ò»¸ö»ù±¾Í¼ĞÎ
 	
-	/* å¡«å…… frame_header */
+	/* Ìî³ä frame_header */
 	Graph->Referee_Transmit_Header.SOF  = HEADER_SOF;
 	     if(Counter == 1) Graph->Referee_Transmit_Header.data_length = 6 + 1 * 15;
 	else if(Counter == 2) Graph->Referee_Transmit_Header.data_length = 6 + 2 * 15;
@@ -247,19 +248,18 @@ void UI_PushUp_Graphs(uint8_t Counter /* 1,2,5,7 */, void *Graphs /* ä¸Counterç
 	Graph->Referee_Transmit_Header.seq  = Graph->Referee_Transmit_Header.seq + 1;
 	Graph->Referee_Transmit_Header.CRC8 = CRC08_Calculate((uint8_t *)(&Graph->Referee_Transmit_Header), 4);
 	
-	/* å¡«å…… cmd_id */
+	/* Ìî³ä cmd_id */
 	Graph->CMD_ID = STUDENT_INTERACTIVE_DATA_CMD_ID;
 	
-	/* å¡«å…… student_interactive_header */
+	/* Ìî³ä student_interactive_header */
 	     if(Counter == 1) Graph->Interactive_Header.data_cmd_id = UI_DataID_Draw1;
 	else if(Counter == 2) Graph->Interactive_Header.data_cmd_id = UI_DataID_Draw2;
 	else if(Counter == 5) Graph->Interactive_Header.data_cmd_id = UI_DataID_Draw5;
 	else if(Counter == 7) Graph->Interactive_Header.data_cmd_id = UI_DataID_Draw7;
-
-	Graph->Interactive_Header.sender_id   = RobotID ;      //å½“å‰æœºå™¨äººID
+	Graph->Interactive_Header.sender_ID   = RobotID ;      //µ±Ç°»úÆ÷ÈËID
+	Graph->Interactive_Header.receiver_ID = RobotID + 256; //¶ÔÓ¦²Ù×÷ÊÖID
 	
-	Graph->Interactive_Header.receiver_id = RobotID+256; //å¯¹åº”æ“ä½œæ‰‹ID
-	/* å¡«å…… frame_tail å³CRC16 */
+	/* Ìî³ä frame_tail ¼´CRC16 */
 	     if(Counter == 1)
 	{
 		UI_Graph1_t *Graph1 = (UI_Graph1_t *)Graphs;
@@ -281,155 +281,142 @@ void UI_PushUp_Graphs(uint8_t Counter /* 1,2,5,7 */, void *Graphs /* ä¸Counterç
 		Graph7->CRC16 = CRC16_Calculate((uint8_t *)Graph7, sizeof(UI_Graph7_t) - 2);
 	}
 	
-	/* ä½¿ç”¨ä¸²å£PushUpåˆ°è£åˆ¤ç³»ç»Ÿ */
-	     if(Counter == 1) HAL_UART_Transmit_DMA(&huart1, (uint8_t *)Graph, sizeof(UI_Graph1_t));
-	else if(Counter == 2) HAL_UART_Transmit_DMA(&huart1, (uint8_t *)Graph, sizeof(UI_Graph2_t));
-	else if(Counter == 5) HAL_UART_Transmit_DMA(&huart1, (uint8_t *)Graph, sizeof(UI_Graph5_t));
-	else if(Counter == 7) HAL_UART_Transmit_DMA(&huart1, (uint8_t *)Graph, sizeof(UI_Graph7_t));
+	/* Ê¹ÓÃ´®¿ÚPushUpµ½²ÃÅĞÏµÍ³ */
+	     if(Counter == 1) HAL_UART_Transmit_DMA(&Referee_UART, (uint8_t *)Graph, sizeof(UI_Graph1_t));
+	else if(Counter == 2) HAL_UART_Transmit_DMA(&Referee_UART, (uint8_t *)Graph, sizeof(UI_Graph2_t));
+	else if(Counter == 5) HAL_UART_Transmit_DMA(&Referee_UART, (uint8_t *)Graph, sizeof(UI_Graph5_t));
+	else if(Counter == 7) HAL_UART_Transmit_DMA(&Referee_UART, (uint8_t *)Graph, sizeof(UI_Graph7_t));
 }
 
 void UI_PushUp_String(UI_String_t *String, uint8_t RobotID)
 {
-	/* å¡«å…… frame_header */
+	/* Ìî³ä frame_header */
 	String->Referee_Transmit_Header.SOF  = HEADER_SOF;
 	String->Referee_Transmit_Header.data_length = 6 + 45;
 	String->Referee_Transmit_Header.seq  = String->Referee_Transmit_Header.seq + 1;
 	String->Referee_Transmit_Header.CRC8 = CRC08_Calculate((uint8_t *)(&String->Referee_Transmit_Header), 4);
 	
-	/* å¡«å…… cmd_id */
+	/* Ìî³ä cmd_id */
 	String->CMD_ID = STUDENT_INTERACTIVE_DATA_CMD_ID;
 	
-	/* å¡«å…… student_interactive_header */
+	/* Ìî³ä student_interactive_header */
 	String->Interactive_Header.data_cmd_id = UI_DataID_DrawChar;
-	String->Interactive_Header.sender_id   = RobotID ;      //å½“å‰æœºå™¨äººID
-	String->Interactive_Header.receiver_id = RobotID + 256; //å¯¹åº”æ“ä½œæ‰‹ID
+	String->Interactive_Header.sender_ID   = RobotID ;      //µ±Ç°»úÆ÷ÈËID
+	String->Interactive_Header.receiver_ID = RobotID + 256; //¶ÔÓ¦²Ù×÷ÊÖID
 	
-	/* å¡«å…… frame_tail å³CRC16 */
+	/* Ìî³ä frame_tail ¼´CRC16 */
 	String->CRC16 = CRC16_Calculate((uint8_t *)String, sizeof(UI_String_t) - 2);
 	
-	/* ä½¿ç”¨ä¸²å£PushUpåˆ°è£åˆ¤ç³»ç»Ÿ */
-	HAL_UART_Transmit_DMA(&huart1, (uint8_t *)String, sizeof(UI_String_t));
+	/* Ê¹ÓÃ´®¿ÚPushUpµ½²ÃÅĞÏµÍ³ */
+	HAL_UART_Transmit_DMA(&Referee_UART, (uint8_t *)String, sizeof(UI_String_t));
 }
 
 void UI_PushUp_Delete(UI_Delete_t *Delete, uint8_t RobotID)
 {
-	/* å¡«å…… frame_header */
+	/* Ìî³ä frame_header */
 	Delete->Referee_Transmit_Header.SOF  = HEADER_SOF;
 	Delete->Referee_Transmit_Header.data_length = 6 + 2;
 	Delete->Referee_Transmit_Header.seq  = Delete->Referee_Transmit_Header.seq + 1;
 	Delete->Referee_Transmit_Header.CRC8 = CRC08_Calculate((uint8_t *)(&Delete->Referee_Transmit_Header), 4);
 	
-	/* å¡«å…… cmd_id */
+	/* Ìî³ä cmd_id */
 	Delete->CMD_ID = STUDENT_INTERACTIVE_DATA_CMD_ID;
 	
-	/* å¡«å…… student_interactive_header */
+	/* Ìî³ä student_interactive_header */
 	Delete->Interactive_Header.data_cmd_id = UI_DataID_Delete;
-	Delete->Interactive_Header.sender_id   = RobotID ;      //å½“å‰æœºå™¨äººID
-	Delete->Interactive_Header.receiver_id = RobotID + 256; //å¯¹åº”æ“ä½œæ‰‹ID
+	Delete->Interactive_Header.sender_ID   = RobotID ;      //µ±Ç°»úÆ÷ÈËID
+	Delete->Interactive_Header.receiver_ID = RobotID + 256; //¶ÔÓ¦²Ù×÷ÊÖID
 	
-	/* å¡«å…… frame_tail å³CRC16 */
+	/* Ìî³ä frame_tail ¼´CRC16 */
 	Delete->CRC16 = CRC16_Calculate((uint8_t *)Delete, sizeof(UI_Delete_t) - 2);
 	
-	/* ä½¿ç”¨ä¸²å£PushUpåˆ°è£åˆ¤ç³»ç»Ÿ */
-	HAL_UART_Transmit_DMA(&huart1, (uint8_t *)Delete, sizeof(UI_Delete_t));
+	/* Ê¹ÓÃ´®¿ÚPushUpµ½²ÃÅĞÏµÍ³ */
+	HAL_UART_Transmit_DMA(&Referee_UART, (uint8_t *)Delete, sizeof(UI_Delete_t));
 }
 
 
-/* Private define ------------------------------------------------------------*/
-#define Max(a,b) ((a) > (b) ? (a) : (b))
-/* æœºå™¨äººID */
+#include "FreeRTOS.h"
+#include "task.h"
+#include "cmsis_os.h"
+#define Robot_ID_Current 104
 
-#define Robot_ID_Red_Infantry3    3 //çº¢æ–¹æ­¥å…µ3
-#define Robot_ID_Red_Infantry4    4 //çº¢æ–¹æ­¥å…µ4
-#define Robot_ID_Red_Infantry5    5 //çº¢æ–¹æ­¥å…µ5
-
-#define Robot_ID_Blue_Infantry3 103 //è“æ–¹æ­¥å…µ3
-#define Robot_ID_Blue_Infantry4 104 //è“æ–¹æ­¥å…µ4
-#define Robot_ID_Blue_Infantry5 105 //è“æ–¹æ­¥å…µ5
-
-#define Robot_ID_Current Robot_ID_Red_Infantry4
-/* ç»˜åˆ¶UIä¸“ç”¨ç»“æ„ä½“ */
+/* ¶¯Ì¬UIÊı¾İ±äÁ¿ */
+uint8_t R_UI = 0;    //Ä¦²ÁÂÖÊÇ·ñ¿ªÆô
+/* ÖĞÑë±ê³ß¸ß¶È±äÁ¿ */
+uint16_t y01 = 680;
+uint16_t y02 = 280;
+uint16_t y03 = 280;
+uint16_t y04 = 230;
+/* »æÖÆUI×¨ÓÃ½á¹¹Ìå */
 UI_Graph1_t UI_Graph1;
 UI_Graph2_t UI_Graph2;
 UI_Graph5_t UI_Graph5;
 UI_Graph7_t UI_Graph7;
 UI_String_t UI_String;
 UI_Delete_t UI_Delete;
-
-/* åŠ¨æ€UIæ•°æ®å˜é‡ */
-uint8_t UI_AutoAim_Flag = 0;    //æ˜¯å¦å¼€å¯è‡ªç„æ ‡å¿—ä½
-float   UI_Kalman_Speed = 0;    //å¡å°”æ›¼é¢„æµ‹é€Ÿåº¦
-float   UI_Gimbal_Pitch = 0.0f; //äº‘å°Pitchè½´è§’åº¦
-float   UI_Gimbal_Yaw   = 0.0f; //äº‘å°Yawè½´è§’åº¦
-uint8_t UI_Capacitance  = 10;   //ç”µå®¹å‰©ä½™å®¹é‡
-uint8_t UI_fric_is_on   = 0;    //æ‘©æ“¦è½®æ˜¯å¦å¼€å¯
-
-/* ä¸­å¤®æ ‡å°ºé«˜åº¦å˜é‡ */
-uint16_t y01 = 455;
-uint16_t y02 = 420;
-uint16_t y03 = 280;
-uint16_t y04 = 230;
-
-uint8_t autoaim_mode;//2:normal,3:small energy,4:big energy
-uint8_t autoaim_armor;//0x10:auto,0x20:big,0x30:small
-uint8_t if_predict;
-
-uint16_t UI_PushUp_Counter = 261;
-float    Capacitance_X;
-void  referee_usart1_task(void)
+void JUDGE_TASK(void const * argument)
 {
-  for(;;)
-  {
-		/* UIæ›´æ–° */
+	/* ¶¯Ì¬UI¿ØÖÆ±äÁ¿ */
+	uint16_t UI_PushUp_Counter = 261;
+	
+	/* ²ÃÅĞÏµÍ³³õÊ¼»¯ */
+	vTaskDelay(300);
+	
+	/* new UI */
+	while(1)
+	{
+		/* ½âÎö²ÃÅĞÏµÍ³Êı¾İ */
+		vTaskDelay(10);
+		
+		/* UI¸üĞÂ */
 		UI_PushUp_Counter++;
-		if(UI_PushUp_Counter % 301 == 0) //é™æ€UIé¢„ç»˜åˆ¶ ä¸­å¤®æ ‡å°º1
+		if(UI_PushUp_Counter % 301 == 0) //¾²Ì¬UIÔ¤»æÖÆ ÖĞÑë±ê³ß1
 		{
-			UI_Draw_Line(&UI_Graph7.Graphic[0], "001", UI_Graph_Add, 0, UI_Color_Green, 1,  40,   50,  80,   150); //ç¬¬ä¸€è¡Œå·¦æ¨ªçº¿
-			UI_Draw_Line(&UI_Graph7.Graphic[1], "002", UI_Graph_Add, 0, UI_Color_Green, 5,  950,   666,  500,   1000); //ç¬¬ä¸€è¡Œåå­—æ¨ª
-			UI_Draw_Line(&UI_Graph7.Graphic[2], "003", UI_Graph_Add, 0, UI_Color_Green, 1, 1000,   y01, 1080,   y01); //ç¬¬ä¸€è¡Œå³æ¨ªçº¿
-			UI_Draw_Line(&UI_Graph7.Graphic[3], "004", UI_Graph_Add, 0, UI_Color_Green, 1,  960,y01-10,  960,y01+10); //ç¬¬ä¸€è¡Œåå­—ç«–
-			UI_Draw_Line(&UI_Graph7.Graphic[4], "005", UI_Graph_Add, 0, UI_Color_Green, 1,  870,   y02,  930,   y02); //ç¬¬äºŒè¡Œå·¦æ¨ªçº¿
-			UI_Draw_Line(&UI_Graph7.Graphic[5], "006", UI_Graph_Add, 0, UI_Color_Green, 5,  959,   y02,  960,   y02); //ç¬¬äºŒè¡Œä¸­å¿ƒç‚¹
-			UI_Draw_Line(&UI_Graph7.Graphic[6], "007", UI_Graph_Add, 0, UI_Color_Green, 1,  990,   y02, 1050,   y02); //ç¬¬äºŒè¡Œå³æ¨ªçº¿
+			
+			UI_Draw_Line(&UI_Graph5.Graphic[0], "001", UI_Graph_Add, 0, UI_Color_Green, 1,  720,  y01,  1200,   y01);	//Õı·½ĞÎÉÏ±ß
+			UI_Draw_Line(&UI_Graph5.Graphic[2], "002", UI_Graph_Add, 0, UI_Color_Green, 1, 1200,  y01, 1200,   y02); 	//Õı·½ĞÎÓÒ±ß
+			UI_Draw_Line(&UI_Graph5.Graphic[3], "003", UI_Graph_Add, 0, UI_Color_Green, 1,  720,  y01, 720,   y02); 	//Õı·½ĞÎ×ó±ß
+			UI_Draw_Line(&UI_Graph5.Graphic[4], "004", UI_Graph_Add, 0, UI_Color_Green, 1,  720,   y02,  1200,  y02); //Õı·½ĞÎÏÂ±ß
+			UI_Draw_Line(&UI_Graph5.Graphic[5], "005", UI_Graph_Add, 0, UI_Color_Green, 5,  959,   y02,  960,   y02); //µÚ¶şĞĞÖĞĞÄµã
+			UI_PushUp_Graphs(5, &UI_Graph5, Robot_ID_Current);
+			continue;
+		}
+		if(UI_PushUp_Counter % 311 == 0) //¾²Ì¬UIÔ¤»æÖÆ ÖĞÑë±ê³ß2
+		{
+			UI_Draw_Line(&UI_Graph7.Graphic[0], "008", UI_Graph_Add, 0, UI_Color_Green, 1,  900,   y03,  940,   y03); //µÚÈıĞĞ×óºáÏß
+			UI_Draw_Line(&UI_Graph7.Graphic[1], "009", UI_Graph_Add, 0, UI_Color_Green, 5,  959,   y03,  960,   y03); //µÚÈıĞĞÖĞĞÄµã
+			UI_Draw_Line(&UI_Graph7.Graphic[2], "010", UI_Graph_Add, 0, UI_Color_Green, 1,  980,   y03, 1020,   y03); //µÚÈıĞĞÓÒºáÏß
+			UI_Draw_Line(&UI_Graph7.Graphic[3], "011", UI_Graph_Add, 0, UI_Color_Green, 1,  930,   y04,  950,   y04); //µÚËÄĞĞ×óºáÏß
+			UI_Draw_Line(&UI_Graph7.Graphic[4], "012", UI_Graph_Add, 0, UI_Color_Green, 5,  959,   y04,  960,   y04); //µÚËÄĞĞÖĞĞÄµã
+			UI_Draw_Line(&UI_Graph7.Graphic[5], "013", UI_Graph_Add, 0, UI_Color_Green, 1,  970,   y04,  990,   y04); //µÚËÄĞĞÓÒºáÏß
+			UI_Draw_Line(&UI_Graph7.Graphic[6], "014", UI_Graph_Add, 0, UI_Color_Green, 1,  960,y04-10,  960,y04-30); //µÚËÄĞĞÏÂÊúÏß
 			UI_PushUp_Graphs(7, &UI_Graph7, Robot_ID_Current);
 			continue;
 		}
-//		if(UI_PushUp_Counter % 311 == 0) //é™æ€UIé¢„ç»˜åˆ¶ ä¸­å¤®æ ‡å°º2
-//		{
-//			UI_Draw_Line(&UI_Graph7.Graphic[0], "008", UI_Graph_Add, 0, UI_Color_Green, 1,  900,   y03,  940,   y03); //ç¬¬ä¸‰è¡Œå·¦æ¨ªçº¿
-//			UI_Draw_Line(&UI_Graph7.Graphic[1], "009", UI_Graph_Add, 0, UI_Color_Green, 5,  959,   y03,  960,   y03); //ç¬¬ä¸‰è¡Œä¸­å¿ƒç‚¹
-//			UI_Draw_Line(&UI_Graph7.Graphic[2], "010", UI_Graph_Add, 0, UI_Color_Green, 1,  980,   y03, 1020,   y03); //ç¬¬ä¸‰è¡Œå³æ¨ªçº¿
-//			UI_Draw_Line(&UI_Graph7.Graphic[3], "011", UI_Graph_Add, 0, UI_Color_Green, 1,  930,   y04,  950,   y04); //ç¬¬å››è¡Œå·¦æ¨ªçº¿
-//			UI_Draw_Line(&UI_Graph7.Graphic[4], "012", UI_Graph_Add, 0, UI_Color_Green, 5,  959,   y04,  960,   y04); //ç¬¬å››è¡Œä¸­å¿ƒç‚¹
-//			UI_Draw_Line(&UI_Graph7.Graphic[5], "013", UI_Graph_Add, 0, UI_Color_Green, 1,  970,   y04,  990,   y04); //ç¬¬å››è¡Œå³æ¨ªçº¿
-//			UI_Draw_Line(&UI_Graph7.Graphic[6], "014", UI_Graph_Add, 0, UI_Color_Green, 1,  960,y04-10,  960,y04-30); //ç¬¬å››è¡Œä¸‹ç«–çº¿
-//			UI_PushUp_Graphs(7, &UI_Graph7, Robot_ID_Current);
-//			continue;
-//		}
-//		if(UI_PushUp_Counter % 321 == 0) //é™æ€UIé¢„ç»˜åˆ¶ å°é™€èºé¢„è­¦çº¿
-//		{
-//			UI_Draw_Line(&UI_Graph5.Graphic[0], "101", UI_Graph_Add, 1, UI_Color_Yellow, 2,  630,   30,  780,  100);
-//			UI_Draw_Line(&UI_Graph5.Graphic[1], "102", UI_Graph_Add, 1, UI_Color_Yellow, 2,  780,  100,  930,  100);
-//			UI_Draw_Line(&UI_Graph5.Graphic[2], "103", UI_Graph_Add, 1, UI_Color_Yellow, 2,  990,  100, 1140,  100);
-//			UI_Draw_Line(&UI_Graph5.Graphic[3], "104", UI_Graph_Add, 1, UI_Color_Yellow, 2, 1140,  100, 1290,   30);
-//			UI_Draw_Line(&UI_Graph5.Graphic[4], "105", UI_Graph_Add, 1, UI_Color_Yellow, 5,  959,  100,  960,  100);
-//			UI_PushUp_Graphs(5, &UI_Graph5, Robot_ID_Current);
-//			continue;
-//		}
-//		if(UI_PushUp_Counter % 331 == 0) //åŠ¨æ€UIé¢„ç»˜åˆ¶ å›¾å½¢
-//		{
-//			UI_Draw_Float (&UI_Graph2.Graphic[0], "201", UI_Graph_Add, 2, UI_Color_Yellow, 22, 3, 3, 1355, 632, 0.000f);   //Pithè½´è§’åº¦
-//			UI_Draw_Line  (&UI_Graph2.Graphic[1], "202", UI_Graph_Add, 2, UI_Color_Orange, 20, 1829, 330, 1870, 334);      //ç”µå®¹å®¹é‡
-//			UI_PushUp_Graphs(2, &UI_Graph2, Robot_ID_Current);
-//			continue;
-//		}
-//		if(UI_PushUp_Counter % 341 == 0) //åŠ¨æ€UIé¢„ç»˜åˆ¶ å­—ç¬¦ä¸²1
-//		{
-//			UI_Draw_String(&UI_String.String,     "203", UI_Graph_Add, 2, UI_Color_Black,  22, 8, 3,  400, 632, "Fric OFF"); //æ‘©æ“¦è½®æ˜¯å¦å¼€å¯
-//			UI_PushUp_String(&UI_String, Robot_ID_Current);
-//			continue;
-//		}
-//		if(UI_PushUp_Counter % 21 == 0) //åŠ¨æ€UIæ›´æ–° å­—ç¬¦ä¸²1
+		if(UI_PushUp_Counter % 321 == 0) //¾²Ì¬UIÔ¤»æÖÆ Ğ¡ÍÓÂİÔ¤¾¯Ïß
+		{
+			UI_Draw_Line(&UI_Graph5.Graphic[0], "101", UI_Graph_Add, 1, UI_Color_Yellow, 2,  630,   30,  780,  100);
+			UI_Draw_Line(&UI_Graph5.Graphic[1], "102", UI_Graph_Add, 1, UI_Color_Yellow, 2,  780,  100,  930,  100);
+			UI_Draw_Line(&UI_Graph5.Graphic[2], "103", UI_Graph_Add, 1, UI_Color_Yellow, 2,  990,  100, 1140,  100);
+			UI_Draw_Line(&UI_Graph5.Graphic[3], "104", UI_Graph_Add, 1, UI_Color_Yellow, 2, 1140,  100, 1290,   30);
+			UI_Draw_Line(&UI_Graph5.Graphic[4], "105", UI_Graph_Add, 1, UI_Color_Yellow, 5,  959,  100,  960,  100);
+			UI_PushUp_Graphs(5, &UI_Graph5, Robot_ID_Current);
+			continue;
+		}
+		if(UI_PushUp_Counter % 331 == 0) //¶¯Ì¬UIÔ¤»æÖÆ Í¼ĞÎ
+		{
+			UI_Draw_Float (&UI_Graph2.Graphic[0], "201", UI_Graph_Add, 2, UI_Color_Yellow, 22, 3, 3, 1355, 632, 0.000f);   //PithÖá½Ç¶È
+			UI_Draw_Line  (&UI_Graph2.Graphic[1], "202", UI_Graph_Add, 2, UI_Color_Orange, 20, 1829, 330, 1870, 334);      //µçÈİÈİÁ¿
+			UI_PushUp_Graphs(2, &UI_Graph2, Robot_ID_Current);
+			continue;
+		}
+		if(UI_PushUp_Counter % 341 == 0) //¶¯Ì¬UIÔ¤»æÖÆ ×Ö·û´®1
+		{
+			UI_Draw_String(&UI_String.String,     "203", UI_Graph_Add, 2, UI_Color_Black,  22, 8, 3,  400, 632, "R OFF"); //Ä¦²ÁÂÖÊÇ·ñ¿ªÆô
+			UI_PushUp_String(&UI_String, Robot_ID_Current);
+			continue;
+		}
+//		if(UI_PushUp_Counter % 21 == 0) //¶¯Ì¬UI¸üĞÂ ×Ö·û´®1
 //		{
 //			if(UI_fric_is_on == 1) 
 //			{
@@ -471,144 +458,22 @@ void  referee_usart1_task(void)
 //			UI_PushUp_String(&UI_String, Robot_ID_Current);
 //			continue;
 //		}
-//		if(UI_PushUp_Counter % 10 == 0)  //åŠ¨æ€UIæ›´æ–° å›¾å½¢
+//		if(UI_PushUp_Counter % 10 == 0)  //¶¯Ì¬UI¸üĞÂ Í¼ĞÎ
 //		{
-//			/* Pitchè½´å½“å‰è§’åº¦ */
+//			/* PitchÖáµ±Ç°½Ç¶È */
 //			UI_Draw_Float(&UI_Graph2.Graphic[0], "201", UI_Graph_Change, 2, UI_Color_Yellow, 22, 3, 3, 1355, 632, UI_Gimbal_Pitch);
 //			
-//			/* è¶…çº§ç”µå®¹å®¹é‡ */
+//			/* ³¬¼¶µçÈİÈİÁ¿ */
 //			UI_Capacitance = Max(UI_Capacitance, 30);
 //			Capacitance_X  = 1870.0f - 4.1f * UI_Capacitance;
 //			if(50 < UI_Capacitance && UI_Capacitance <= 100) UI_Draw_Line(&UI_Graph2.Graphic[1], "202", UI_Graph_Change, 2, UI_Color_Green , 20, Capacitance_X, 334, 1870, 334);
 //			if(35 < UI_Capacitance && UI_Capacitance <=  50) UI_Draw_Line(&UI_Graph2.Graphic[1], "202", UI_Graph_Change, 2, UI_Color_Yellow, 20, Capacitance_X, 334, 1870, 334);
 //			if(0  < UI_Capacitance && UI_Capacitance <=  35) UI_Draw_Line(&UI_Graph2.Graphic[1], "202", UI_Graph_Change, 2, UI_Color_Orange, 20, Capacitance_X, 334, 1870, 334);
 //			
+
 //			UI_PushUp_Graphs(2, &UI_Graph2, Robot_ID_Current);
 //			continue;
 //		}
 	}
 }
-	
-//void referee_usart_task(void const * argument)
-//{
-//	/* åŠ¨æ€UIæ§åˆ¶å˜é‡ */
-//	uint16_t UI_PushUp_Counter = 261;
-//	float    Capacitance_X;
-//	
-//	/* è£åˆ¤ç³»ç»Ÿåˆå§‹åŒ– */
-////	vTaskDelay(300);
-//	
-//	/* new UI */
-//	while(1)
-//	{
-
-//		/* UIæ›´æ–° */
-//		UI_PushUp_Counter++;
-//		if(UI_PushUp_Counter % 301 == 0) //é™æ€UIé¢„ç»˜åˆ¶ ä¸­å¤®æ ‡å°º1
-//		{
-//			UI_Draw_Line(&UI_Graph7.Graphic[0], "001", UI_Graph_Add, 0, UI_Color_Green, 1,  840,   y01,  920,   y01); //ç¬¬ä¸€è¡Œå·¦æ¨ªçº¿
-//			UI_Draw_Line(&UI_Graph7.Graphic[1], "002", UI_Graph_Add, 0, UI_Color_Green, 1,  950,   y01,  970,   y01); //ç¬¬ä¸€è¡Œåå­—æ¨ª
-//			UI_Draw_Line(&UI_Graph7.Graphic[2], "003", UI_Graph_Add, 0, UI_Color_Green, 1, 1000,   y01, 1080,   y01); //ç¬¬ä¸€è¡Œå³æ¨ªçº¿
-//			UI_Draw_Line(&UI_Graph7.Graphic[3], "004", UI_Graph_Add, 0, UI_Color_Green, 1,  960,y01-10,  960,y01+10); //ç¬¬ä¸€è¡Œåå­—ç«–
-//			UI_Draw_Line(&UI_Graph7.Graphic[4], "005", UI_Graph_Add, 0, UI_Color_Green, 1,  870,   y02,  930,   y02); //ç¬¬äºŒè¡Œå·¦æ¨ªçº¿
-//			UI_Draw_Line(&UI_Graph7.Graphic[5], "006", UI_Graph_Add, 0, UI_Color_Green, 5,  959,   y02,  960,   y02); //ç¬¬äºŒè¡Œä¸­å¿ƒç‚¹
-//			UI_Draw_Line(&UI_Graph7.Graphic[6], "007", UI_Graph_Add, 0, UI_Color_Green, 1,  990,   y02, 1050,   y02); //ç¬¬äºŒè¡Œå³æ¨ªçº¿
-//			UI_PushUp_Graphs(7, &UI_Graph7, Robot_ID_Current);
-//			continue;
-//		}
-//		if(UI_PushUp_Counter % 311 == 0) //é™æ€UIé¢„ç»˜åˆ¶ ä¸­å¤®æ ‡å°º2
-//		{
-//			UI_Draw_Line(&UI_Graph7.Graphic[0], "008", UI_Graph_Add, 0, UI_Color_Green, 1,  900,   y03,  940,   y03); //ç¬¬ä¸‰è¡Œå·¦æ¨ªçº¿
-//			UI_Draw_Line(&UI_Graph7.Graphic[1], "009", UI_Graph_Add, 0, UI_Color_Green, 5,  959,   y03,  960,   y03); //ç¬¬ä¸‰è¡Œä¸­å¿ƒç‚¹
-//			UI_Draw_Line(&UI_Graph7.Graphic[2], "010", UI_Graph_Add, 0, UI_Color_Green, 1,  980,   y03, 1020,   y03); //ç¬¬ä¸‰è¡Œå³æ¨ªçº¿
-//			UI_Draw_Line(&UI_Graph7.Graphic[3], "011", UI_Graph_Add, 0, UI_Color_Green, 1,  930,   y04,  950,   y04); //ç¬¬å››è¡Œå·¦æ¨ªçº¿
-//			UI_Draw_Line(&UI_Graph7.Graphic[4], "012", UI_Graph_Add, 0, UI_Color_Green, 5,  959,   y04,  960,   y04); //ç¬¬å››è¡Œä¸­å¿ƒç‚¹
-//			UI_Draw_Line(&UI_Graph7.Graphic[5], "013", UI_Graph_Add, 0, UI_Color_Green, 1,  970,   y04,  990,   y04); //ç¬¬å››è¡Œå³æ¨ªçº¿
-//			UI_Draw_Line(&UI_Graph7.Graphic[6], "014", UI_Graph_Add, 0, UI_Color_Green, 1,  960,y04-10,  960,y04-30); //ç¬¬å››è¡Œä¸‹ç«–çº¿
-//			UI_PushUp_Graphs(7, &UI_Graph7, Robot_ID_Current);
-//			continue;
-//		}
-//		if(UI_PushUp_Counter % 321 == 0) //é™æ€UIé¢„ç»˜åˆ¶ å°é™€èºé¢„è­¦çº¿
-//		{
-//			UI_Draw_Line(&UI_Graph5.Graphic[0], "101", UI_Graph_Add, 1, UI_Color_Yellow, 2,  630,   30,  780,  100);
-//			UI_Draw_Line(&UI_Graph5.Graphic[1], "102", UI_Graph_Add, 1, UI_Color_Yellow, 2,  780,  100,  930,  100);
-//			UI_Draw_Line(&UI_Graph5.Graphic[2], "103", UI_Graph_Add, 1, UI_Color_Yellow, 2,  990,  100, 1140,  100);
-//			UI_Draw_Line(&UI_Graph5.Graphic[3], "104", UI_Graph_Add, 1, UI_Color_Yellow, 2, 1140,  100, 1290,   30);
-//			UI_Draw_Line(&UI_Graph5.Graphic[4], "105", UI_Graph_Add, 1, UI_Color_Yellow, 5,  959,  100,  960,  100);
-//			UI_PushUp_Graphs(5, &UI_Graph5, Robot_ID_Current);
-//			continue;
-//		}
-//		if(UI_PushUp_Counter % 331 == 0) //åŠ¨æ€UIé¢„ç»˜åˆ¶ å›¾å½¢
-//		{
-//			UI_Draw_Float (&UI_Graph2.Graphic[0], "201", UI_Graph_Add, 2, UI_Color_Yellow, 22, 3, 3, 1355, 632, 0.000f);   //Pithè½´è§’åº¦
-//			UI_Draw_Line  (&UI_Graph2.Graphic[1], "202", UI_Graph_Add, 2, UI_Color_Orange, 20, 1829, 330, 1870, 334);      //ç”µå®¹å®¹é‡
-//			UI_PushUp_Graphs(2, &UI_Graph2, Robot_ID_Current);
-//			continue;
-//		}
-////		if(UI_PushUp_Counter % 341 == 0) //åŠ¨æ€UIé¢„ç»˜åˆ¶ å­—ç¬¦ä¸²1
-////		{
-////			UI_Draw_String(&UI_String.String,     "203", UI_Graph_Add, 2, UI_Color_Black,  22, 8, 3,  400, 632, "Fric OFF"); //æ‘©æ“¦è½®æ˜¯å¦å¼€å¯
-////			UI_PushUp_String(&UI_String, Robot_ID_Current);
-////			continue;
-////		}
-////		if(UI_PushUp_Counter % 21 == 0) //åŠ¨æ€UIæ›´æ–° å­—ç¬¦ä¸²1
-////		{
-////			if(UI_fric_is_on == 1) 
-////			{
-////				if(autoaim_mode==0x02&&autoaim_armor==0x10&&if_predict==0)
-////				{
-////					UI_Draw_String(&UI_String.String, "203", UI_Graph_Change, 2, UI_Color_Main,  22, 8+4+9+8, 3,  100, 700, "Fric  ON\nNor\nArm Auto\nPre  NO");
-////				}
-////				else if(autoaim_mode==0x02&&autoaim_armor==0x20&&if_predict==0)
-////				{
-////					UI_Draw_String(&UI_String.String, "203", UI_Graph_Change, 2, UI_Color_Main,  22, 8+4+9+8, 3,  100, 700, "Fric  ON\nNor\nArm  Big\nPre  NO");
-////				}
-////				else if(autoaim_mode==0x02&&autoaim_armor==0x30&&if_predict==0)
-////				{
-////					UI_Draw_String(&UI_String.String, "203", UI_Graph_Change, 2, UI_Color_Main,  22, 8+4+9+8, 3,  100, 700, "Fric  ON\nNor\nArm Smal\nPre  NO");
-////				}		
-////				else if(autoaim_mode==0x02&&autoaim_armor==0x10&&if_predict==1)
-////				{
-////					UI_Draw_String(&UI_String.String, "203", UI_Graph_Change, 2, UI_Color_Main,  22, 8+4+9+8, 3,  100, 700, "Fric  ON\nNor\nArm Auto\nPre YES");
-////				}
-////				else if(autoaim_mode==0x02&&autoaim_armor==0x20&&if_predict==1)
-////				{
-////					UI_Draw_String(&UI_String.String, "203", UI_Graph_Change, 2, UI_Color_Main,  22, 8+4+9+8, 3,  100, 700, "Fric  ON\nNor\nArm  Big\nPre YES");
-////				}
-////				else if(autoaim_mode==0x02&&autoaim_armor==0x30&&if_predict==1)
-////				{
-////					UI_Draw_String(&UI_String.String, "203", UI_Graph_Change, 2, UI_Color_Main,  22, 8+4+9+8, 3,  100, 700, "Fric  ON\nNor\nArm Smal\nPre YES");
-////				}		
-////				
-////				else if(autoaim_mode==0x03)
-////				{
-////					UI_Draw_String(&UI_String.String, "203", UI_Graph_Change, 2, UI_Color_Main,  22, 8+4+9+8, 3,  100, 700, "Fric  ON\nXFu\n        \n       ");
-////				}
-////				else if(autoaim_mode==0x04)
-////				{
-////					UI_Draw_String(&UI_String.String, "203", UI_Graph_Change, 2, UI_Color_Main,  22, 8+4+9+8, 3,  100, 700, "Fric  ON\nDFu\n        \n       ");
-////				}
-////			}
-////			if(UI_fric_is_on == 0) UI_Draw_String(&UI_String.String, "203", UI_Graph_Change, 2, UI_Color_Black, 22, 8+4+9+8, 3,  100, 700, "Fric OFF\n   \n        \n       ");
-////			UI_PushUp_String(&UI_String, Robot_ID_Current);
-////			continue;
-////		}
-//		if(UI_PushUp_Counter % 10 == 0)  //åŠ¨æ€UIæ›´æ–° å›¾å½¢
-//		{
-//			/* Pitchè½´å½“å‰è§’åº¦ */
-//			UI_Draw_Float(&UI_Graph2.Graphic[0], "201", UI_Graph_Change, 2, UI_Color_Yellow, 22, 3, 3, 1355, 632, UI_Gimbal_Pitch);
-//			
-//			/* è¶…çº§ç”µå®¹å®¹é‡ */
-//			UI_Capacitance = Max(UI_Capacitance, 30);
-//			Capacitance_X  = 1870.0f - 4.1f * UI_Capacitance;
-//			if(50 < UI_Capacitance && UI_Capacitance <= 100) UI_Draw_Line(&UI_Graph2.Graphic[1], "202", UI_Graph_Change, 2, UI_Color_Green , 20, Capacitance_X, 334, 1870, 334);
-//			if(35 < UI_Capacitance && UI_Capacitance <=  50) UI_Draw_Line(&UI_Graph2.Graphic[1], "202", UI_Graph_Change, 2, UI_Color_Yellow, 20, Capacitance_X, 334, 1870, 334);
-//			if(0  < UI_Capacitance && UI_Capacitance <=  35) UI_Draw_Line(&UI_Graph2.Graphic[1], "202", UI_Graph_Change, 2, UI_Color_Orange, 20, Capacitance_X, 334, 1870, 334);
-//			
-//			UI_PushUp_Graphs(2, &UI_Graph2, Robot_ID_Current);
-//			continue;
-//		}
-//	}
-//}
-
 

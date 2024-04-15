@@ -83,7 +83,7 @@ PID_Parameter_t PID_Speed_Param[MOTOR_TYPE_CNT][PID_TYPE_CNT]={
 			.F = 0,
     },
 		[KEY]	 = {
-      .P = 190,
+      .P = 200,
       .I = 0.5,
       .D = 0,
 			.F = 0.5,
@@ -101,7 +101,7 @@ PID_Parameter_t PID_Speed_Param[MOTOR_TYPE_CNT][PID_TYPE_CNT]={
       .D = 0,
     },
 		[KEY]	 = {
-      .P = 150,
+      .P = 200,
       .I = 0,
       .D = 0,
 		},
@@ -157,7 +157,7 @@ PID_Parameter_t PID_Angle_Param[MOTOR_TYPE_CNT][PID_TYPE_CNT]={
 			.F = 0,
     },
 		[KEY]	 = {
-      .P = 16,
+      .P = 18,
       .I = 0,
       .D = 0,
 			.F = 0,
@@ -177,7 +177,7 @@ PID_Parameter_t PID_Angle_Param[MOTOR_TYPE_CNT][PID_TYPE_CNT]={
 			.F = 0,
     },
 		[KEY]	 = {
-      .P = 8,
+      .P = 20,
       .I = 0,
       .D = 0,
 			.F = 0,

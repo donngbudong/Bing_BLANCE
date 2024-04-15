@@ -42,9 +42,9 @@ up\gimbal_task.o: ../Core/Inc/main.h
 up\gimbal_task.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 up\gimbal_task.o: ../App/Device/packet.h
 up\gimbal_task.o: ../App/Header/system.h
+up\gimbal_task.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 up\gimbal_task.o: ../App/Driver/drv_usart.h
 up\gimbal_task.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
-up\gimbal_task.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 up\gimbal_task.o: ../App/Algorithm/crc.h
 up\gimbal_task.o: ../App/Header/Device.h
 up\gimbal_task.o: ../App/Device/remote_control.h
@@ -52,3 +52,4 @@ up\gimbal_task.o: ../App/Task/system_task.h
 up\gimbal_task.o: ../App/Task/shoot_task.h
 up\gimbal_task.o: ../App/Task/vision_task.h
 up\gimbal_task.o: ../App/Task/vofa_task.h
+up\gimbal_task.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\math.h

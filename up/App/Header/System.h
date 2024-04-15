@@ -1,7 +1,10 @@
 #ifndef __SYSTEM_H
 #define __SYSTEM_H
 #include "pid.h"
+#include "main.h"
+#include <stdbool.h>
 
+ 
 #define HERO  			1
 #define Infantry_3  3
 #define Infantry_5  5
@@ -42,8 +45,20 @@ typedef enum
   KEY_CTRL_MODE = 2,    //键盘控制模式
   CTRL_MODE_CNT ,
 }System_Ctrl_Mode_t;
+/* 系统控制状态枚举 */
+typedef enum
+{
+	NO = 1,
+	OFF = 0,
+}State_t;
 
-
+/*状态标志位*/
+typedef struct 
+{
+	bool magazine;
+	bool fire_flag;
+	bool fire_control;
+}Flag_State_t;
 
 
 /* 系统信息结构体 */
@@ -53,6 +68,7 @@ typedef struct
 	Imu_State_t 		Imu_State;
 	System_State_t 	System_State;
 	PID_Type_t  		System_Pid;
+	Flag_State_t		Flag_State;
 }Sys_Info_t;
 
 

@@ -39,9 +39,9 @@ up\system_task.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_usb.h
 up\system_task.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pcd_ex.h
 up\system_task.o: ../App/Header/System.h
 up\system_task.o: ../App/Algorithm/pid.h
+up\system_task.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 up\system_task.o: ../App/Driver/drv_usart.h
 up\system_task.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
-up\system_task.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 up\system_task.o: ../App/Algorithm/crc.h
 up\system_task.o: ../App/Header/Device.h
 up\system_task.o: ../App/Device/HI229.h

@@ -37,3 +37,28 @@ up\stm32f4xx_it.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_usb.h
 up\stm32f4xx_it.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pcd_ex.h
 up\stm32f4xx_it.o: ../Core/Inc/stm32f4xx_it.h
 up\stm32f4xx_it.o: ../App/Driver/drv_usart.h
+up\stm32f4xx_it.o: ../App/Header/Device.h
+up\stm32f4xx_it.o: ../App/Algorithm/pid.h
+up\stm32f4xx_it.o: ../App/Device/HI229.h
+up\stm32f4xx_it.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+up\stm32f4xx_it.o: ../App/Device/packet.h
+up\stm32f4xx_it.o: ../App/Header/system.h
+up\stm32f4xx_it.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
+up\stm32f4xx_it.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+up\stm32f4xx_it.o: ../App/Algorithm/crc.h
+up\stm32f4xx_it.o: ../App/Device/remote_control.h
+up\stm32f4xx_it.o: ../App/Device/can_receive.h
+up\stm32f4xx_it.o: ../App/Task/system_task.h
+up\stm32f4xx_it.o: ../App/Task/gimbal_task.h
+up\stm32f4xx_it.o: ../App/Task/shoot_task.h
+up\stm32f4xx_it.o: ../App/Task/vision_task.h
+up\stm32f4xx_it.o: ../App/Task/vofa_task.h
+up\stm32f4xx_it.o: ../USB_DEVICE/App/usbd_cdc_if.h
+up\stm32f4xx_it.o: ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc/usbd_cdc.h
+up\stm32f4xx_it.o: ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ioreq.h
+up\stm32f4xx_it.o: ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_def.h
+up\stm32f4xx_it.o: ../USB_DEVICE/Target/usbd_conf.h
+up\stm32f4xx_it.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+up\stm32f4xx_it.o: ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_core.h
+up\stm32f4xx_it.o: ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ioreq.h
+up\stm32f4xx_it.o: ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ctlreq.h

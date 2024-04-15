@@ -63,7 +63,7 @@ void StartDefaultTask(void const * argument);
 void SYSTEM_STATE_TASK(void const * argument);
 void CHASSIS_TASK(void const * argument);
 void IMU_TASK(void const * argument);
-void JUDGE_TASK(void const * argument);
+extern void JUDGE_TASK(void const * argument);
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
@@ -208,25 +208,6 @@ void IMU_TASK(void const * argument)
     osDelay(1);
   }
   /* USER CODE END IMU_TASK */
-}
-
-/* USER CODE BEGIN Header_JUDGE_TASK */
-/**
-* @brief Function implementing the judge_task thread.
-* @param argument: Not used
-* @retval None
-*/
-/* USER CODE END Header_JUDGE_TASK */
-void JUDGE_TASK(void const * argument)
-{
-  /* USER CODE BEGIN JUDGE_TASK */
-  /* Infinite loop */
-//  for(;;)
-//  {
-	referee_usart1_task();
-//    osDelay(1);
-//  }
-  /* USER CODE END JUDGE_TASK */
 }
 
 /* Private application code --------------------------------------------------*/

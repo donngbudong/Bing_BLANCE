@@ -183,7 +183,7 @@
         <Ww>
           <count>5</count>
           <WinNumber>1</WinNumber>
-          <ItemText>st</ItemText>
+          <ItemText>st,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>6</count>
@@ -204,6 +204,11 @@
           <count>9</count>
           <WinNumber>1</WinNumber>
           <ItemText>Vision_cj,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>10</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>\\up\../App/Task/gimbal_task.c\Gimbal.PID_Type</ItemText>
         </Ww>
       </WatchWindow1>
       <WatchWindow2>
@@ -410,7 +415,7 @@
 
   <Group>
     <GroupName>Header</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>

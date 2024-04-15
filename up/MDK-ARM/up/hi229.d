@@ -40,9 +40,9 @@ up\hi229.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 up\hi229.o: ..\App\Device\packet.h
 up\hi229.o: ../App/Header/system.h
 up\hi229.o: ../App/Algorithm/pid.h
+up\hi229.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 up\hi229.o: ../App/Driver/drv_usart.h
 up\hi229.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
-up\hi229.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 up\hi229.o: ../App/Algorithm/crc.h
 up\hi229.o: ../App/Header/Device.h
 up\hi229.o: ../App/Device/remote_control.h

@@ -93,10 +93,10 @@ void PID_clear(PID_Loop_t *pid)
 
 //PID_Parameter_t Param_1 = {800,	0, 110000};
 PID_Parameter_t Param_1 = {0,	0, 0};
-PID_Parameter_t Param_2 = {450,18, 0};
+PID_Parameter_t Param_2 = {350,14, 0};
 
-PID_Parameter_t Param_3 = {280,	0,	0};
-PID_Parameter_t Param_4 = {18,	0,	0};
+PID_Parameter_t Param_3 = {320,	0,	0};
+PID_Parameter_t Param_4 = {17,	0,	0};
 
 PID_Parameter_t Param_5 = {5 	,	0,	0};
 PID_Parameter_t Param_6 = {3	,	0,	0};
@@ -139,7 +139,7 @@ void MF_9028_Balance_1(PID_Loop_t *str)
   str->I_Limit_Max = 0;
   str->PID_I_Out_Max = 8000; 
   str->PID_P_Out_Max = 16000;
-  str->PID_Output_Max = 3000;
+  str->PID_Output_Max = 8000;
   str->PID_Err_Dead = 0;
 }
 /**
@@ -166,7 +166,7 @@ void MF_9028_Balance_Kp(PID_Loop_t *str)
   str->I_Limit_Max = 10000;
   str->PID_I_Out_Max = 8000; 
   str->PID_P_Out_Max = 16000;
-  str->PID_Output_Max = 16000;
+  str->PID_Output_Max = 5000;
   str->PID_Err_Dead = 0;
 }
 
@@ -180,7 +180,7 @@ void MF_9028_Balance_Kd(PID_Loop_t *str)
   str->I_Limit_Max = 10000;
   str->PID_I_Out_Max = 0; 
   str->PID_P_Out_Max = 16000;
-  str->PID_Output_Max = 16000;
+  str->PID_Output_Max = 5000;
   str->PID_Err_Dead = 0;
 }
 
@@ -194,7 +194,7 @@ void MF_9028_PID_56(PID_Loop_t *str)
   str->I_Limit_Max = 2000;
   str->PID_I_Out_Max = 0; 
   str->PID_P_Out_Max = 16000;
-  str->PID_Output_Max = 12000;
+  str->PID_Output_Max = 500;
   str->PID_Err_Dead = 5;
 }
 /**

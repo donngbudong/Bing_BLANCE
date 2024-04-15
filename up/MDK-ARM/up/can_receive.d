@@ -41,9 +41,9 @@ up\can_receive.o: ../Core/Inc/main.h
 up\can_receive.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 up\can_receive.o: ..\App\Device\packet.h
 up\can_receive.o: ../App/Header/system.h
+up\can_receive.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 up\can_receive.o: ../App/Driver/drv_usart.h
 up\can_receive.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
-up\can_receive.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 up\can_receive.o: ../App/Algorithm/crc.h
 up\can_receive.o: ../App/Header/Device.h
 up\can_receive.o: ../App/Device/remote_control.h

@@ -162,10 +162,10 @@ void Referee_Decode(uint8_t *referee_buf )
 //{
 //  return REF.ShootData.bullet_speed;
 //}
-//uint8_t REF_Report_IF_shooter_output(void)
-//{
-//  return REF.GameRobotStat.mains_power_shooter_output;
-//}
+uint8_t REF_Shoot_Barrel_Heat(void)
+{
+  return REF.Power_Heat_Data.shooter_17mm_1_barrel_heat;
+}
 
 ////------------GameRobotStat------------//
 //uint8_t REF_Report_robot_ID(void)   //1

@@ -36,6 +36,9 @@ Sys_Info_t System = {
     .Imu_State = IMU_LOST,
     .System_State = SYSTEM_LOST,
 		.System_Pid = Clear_Away,
+		.Flag_State.magazine = NO,
+		.Flag_State.fire_control = OFF,
+		.Flag_State.fire_flag = OFF,
 
 };
 
@@ -56,7 +59,9 @@ void System_Task(void)
 	RC_State_Report();
 	IMU_State_Report();
 	PID_Switch();
-	shoot_pc_R();
+	Shoot_PC_R();
+	Vision_PC_Q();
+	State_LED();
 }
 
 
@@ -129,42 +134,51 @@ void ws2812_blue(uint8_t led_nums)
 	}
 	 HAL_TIM_PWM_Start_DMA(&htim1,TIM_CHANNEL_1,(uint32_t *)RGB_buffur,(num_data));
 }
-uint8_t i=100;
+
 uint8_t x,y,z;
+uint8_t big=10;
 void State_LED(void)
 {
-	 // X
-	 if (x == 0)
+	 if (System.Flag_State.magazine == 1)
 	 {
-		ws2812_set_RGB(i, 0x00, 0x00, 0);
-		ws2812_set_RGB(i, 0x00, 0x00, 1);
+		ws2812_set_RGB(big, 0x00, 0x00, 0);
 	 }
 	 else
 	 {
-		ws2812_set_RGB(0x00, i, 0x00, 0);
-		ws2812_set_RGB(0x00, i, 0x00, 1);
+		ws2812_set_RGB(0x00, big, 0x00, 0);
 	 }
+	 
+	  if (Shoot.Mode == Continous)
+	 {
+		ws2812_set_RGB(0x00, big, 0x00, 1);
+	 }
+	 else
+	 {
+		ws2812_set_RGB(big, 0x00, 0x00, 1);
+	 }
+	 
+	 
 	 // Y
-	 if (y == 0)
+	 if (Vision_cj.VisionRTx.AutoAim_Rx.Packet.RxData.tracking==0)
 	 {
-		ws2812_set_RGB(0x00, i, 0x00, 2);
-		ws2812_set_RGB(0x00, i, 0x00, 3);
+		ws2812_set_RGB(big, 0x00, 0x00, 2);
+		ws2812_set_RGB(big, 0x00, 0x00, 3);
 	 }
 	 else
 	 {
-		ws2812_set_RGB(0x00, 0x00, i, 2);
-		ws2812_set_RGB(0x00, 0x00, i, 3);
+		ws2812_set_RGB(0x00, 0x00, big, 2);
+		ws2812_set_RGB(0x00, 0x00, big, 3);
 	 }
 	 // Z
-	 if (z == 0)
+	 if (System.Flag_State.fire_control == 0)
 	 {
-		ws2812_set_RGB(0x00, 0x00, i, 4);
-		ws2812_set_RGB(0x00, 0x00, i, 5);
+		ws2812_set_RGB(big, 0x00, 0x00, 4);
+		ws2812_set_RGB(big, 0x00, 0x00, 5);
 	 }
 	 else
 	 {
-		ws2812_set_RGB(i, 0x00, 0x00, 4);
-		ws2812_set_RGB(i, 0x00, 0x00, 5);
+		ws2812_set_RGB(0x00, 0x00, big, 4);
+		ws2812_set_RGB(0x00, 0x00, big, 5);
 	 }
 
 //    ws2812_set_RGB(0x00, 0x22, 0x00, 1);
@@ -180,27 +194,26 @@ void State_LED(void)
 /**弹舱开关**/
 //780关//1800开
 
-uint16_t magazine=1;//开关弹舱
-void shoot_pc_R(void)
+void Shoot_PC_R(void)
 {
 	static uint8_t helm=1;
 	if (helm==1&&KEY_R)
 		{	
-			HAL_Delay(20);		
+			HAL_Delay(10);		
 			if (KEY_R)
 			{	
 				helm=0;
-				if(magazine==0)
-				{magazine=1;}
+				if(System.Flag_State.magazine==0)
+				{System.Flag_State.magazine=1;}
 				else	
-				{magazine=0;}
+				{System.Flag_State.magazine=0;}
 			}
 		}
 		if(helm==0 && RC_Ctrl.kb.bit.R==0)
 		{
 			helm=1;
 		}
-			if(magazine==0)
+			if(System.Flag_State.magazine==0)
 		{
 			__HAL_TIM_SET_COMPARE(&htim3,TIM_CHANNEL_2,750);
 		}
@@ -208,4 +221,26 @@ void shoot_pc_R(void)
 		{
 			__HAL_TIM_SET_COMPARE(&htim3,TIM_CHANNEL_2,1800);
 		}	
+}
+
+
+void Vision_PC_Q(void)
+{
+	static uint8_t helm=1;
+	if (helm==1&&KEY_Q)
+		{	
+			HAL_Delay(10);		
+			if (KEY_Q)
+			{	
+				helm=0;
+				if(System.Flag_State.fire_control==0)
+				{System.Flag_State.fire_control=1;}
+				else	
+				{System.Flag_State.fire_control=0;}
+			}
+		}
+		if(helm==0 && RC_Ctrl.kb.bit.Q==0)
+		{
+			helm=1;
+		}
 }

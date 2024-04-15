@@ -6,11 +6,12 @@
 
 #include "Device.h"
 #include "math.h"
+#include "cmsis_os.h"
 
 
 extern CAN_GET_DATA_t Gimbal_YAW;
 extern float angle;//旋转角度
-
+bool mode = 1;
 /* Init start */
 CHASSIS_Date_t Chassis ={
 	.State=SYSTEM_LOST,
@@ -27,14 +28,22 @@ CHASSIS_Date_t Chassis ={
 void Chassis_Task(void)
 {
 	Chassis_GET_Info();
+	Chassis_KEY_C();
 	if(RC_S2 == 1)
 	{
-		Chassis_Normal_s();
+		Chassis_Balance();
 		CAN_cmd_chassis(Chassis.iqControl[0],Chassis.iqControl[1]);
 	}
 	else if(RC_S2 == 2)
 	{
-		Chassis_Normal();
+		if(mode == 1)
+		{
+				Chassis_Normal();
+		}
+		else if(mode == 0)
+		{
+			Chassis_Normal_s();
+		}
 
 		CAN_cmd_chassis(Chassis.iqControl[0],Chassis.iqControl[1]);
 	}
@@ -107,8 +116,8 @@ void Chassis_Balance(void)
 	PID_Position(&Chassis.PID.Chasssis_OUT,Chassis.torque_balance,0);
 	
 
-	Chassis.iqControl[0] = (-Chassis.PID.Chasssis_OUT.PID_Output - Chassis.torque_revolve);
-	Chassis.iqControl[1] = ( Chassis.PID.Chasssis_OUT.PID_Output - Chassis.torque_revolve);
+	Chassis.iqControl[0] = (-Chassis.PID.Chasssis_OUT.PID_Output );
+	Chassis.iqControl[1] = ( Chassis.PID.Chasssis_OUT.PID_Output );
 //	Chassis.iqControl[0] = (-Chassis.PID.Chasssis_OUT.PID_Output);
 //	Chassis.iqControl[1] = ( Chassis.PID.Chasssis_OUT.PID_Output);
 ////	Chassis.iqControl[0] = (-Chassis.torque_revolve);
@@ -129,7 +138,7 @@ void Chassis_Normal(void)
 	Chassis.flag_clear_pose = 0;
 	Chassis.target_speed_x=speed_control(Chassis.move_speed,Chassis.move_direction);
 
-	Chassis.angle_z=deadband_limit(angle_z_err_get(-Chassis.move_direction+(Gimbal_YAW.Motor_Angle / 1303.7973f)),0.02f);
+//	Chassis.angle_z=deadband_limit(angle_z_err_get(-Chassis.move_direction+(Gimbal_YAW.Motor_Angle / 1303.7973f)),0.02f);
 
 	PID_Position(&Chassis.PID.PID_b1, Chassis.target_pose_x, Chassis.pose_x);
 	PID_Position(&Chassis.PID.PID_b2, Chassis.X_Target, Chassis.speed_x);
@@ -148,19 +157,17 @@ void Chassis_Normal(void)
 //	PID_Position(&Chassis.PID.PID_b6,Chassis.PID.PID_b5.PID_Output,Chassis.Gyo_z);
 
 	
-	Chassis.torque_speed   = (-Chassis.PID.PID_b1.PID_Output - Chassis.PID.PID_b2.PID_Output) * Chassis.torque_const;
+	Chassis.torque_speed   = ( - Chassis.PID.PID_b2.PID_Output) * Chassis.torque_const;
 	Chassis.torque_balance = (-Chassis.PID.PID_b3.PID_Output - Chassis.PID.PID_b4.PID_Output) * Chassis.torque_const;
 	Chassis.torque_revolve = -Chassis.PID.PID_b6.PID_Output * Chassis.torque_const;				//航行锁定
+	PID_Position(&Chassis.PID.Chasssis_OUT,Chassis.torque_speed + Chassis.torque_balance,0);
 
-	PID_Position(&Chassis.PID.Chasssis_OUT, Chassis.torque_speed + Chassis.torque_balance,0);
-	
-	
 	Chassis.iqControl[0] = (-Chassis.PID.Chasssis_OUT.PID_Output + Chassis.torque_revolve);
 	Chassis.iqControl[1] = ( Chassis.PID.Chasssis_OUT.PID_Output + Chassis.torque_revolve);
 //	Chassis.iqControl[0] = (-Chassis.torque_revolve);
 //	Chassis.iqControl[1] = (-Chassis.torque_revolve);
-//	Chassis.iqControl[0] = (-Chassis.PID.Chasssis_OUT.PID_Output - Chassis.torque_revolve);
-//	Chassis.iqControl[1] = ( Chassis.PID.Chasssis_OUT.PID_Output - Chassis.torque_revolve);
+//	Chassis.iqControl[0] = (-Chassis.PID.Chasssis_OUT.PID_Output );
+//	Chassis.iqControl[1] = ( Chassis.PID.Chasssis_OUT.PID_Output );
 
 }
 
@@ -186,7 +193,7 @@ void Chassis_Normal_s(void)
 	PID_Position(&Chassis.PID.PID_b3,0,Chassis.Pitch);
 	PID_Position(&Chassis.PID.PID_b4,0,Chassis.Gyo_y);
 	/*旋转*/
-	PID_Position(&Chassis.PID.PID_b5,0,40);
+	PID_Position(&Chassis.PID.PID_b5,0,200);
 	PID_Position(&Chassis.PID.PID_b6,Chassis.PID.PID_b5.PID_Output,Chassis.Gyo_z);
 //	
 //	PID_Position(&Chassis.PID.PID_b5,0,Chassis.angle_z);
@@ -217,7 +224,7 @@ void Chassis_Normal_z(void)
 
 	Chassis.target_pose_x=Chassis.pose_x;
 	Chassis.flag_clear_pose = 0;
-	Chassis.target_speed_x=fabs(cos(Chassis.PID.PID_b5.Err)) * speed_control(Chassis.move_speed,Chassis.move_direction);
+//	Chassis.target_speed_x=fabs(cos(Chassis.PID.PID_b5.Err)) * speed_control(Chassis.move_speed,Chassis.move_direction);
 
 	Chassis.angle_z=deadband_limit(angle_z_err_get(-Chassis.move_direction+(Gimbal_YAW.Motor_Angle / 1303.7973f)),0.02f);
 
@@ -381,3 +388,26 @@ void Chassis_Stop(void)
 }
 
 
+/**
+ *	@brief	底盘模式切换
+ */
+void Chassis_KEY_C(void)
+{
+	static uint8_t press_flag=1;
+	if (press_flag==1&&KEY_C)
+		{	
+			HAL_Delay(20);		
+			if (KEY_C)
+			{	
+				press_flag=0;
+				if(mode == 1){
+				mode = 0;}
+				else{
+				mode = 1;}
+			}
+		}
+	if(press_flag == 0 && KEY_C == 0)
+		{
+			press_flag=1;
+		}
+}

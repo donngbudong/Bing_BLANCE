@@ -55,9 +55,9 @@ up\freertos.o: ../App/Device/HI229.h
 up\freertos.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 up\freertos.o: ../App/Device/packet.h
 up\freertos.o: ../App/Header/system.h
+up\freertos.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 up\freertos.o: ../App/Driver/drv_usart.h
 up\freertos.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
-up\freertos.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 up\freertos.o: ../App/Algorithm/crc.h
 up\freertos.o: ../App/Device/remote_control.h
 up\freertos.o: ../App/Device/can_receive.h

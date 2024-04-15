@@ -23,7 +23,8 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "drv_usart.h"
-
+#include "Device.h"
+#include "usbd_cdc_if.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -43,6 +44,7 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN PV */
+extern uint8_t UserRxBufferHS[APP_RX_DATA_SIZE];
 
 /* USER CODE END PV */
 
@@ -399,7 +401,7 @@ void OTG_HS_IRQHandler(void)
   /* USER CODE END OTG_HS_IRQn 0 */
   HAL_PCD_IRQHandler(&hpcd_USB_OTG_HS);
   /* USER CODE BEGIN OTG_HS_IRQn 1 */
-
+	VISION_ReadData(UserRxBufferHS);
   /* USER CODE END OTG_HS_IRQn 1 */
 }
 

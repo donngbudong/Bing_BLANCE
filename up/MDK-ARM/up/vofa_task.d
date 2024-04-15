@@ -43,7 +43,7 @@ up\vofa_task.o: ../App/Device/HI229.h
 up\vofa_task.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 up\vofa_task.o: ../App/Device/packet.h
 up\vofa_task.o: ../App/Header/system.h
+up\vofa_task.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 up\vofa_task.o: ../App/Driver/drv_usart.h
 up\vofa_task.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
-up\vofa_task.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 up\vofa_task.o: ../App/Algorithm/crc.h

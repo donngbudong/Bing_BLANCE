@@ -60,8 +60,8 @@ void Shoot_PID_Switch(Shoot_Motor_t *strSho);
 void Shoot_RC_Ctrl(void);
 void Shoot_KEY_Ctrl(void);
 
-void Shoot_Ctrl_FRIC_L(Shoot_Motor_t *str);
-void Shoot_Ctrl_FRIC_R(Shoot_Motor_t *str);
+void Shoot_Ctrl_FRIC_R(Shoot_Motor_t *str,int16_t speed);
+void Shoot_Ctrl_FRIC_L(Shoot_Motor_t *str,int16_t speed);
 void Shoot_Ctrl_DRIVER(Shoot_Motor_t *str);
 
 float Shoot_GetOutPut(Shoot_Motor_t *str);

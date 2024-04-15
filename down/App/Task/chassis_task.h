@@ -107,6 +107,7 @@ void Chassis_Stop(void);
 void Chassis_PID_Set(PID_Chassis_Info_t *str);
 
 
+void Chassis_KEY_C(void);
 
 
 #endif

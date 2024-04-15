@@ -42,9 +42,9 @@ up\shoot_task.o: ../Core/Inc/main.h
 up\shoot_task.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 up\shoot_task.o: ../App/Device/packet.h
 up\shoot_task.o: ../App/Header/system.h
+up\shoot_task.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 up\shoot_task.o: ../App/Driver/drv_usart.h
 up\shoot_task.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
-up\shoot_task.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 up\shoot_task.o: ../App/Algorithm/crc.h
 up\shoot_task.o: ../App/Header/Device.h
 up\shoot_task.o: ../App/Device/remote_control.h

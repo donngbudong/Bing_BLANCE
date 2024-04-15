@@ -14,8 +14,8 @@
 #define Motor_180         4096
 #define Motor_360         8192
 
-#define PITCH_MAX					23
-#define PITCH_MIX					-22
+#define PITCH_MAX					21
+#define PITCH_MIX					-20
 
 /* 云台电机数组下标 */
 typedef enum 
@@ -87,6 +87,7 @@ void Gimbal_FirstPitchAngle(Gimbal_Info_t *str);
 void IMU_YawData_Report(Motor_Data_t *str);
 void IMU_PitData_Report(Motor_Data_t *str);
 void IMU_Data_Report(void);
+bool JudgeFireFlag(Gimbal_Date_t *AimTra);
 
 
 

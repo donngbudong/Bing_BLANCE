@@ -121,26 +121,26 @@ int main(void)
 	//定义参数
 	st.k = 0.092f;
 	st.bullet_type =  BULLET_17;
-	st.current_v = 25;
+	st.current_v = 27;
 	st.current_pitch = 0;
 	st.current_yaw = 0;
-	st.xw = 3.0;
-	// st.yw = 0.0159;
-	st.yw = 0;
-	// st.zw = -0.2898;
-	st.zw = 1.5;
+//	st.xw = 3.0;
+//	// st.yw = 0.0159;
+//	st.yw = 0;
+//	// st.zw = -0.2898;
+//	st.zw = 1.5;
 
-	st.vxw = 0;
-	st.vyw = 0;
-	st.vzw = 0;
-	st.v_yaw = 0;
-	st.tar_yaw = 0.09131;
-	st.r1 = 0.5;
-	st.r2 = 0.5;
-	st.dz = 0.1;
-	st.bias_time = 100;
-	st.s_bias = 0.19133;
-	st.z_bias = 0.21265;
+//	st.vxw = 0;
+//	st.vyw = 0;
+//	st.vzw = 0;
+//	st.v_yaw = 0;
+//	st.tar_yaw = 0.09131;
+//	st.r1 = 0.5;
+//	st.r2 = 0.5;
+//	st.dz = 0.1;
+	st.bias_time = 5;
+	st.s_bias = -0.04034f ;
+	st.z_bias = -0.1525f;
 	st.armor_id = ARMOR_INFANTRY3;
 	st.armor_num = ARMOR_NUM_NORMAL;
 

@@ -37,12 +37,12 @@ up\remote_control.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_usb.h
 up\remote_control.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pcd_ex.h
 up\remote_control.o: ../App/Header/System.h
 up\remote_control.o: ../App/Algorithm/pid.h
+up\remote_control.o: ../Core/Inc/main.h
+up\remote_control.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 up\remote_control.o: ../App/Driver/drv_usart.h
 up\remote_control.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
-up\remote_control.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 up\remote_control.o: ../App/Algorithm/crc.h
 up\remote_control.o: ../App/Header/Device.h
-up\remote_control.o: ../Core/Inc/main.h
 up\remote_control.o: ../App/Device/HI229.h
 up\remote_control.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 up\remote_control.o: ../App/Device/packet.h

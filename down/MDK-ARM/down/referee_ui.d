@@ -1,10 +1,10 @@
 down\referee_ui.o: ..\App\Referee\referee_UI.c
 down\referee_ui.o: ..\App\Referee\referee_UI.h
-down\referee_ui.o: ../App/Header/System.h
+down\referee_ui.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+down\referee_ui.o: ../App/Algorithm/crc.h
 down\referee_ui.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h
 down\referee_ui.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h
 down\referee_ui.o: ../Drivers/CMSIS/Include/core_cm4.h
-down\referee_ui.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 down\referee_ui.o: ../Drivers/CMSIS/Include/cmsis_version.h
 down\referee_ui.o: ../Drivers/CMSIS/Include/cmsis_compiler.h
 down\referee_ui.o: ../Drivers/CMSIS/Include/cmsis_armcc.h
@@ -34,12 +34,18 @@ down\referee_ui.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h
 down\referee_ui.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h
 down\referee_ui.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h
 down\referee_ui.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
-down\referee_ui.o: ../App/Driver/drv_usart.h
-down\referee_ui.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 down\referee_ui.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
-down\referee_ui.o: ../App/Algorithm/crc.h
-down\referee_ui.o: ../App/Referee/referee.h
-down\referee_ui.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
-down\referee_ui.o: ../App/Header/System.h
-down\referee_ui.o: ../Core/Inc/usart.h
-down\referee_ui.o: ../Core/Inc/main.h
+down\referee_ui.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
+down\referee_ui.o: ../Core/Inc/FreeRTOSConfig.h
+down\referee_ui.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h
+down\referee_ui.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h
+down\referee_ui.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h
+down\referee_ui.o: ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F/portmacro.h
+down\referee_ui.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h
+down\referee_ui.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h
+down\referee_ui.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h
+down\referee_ui.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
+down\referee_ui.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h
+down\referee_ui.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h
+down\referee_ui.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h
+down\referee_ui.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h

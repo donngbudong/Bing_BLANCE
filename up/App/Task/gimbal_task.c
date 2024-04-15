@@ -3,6 +3,7 @@
 ***/
 #include "gimbal_task.h"
 #include "Device.h"
+#include "math.h"
 
 
 
@@ -14,6 +15,10 @@ Gimbal_Date_t Gimbal ={
 };
 
 /*Init end*/
+static bool fire_flag = 0; // 开火标志位
+static uint32_t start_fire_time = 0; // 开始开火的时间
+extern int16_t Shoot_pid_out;				//拨弹M2006
+
 static PID_Type_t YAW_prev_pid_type = Clear_Away; 
 /**
  * @brief Gimbal总控
@@ -212,6 +217,8 @@ void Gimbal_KRY_Ctrl(void)
 {
 	KEY_Ctrl_YAW(&Gimbal.YAW);
 	KEY_Ctrl_PITCH(&Gimbal.PITCH);
+
+	System.Flag_State.fire_flag = JudgeFireFlag(&Gimbal);
 	
 	Gimbal_CanOutPut();
 }
@@ -219,6 +226,7 @@ void Gimbal_KRY_Ctrl(void)
  * @brief Gimbal_YAW轴的控制 KEY遥控模式
  * @param 
  */
+
 void KEY_Ctrl_YAW(Gimbal_Info_t *str)
 {
 	if(YAW_prev_pid_type != Gimbal.PID_Type)
@@ -233,14 +241,14 @@ void KEY_Ctrl_YAW(Gimbal_Info_t *str)
 	}
 	else/*开启自瞄*/
 	{
-		if(Vision.distance[2] ==24855 || Vision.distance[2] == 0)
+		if(Vision_cj.VisionRTx.AutoAim_Rx.Packet.RxData.tracking == 0)
 		{
 			str->KEY_Move.Angle_Inc = str->KEY_Move.Angle_k * (MOUSE_X_MOVE_SPEED);
 			str->Motor_Data.PID_Angle_target -= str->KEY_Move.Angle_Inc;
 		}
-		else
+		else if(Vision_cj.VisionRTx.AutoAim_Rx.Packet.RxData.tracking == 1)
 		{
-			str->Motor_Data.PID_Angle_target = str->Motor_Data.IMU_GetData.IMU_Angle - Vision.RX_Yaw ;
+			str->Motor_Data.PID_Angle_target = st.yaw;
 		}
 
 	}
@@ -268,22 +276,22 @@ void KEY_Ctrl_PITCH(Gimbal_Info_t *str)
 	}
 	else/*开启自瞄*/
 	{
-		if(Vision.distance[2] ==24855 || Vision.distance[2] == 0)
+		if(Vision_cj.VisionRTx.AutoAim_Rx.Packet.RxData.tracking == 0)
 		{
-			str->RC_Move.Angle_Inc = str->RC_Move.Angle_k * MOUSE_Y_MOVE_SPEED;
-			str->Motor_Data.PID_Angle_target -= str->RC_Move.Angle_Inc;		
+			str->KEY_Move.Angle_Inc = str->KEY_Move.Angle_k * (MOUSE_X_MOVE_SPEED);
+			str->Motor_Data.PID_Angle_target -= str->KEY_Move.Angle_Inc;
 		}
-		else 
+		else if(Vision_cj.VisionRTx.AutoAim_Rx.Packet.RxData.tracking == 1)
 		{
-			str->Motor_Data.PID_Angle_target = str->Motor_Data.IMU_GetData.IMU_Angle + Vision.RX_Pitch;	
+			str->Motor_Data.PID_Angle_target = st.pitch ;
 		}
 	}
+	
 	PITCH_Angle_Limit(&str->Motor_Data.PID_Angle_target);
 	/*同步陀螺仪与YAW数据*/
 	str->Motor_Data.PID_Speed = str->Motor_Data.IMU_GetData.IMU_Speed;
 	str->Motor_Data.PID_Angle = str->Motor_Data.IMU_GetData.IMU_Angle;
 }
-
 
 /**
  * @brief 底盘YAW轴跟随处理
@@ -365,7 +373,6 @@ float Gimbal_GetOutPut(Gimbal_Info_t *str)
  * @brief Gimbal电机输出
  * @param 
  */
-extern int16_t Shoot_pid_out;
 void Gimbal_CanOutPut(void)
 {
 	static int16_t Gimbal_pid_out[4] = {0,0,0,0};
@@ -442,3 +449,46 @@ void IMU_Data_Report(void)
 }
 
 
+/**
+ * @brief 计算是否符合开火条件
+ * @param AimTra:in 瞄准的弹道数据
+ * @param gyro_angle_rad:in 当前的陀螺仪数据
+ */
+
+bool JudgeFireFlag(Gimbal_Date_t *AimTra)
+{
+    // 当到达范围内时更新开始开火时间
+    // 在之后的0.5s（500ms）内保持开火位为true
+    float error_pitch, error_yaw;
+    error_pitch = fabs(AimTra->PITCH.Motor_Data.PID_Angle - AimTra->PITCH.Motor_Data.PID_Angle_target);
+    error_yaw = fabs(AimTra->YAW.Motor_Data.PID_Angle - AimTra->YAW.Motor_Data.PID_Angle_target);
+    bool fire = 0;
+    uint32_t now_time = HAL_GetTick();
+    if ((error_pitch < 2.0f) &&
+        (error_yaw < 0.3f))
+    {
+        fire = true;
+        start_fire_time = now_time;
+    }
+    else if (now_time - start_fire_time < 500)
+    {
+        fire = true;
+    }
+    else
+    {
+        fire = false;
+    }
+
+    return fire;
+}
+
+
+/**
+ * @brief   获取开火标志符(1可以开火，0不可以开火)
+ * @param   none
+ * @return  开火标志符
+ */
+bool GetFireFlag(void)
+{
+    return fire_flag;
+}

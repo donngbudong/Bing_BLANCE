@@ -140,8 +140,8 @@ int16_t Shoot_pid_out;//拨盘can_out
  */
 void Shoot_RC_Ctrl(void)
 {
-	Shoot_Ctrl_FRIC_L(&Shoot.Motor_Data[FRIC_L]);
-	Shoot_Ctrl_FRIC_R(&Shoot.Motor_Data[FRIC_R]);
+	Shoot_Ctrl_FRIC_L(&Shoot.Motor_Data[FRIC_L],6800);
+	Shoot_Ctrl_FRIC_R(&Shoot.Motor_Data[FRIC_R],-6800);
 	Shoot_Ctrl_DRIVER(&Shoot.Motor_Data[DRIVER]);
 
 		if(RC_SW == 660)
@@ -164,8 +164,8 @@ void Shoot_RC_Ctrl(void)
 void Shoot_KEY_Ctrl(void)
 {
 	Shoot_KEY_F();
-	Shoot_Ctrl_FRIC_L(&Shoot.Motor_Data[FRIC_L]);
-	Shoot_Ctrl_FRIC_R(&Shoot.Motor_Data[FRIC_R]);
+	Shoot_Ctrl_FRIC_L(&Shoot.Motor_Data[FRIC_L],6800);
+	Shoot_Ctrl_FRIC_R(&Shoot.Motor_Data[FRIC_R],-6800);
 	Shoot_Ctrl_DRIVER(&Shoot.Motor_Data[DRIVER]);
 	Shoot_KEY_Fire();
 
@@ -173,14 +173,14 @@ void Shoot_KEY_Ctrl(void)
 }
 
 
-void Shoot_Ctrl_FRIC_L(Shoot_Motor_t *str)
+void Shoot_Ctrl_FRIC_L(Shoot_Motor_t *str,int16_t speed)
 {
-	str->Motor_Data.PID_Speed_target = 6800;
+	str->Motor_Data.PID_Speed_target = speed;
 	str->Motor_Data.PID_Speed = str->Motor_Data.CAN_GetData.Motor_Speed;
 }
-void Shoot_Ctrl_FRIC_R(Shoot_Motor_t *str)
+void Shoot_Ctrl_FRIC_R(Shoot_Motor_t *str,int16_t speed)
 {
-	str->Motor_Data.PID_Speed_target = -6800;
+	str->Motor_Data.PID_Speed_target = speed;
 	str->Motor_Data.PID_Speed = str->Motor_Data.CAN_GetData.Motor_Speed;
 }
 void Shoot_Ctrl_DRIVER(Shoot_Motor_t *str)
@@ -228,12 +228,14 @@ void Shoot_CanOutPut(void)
  */
 void Shoot_Stop(void)
 {
-	static int16_t pid_out[3] = {0, 0};
-	
+	static int16_t pid_out[3] = {0, 0, 0};
+	Shoot_Ctrl_FRIC_L(&Shoot.Motor_Data[FRIC_L],0);
+	Shoot_Ctrl_FRIC_R(&Shoot.Motor_Data[FRIC_R],0);
 	/* 速度环最终输出 */
-  pid_out[FRIC_L] = 0;
-  pid_out[FRIC_R] = 0;
+  pid_out[FRIC_L] = (int16_t)Shoot_GetOutPut(&Shoot.Motor_Data[FRIC_L]);
+  pid_out[FRIC_R] = (int16_t)Shoot_GetOutPut(&Shoot.Motor_Data[FRIC_R]);
   pid_out[DRIVER] = 0;
+	
 	CAN_cmd_shoot (pid_out[FRIC_L],	pid_out[FRIC_R]);
 //	CAN_cmd_shoot_driver(pid_out[DRIVER]);
 
@@ -295,11 +297,18 @@ void Shoot_KEY_F(void)
 			press_flag=1;
 		}
 }
+
+
+
 void Shoot_KEY_Fire(void)
 {
 	if(Shoot.Mode == Continous)
 	{
-		if(MOUSE_LEFT == 1)
+		if(System.Flag_State.fire_control == 0&& MOUSE_LEFT == 1)		//左键开火
+		{
+			Shoot_pid_out = (int16_t)Shoot_GetOutPut(&Shoot.Motor_Data[DRIVER]);
+		}
+		else if(System.Flag_State.fire_control == 1 && System.Flag_State.fire_flag == 1 && MOUSE_LEFT == 1)		//火控
 		{
 			Shoot_pid_out = (int16_t)Shoot_GetOutPut(&Shoot.Motor_Data[DRIVER]);
 		}

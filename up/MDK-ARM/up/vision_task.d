@@ -2,6 +2,11 @@ up\vision_task.o: ..\App\Task\vision_task.c
 up\vision_task.o: ..\App\Task\vision_task.h
 up\vision_task.o: ../App/Header/System.h
 up\vision_task.o: ../App/Algorithm/pid.h
+up\vision_task.o: ../Core/Inc/main.h
+up\vision_task.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h
+up\vision_task.o: ../Core/Inc/stm32f4xx_hal_conf.h
+up\vision_task.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h
+up\vision_task.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h
 up\vision_task.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h
 up\vision_task.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h
 up\vision_task.o: ../Drivers/CMSIS/Include/core_cm4.h
@@ -12,10 +17,6 @@ up\vision_task.o: ../Drivers/CMSIS/Include/cmsis_armcc.h
 up\vision_task.o: ../Drivers/CMSIS/Include/mpu_armv7.h
 up\vision_task.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h
 up\vision_task.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h
-up\vision_task.o: ../Core/Inc/stm32f4xx_hal_conf.h
-up\vision_task.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h
-up\vision_task.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h
-up\vision_task.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h
 up\vision_task.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h
 up\vision_task.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
 up\vision_task.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc_ex.h
@@ -37,13 +38,11 @@ up\vision_task.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
 up\vision_task.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pcd.h
 up\vision_task.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_usb.h
 up\vision_task.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pcd_ex.h
+up\vision_task.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 up\vision_task.o: ../App/Driver/drv_usart.h
 up\vision_task.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
-up\vision_task.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 up\vision_task.o: ../App/Algorithm/crc.h
-up\vision_task.o: ../App/Algorithm/Trajectory_Calculation.h
 up\vision_task.o: ../App/Header/Device.h
-up\vision_task.o: ../Core/Inc/main.h
 up\vision_task.o: ../App/Device/HI229.h
 up\vision_task.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 up\vision_task.o: ../App/Device/packet.h
@@ -69,3 +68,12 @@ up\vision_task.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h
 up\vision_task.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h
 up\vision_task.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h
 up\vision_task.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h
+up\vision_task.o: ../USB_DEVICE/App/usbd_cdc_if.h
+up\vision_task.o: ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc/usbd_cdc.h
+up\vision_task.o: ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ioreq.h
+up\vision_task.o: ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_def.h
+up\vision_task.o: ../USB_DEVICE/Target/usbd_conf.h
+up\vision_task.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+up\vision_task.o: ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_core.h
+up\vision_task.o: ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ioreq.h
+up\vision_task.o: ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ctlreq.h

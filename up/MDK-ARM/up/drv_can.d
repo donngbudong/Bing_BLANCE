@@ -42,9 +42,9 @@ up\drv_can.o: ../App/Device/HI229.h
 up\drv_can.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 up\drv_can.o: ../App/Device/packet.h
 up\drv_can.o: ../App/Header/system.h
+up\drv_can.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 up\drv_can.o: ../App/Driver/drv_usart.h
 up\drv_can.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
-up\drv_can.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 up\drv_can.o: ../App/Algorithm/crc.h
 up\drv_can.o: ../App/Device/remote_control.h
 up\drv_can.o: ../App/Device/can_receive.h

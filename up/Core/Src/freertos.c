@@ -134,7 +134,7 @@ void MX_FREERTOS_Init(void) {
   shoot_taskHandle = osThreadCreate(osThread(shoot_task), NULL);
 
   /* definition and creation of visual_task */
-  osThreadDef(visual_task, VISUAL_TASK, osPriorityRealtime, 0, 128);
+  osThreadDef(visual_task, VISUAL_TASK, osPriorityHigh, 0, 256);
   visual_taskHandle = osThreadCreate(osThread(visual_task), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
@@ -243,7 +243,7 @@ void SHOOT_TASK(void const * argument)
   for(;;)
   {
 		currentTime = xTaskGetTickCount();
-//		Shoot_Task();
+		Shoot_Task();
 		vTaskDelayUntil(&currentTime, 3);//¾ø¶ÔÑÓÊ±    
   }
   /* USER CODE END SHOOT_TASK */

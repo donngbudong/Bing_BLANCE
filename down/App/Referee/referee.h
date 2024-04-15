@@ -487,6 +487,7 @@ typedef struct judge_info_struct
 
 void Referee_Decode(uint8_t *referee_buf);
 void Determine_ID(void);//判断自己是哪个队伍
+extern Referee_info_t 	REF ;
 
 #endif 
 
