@@ -222,17 +222,17 @@ typedef __packed struct
 /* ID: 0x0201  Byte: 27		机器人性能体系数据 */
 typedef __packed struct
 {
-	uint8_t robot_id; 
-  uint8_t robot_level; 
-  uint16_t current_HP;  
-  uint16_t maximum_HP; 
-  uint16_t shooter_barrel_cooling_value; 
-  uint16_t shooter_barrel_heat_limit; 
-  uint16_t chassis_power_limit;  
+	uint8_t robot_id;
+	uint8_t robot_level;
+	uint16_t current_HP;
+	uint16_t maximum_HP;
+	uint16_t shooter_barrel_cooling_value;
+	uint16_t shooter_barrel_heat_limit;
+	uint16_t chassis_power_limit;
  
-  uint8_t power_management_gimbal_output : 1; 
-  uint8_t power_management_chassis_output : 1;  
-  uint8_t power_management_shooter_output : 1; 
+	uint8_t power_management_gimbal_output : 1;
+	uint8_t power_management_chassis_output : 1;
+	uint8_t power_management_shooter_output : 1;
 }robot_status_t;
 
 /* ID: 0X0202  Byte: 16    实时功率热量数据 */
@@ -252,7 +252,7 @@ typedef __packed struct
 {
 	float x;
 	float y;
-	float angle;
+	float angle;		//本机器人测速模块的朝向，单位：度。正北为 0 度
 }robot_pos_t;
 
 /* ID: 0x0204  Byte:  5    机器人增益数据 */

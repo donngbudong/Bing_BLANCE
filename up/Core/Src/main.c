@@ -140,7 +140,7 @@ int main(void)
 //	st.dz = 0.1;
 	st.bias_time = 5;
 	st.s_bias = -0.04034f ;
-	st.z_bias = -0.1525f;
+	st.z_bias = -0.1025f;
 	st.armor_id = ARMOR_INFANTRY3;
 	st.armor_num = ARMOR_NUM_NORMAL;
 

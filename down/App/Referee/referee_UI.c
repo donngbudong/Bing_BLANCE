@@ -370,7 +370,7 @@ void JUDGE_TASK(void const * argument)
 		
 		/* UI更新 */
 		UI_PushUp_Counter++;
-		if(UI_PushUp_Counter % 301 == 0) //静态UI预绘制 中央标尺1
+		if(UI_PushUp_Counter % 301 == 0) //静态UI预绘制 视觉识别框
 		{
 			
 			UI_Draw_Line(&UI_Graph5.Graphic[0], "001", UI_Graph_Add, 0, UI_Color_Green, 1,  720,  y01,  1200,   y01);	//正方形上边
