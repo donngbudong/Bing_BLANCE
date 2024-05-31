@@ -28,6 +28,7 @@ up\gimbal_task.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_can.h
 up\gimbal_task.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash.h
 up\gimbal_task.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash_ex.h
 up\gimbal_task.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash_ramfunc.h
+up\gimbal_task.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_iwdg.h
 up\gimbal_task.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr.h
 up\gimbal_task.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h
 up\gimbal_task.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h
@@ -52,4 +53,5 @@ up\gimbal_task.o: ../App/Task/system_task.h
 up\gimbal_task.o: ../App/Task/shoot_task.h
 up\gimbal_task.o: ../App/Task/vision_task.h
 up\gimbal_task.o: ../App/Task/vofa_task.h
+up\gimbal_task.o: ../App/Task/referee.h
 up\gimbal_task.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\math.h

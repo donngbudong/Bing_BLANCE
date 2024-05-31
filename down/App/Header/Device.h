@@ -20,6 +20,7 @@
 #include "chassis_task.h"
 #include "vofa_task.h"
 #include "referee_UI.h"
+#include "referee.h"
 
 
 

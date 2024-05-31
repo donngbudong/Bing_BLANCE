@@ -21,6 +21,7 @@
 #include "cmsis_os.h"
 #include "can.h"
 #include "dma.h"
+#include "iwdg.h"
 #include "tim.h"
 #include "usart.h"
 #include "usb_device.h"
@@ -108,8 +109,9 @@ int main(void)
   MX_UART5_Init();
   MX_USART6_UART_Init();
   MX_UART4_Init();
-  MX_USART3_UART_Init();
   MX_TIM3_Init();
+  MX_USART1_UART_Init();
+  MX_IWDG_Init();
   /* USER CODE BEGIN 2 */
 	Driver_Init();
 	Motor_Init();
@@ -140,7 +142,7 @@ int main(void)
 //	st.dz = 0.1;
 	st.bias_time = 5;
 	st.s_bias = -0.04034f ;
-	st.z_bias = -0.1025f;
+	st.z_bias = -0.10525f;
 	st.armor_id = ARMOR_INFANTRY3;
 	st.armor_num = ARMOR_NUM_NORMAL;
 
@@ -182,8 +184,9 @@ void SystemClock_Config(void)
   /** Initializes the RCC Oscillators according to the specified parameters
   * in the RCC_OscInitTypeDef structure.
   */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_LSI|RCC_OSCILLATORTYPE_HSE;
   RCC_OscInitStruct.HSEState = RCC_HSE_ON;
+  RCC_OscInitStruct.LSIState = RCC_LSI_ON;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
   RCC_OscInitStruct.PLL.PLLM = 25;

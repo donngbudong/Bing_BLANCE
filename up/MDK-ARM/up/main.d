@@ -27,6 +27,7 @@ up\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_can.h
 up\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash.h
 up\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash_ex.h
 up\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash_ramfunc.h
+up\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_iwdg.h
 up\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr.h
 up\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h
 up\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h
@@ -51,6 +52,7 @@ up\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h
 up\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h
 up\main.o: ../Core/Inc/can.h
 up\main.o: ../Core/Inc/dma.h
+up\main.o: ../Core/Inc/iwdg.h
 up\main.o: ../Core/Inc/tim.h
 up\main.o: ../Core/Inc/usart.h
 up\main.o: ../USB_DEVICE/App/usb_device.h
@@ -77,4 +79,5 @@ up\main.o: ../App/Task/gimbal_task.h
 up\main.o: ../App/Task/shoot_task.h
 up\main.o: ../App/Task/vision_task.h
 up\main.o: ../App/Task/vofa_task.h
+up\main.o: ../App/Task/referee.h
 up\main.o: ../App/Algorithm/Trajectory_Calculation.h

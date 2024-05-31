@@ -204,6 +204,7 @@ void GIMBAL_TASK(void const * argument)
 		Gimbal_Task();
     vTaskDelayUntil(&currentTime, 3);//绝对延时   
 	}
+
   /* USER CODE END GIMBAL_TASK */
 }
 
@@ -265,7 +266,8 @@ void VISUAL_TASK(void const * argument)
   {
 		currentTime = xTaskGetTickCount();
 		Visual_Task();
-		vTaskDelayUntil(&currentTime, 2);//绝对延时    
+//		vofa_SendDate();
+		vTaskDelayUntil(&currentTime, 3);//绝对延时    
   }
   /* USER CODE END VISUAL_TASK */
 }

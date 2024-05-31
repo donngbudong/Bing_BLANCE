@@ -14,6 +14,7 @@ typedef union
 }Vofa_Date; 
 
 
+void vofa_SendDate(void);
 
 
 #endif

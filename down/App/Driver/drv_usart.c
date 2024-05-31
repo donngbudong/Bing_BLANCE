@@ -89,7 +89,7 @@ void UART_IRQHandler_IT(UART_HandleTypeDef *huart)
 			HAL_UART_Receive_DMA(&huart1,Judge_Buffer,128);
 			
 			Referee_Decode(Judge_Buffer);
-			memset(Judge_Buffer, 0, 128);//清除接收缓存
+//			memset(Judge_Buffer, 0, 128);//清除接收缓存
 		}
 	}
 	else if(huart==&huart2)//Remote_Control

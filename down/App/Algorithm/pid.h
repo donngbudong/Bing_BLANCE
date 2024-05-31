@@ -22,7 +22,7 @@ typedef __packed struct
 }PID_Parameter_t;
 
 
-typedef __packed struct
+typedef  struct
 {
   PID_Parameter_t PID_Param;
 	float Target;

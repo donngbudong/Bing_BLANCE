@@ -14,8 +14,8 @@
 #define Motor_180         4096
 #define Motor_360         8192
 
-#define PITCH_MAX					21
-#define PITCH_MIX					-20
+#define PITCH_MAX					15
+#define PITCH_MIX					-12
 
 /* 云台电机数组下标 */
 typedef enum 

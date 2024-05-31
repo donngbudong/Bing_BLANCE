@@ -106,7 +106,6 @@ int main(void)
 	Driver_Init();
 	Chassis_InitPID();
 	Motor_Init();
-	Chassis.follow_gimbal_zero = 72;
   /* USER CODE END 2 */
 
   /* Call init function for freertos objects (in cmsis_os2.c) */

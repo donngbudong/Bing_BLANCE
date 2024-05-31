@@ -1,5 +1,8 @@
 #include "referee_UI.h"
 #include "crc.h"
+#include <math.h>
+#include "chassis_task.h"
+
 #define Referee_UART huart1
 extern UART_HandleTypeDef huart1;
 
@@ -335,10 +338,36 @@ void UI_PushUp_Delete(UI_Delete_t *Delete, uint8_t RobotID)
 }
 
 
+// 定义一个结构体表示点
+typedef struct {
+    uint16_t x;
+    uint16_t y;
+} Point;
+
+Point center = {960, 200}; // 圆心坐标
+// 旋转函数，将点绕原点逆时针旋转angle度
+Point rotate_point(Point point, double angle) {
+    Point rotated_point;
+    float angle_rad = angle * PI / 180.0;
+    rotated_point.x = (point.x - center.x) * cos(angle_rad) - (point.y - center.y) * sin(angle_rad) + center.x;
+    rotated_point.y = (point.x - center.x) * sin(angle_rad) + (point.y - center.y) * cos(angle_rad) + center.y;
+    return rotated_point;
+}
+Point start_point = {910 , 200};
+Point end_point = 	{1010, 200};
+Point rotated_start_point = {0.0};
+Point rotated_end_point		= {0.0};
+float start_angle;
+void Chassis_UI(void)
+{
+	float start_angle = Chassis.GIM_Yaw_t - 70;
+	rotated_start_point = rotate_point(start_point, start_angle);
+	rotated_end_point = rotate_point(end_point, start_angle);
+}
 #include "FreeRTOS.h"
 #include "task.h"
 #include "cmsis_os.h"
-#define Robot_ID_Current 104
+#define Robot_ID_Current 3
 
 /* 动态UI数据变量 */
 uint8_t R_UI = 0;    //摩擦轮是否开启
@@ -395,27 +424,27 @@ void JUDGE_TASK(void const * argument)
 		}
 		if(UI_PushUp_Counter % 321 == 0) //静态UI预绘制 小陀螺预警线
 		{
-			UI_Draw_Line(&UI_Graph5.Graphic[0], "101", UI_Graph_Add, 1, UI_Color_Yellow, 2,  630,   30,  780,  100);
+			UI_Draw_Line(&UI_Graph5.Graphic[0], "101", UI_Graph_Add, 1, UI_Color_Yellow, 5,  1,   50,  500,  500);
 			UI_Draw_Line(&UI_Graph5.Graphic[1], "102", UI_Graph_Add, 1, UI_Color_Yellow, 2,  780,  100,  930,  100);
 			UI_Draw_Line(&UI_Graph5.Graphic[2], "103", UI_Graph_Add, 1, UI_Color_Yellow, 2,  990,  100, 1140,  100);
-			UI_Draw_Line(&UI_Graph5.Graphic[3], "104", UI_Graph_Add, 1, UI_Color_Yellow, 2, 1140,  100, 1290,   30);
+			UI_Draw_Line(&UI_Graph5.Graphic[3], "104", UI_Graph_Add, 1, UI_Color_Yellow, 5, 1400,  500, 1800,   30);
 			UI_Draw_Line(&UI_Graph5.Graphic[4], "105", UI_Graph_Add, 1, UI_Color_Yellow, 5,  959,  100,  960,  100);
 			UI_PushUp_Graphs(5, &UI_Graph5, Robot_ID_Current);
 			continue;
 		}
 		if(UI_PushUp_Counter % 331 == 0) //动态UI预绘制 图形
 		{
-			UI_Draw_Float (&UI_Graph2.Graphic[0], "201", UI_Graph_Add, 2, UI_Color_Yellow, 22, 3, 3, 1355, 632, 0.000f);   //Pith轴角度
-			UI_Draw_Line  (&UI_Graph2.Graphic[1], "202", UI_Graph_Add, 2, UI_Color_Orange, 20, 1829, 330, 1870, 334);      //电容容量
+			UI_Draw_Line(&UI_Graph2.Graphic[0], "201", UI_Graph_Add, 2, UI_Color_Yellow, 22, start_point.x, start_point.y, end_point.x, end_point.y);
+//			UI_Draw_Line  (&UI_Graph2.Graphic[1], "202", UI_Graph_Add, 2, UI_Color_Orange, 20, 1829, 330, 1870, 334);      //电容容量
 			UI_PushUp_Graphs(2, &UI_Graph2, Robot_ID_Current);
 			continue;
 		}
-		if(UI_PushUp_Counter % 341 == 0) //动态UI预绘制 字符串1
-		{
-			UI_Draw_String(&UI_String.String,     "203", UI_Graph_Add, 2, UI_Color_Black,  22, 8, 3,  400, 632, "R OFF"); //摩擦轮是否开启
-			UI_PushUp_String(&UI_String, Robot_ID_Current);
-			continue;
-		}
+//		if(UI_PushUp_Counter % 341 == 0) //动态UI预绘制 字符串1
+//		{
+//			UI_Draw_String(&UI_String.String,     "203", UI_Graph_Add, 2, UI_Color_Black,  22, 8, 3,  400, 632, "R OFF"); //摩擦轮是否开启
+//			UI_PushUp_String(&UI_String, Robot_ID_Current);
+//			continue;
+//		}
 //		if(UI_PushUp_Counter % 21 == 0) //动态UI更新 字符串1
 //		{
 //			if(UI_fric_is_on == 1) 
@@ -458,8 +487,11 @@ void JUDGE_TASK(void const * argument)
 //			UI_PushUp_String(&UI_String, Robot_ID_Current);
 //			continue;
 //		}
-//		if(UI_PushUp_Counter % 10 == 0)  //动态UI更新 图形
-//		{
+		if(UI_PushUp_Counter % 10 == 0)  //动态UI更新 图形
+		{
+			Chassis_UI();
+			UI_Draw_Line(&UI_Graph2.Graphic[0], "201", UI_Graph_Change, 2, UI_Color_Yellow, 35, rotated_start_point.x, rotated_start_point.y, rotated_end_point.x, rotated_end_point.y);
+			
 //			/* Pitch轴当前角度 */
 //			UI_Draw_Float(&UI_Graph2.Graphic[0], "201", UI_Graph_Change, 2, UI_Color_Yellow, 22, 3, 3, 1355, 632, UI_Gimbal_Pitch);
 //			
@@ -469,11 +501,12 @@ void JUDGE_TASK(void const * argument)
 //			if(50 < UI_Capacitance && UI_Capacitance <= 100) UI_Draw_Line(&UI_Graph2.Graphic[1], "202", UI_Graph_Change, 2, UI_Color_Green , 20, Capacitance_X, 334, 1870, 334);
 //			if(35 < UI_Capacitance && UI_Capacitance <=  50) UI_Draw_Line(&UI_Graph2.Graphic[1], "202", UI_Graph_Change, 2, UI_Color_Yellow, 20, Capacitance_X, 334, 1870, 334);
 //			if(0  < UI_Capacitance && UI_Capacitance <=  35) UI_Draw_Line(&UI_Graph2.Graphic[1], "202", UI_Graph_Change, 2, UI_Color_Orange, 20, Capacitance_X, 334, 1870, 334);
-//			
+			
 
-//			UI_PushUp_Graphs(2, &UI_Graph2, Robot_ID_Current);
-//			continue;
-//		}
+			UI_PushUp_Graphs(2, &UI_Graph2, Robot_ID_Current);
+			continue;
+		}
 	}
 }
+
 

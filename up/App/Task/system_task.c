@@ -84,8 +84,10 @@ void PID_Switch(void)
 uint16_t xy123=1000;
 void System_State(void)
 {
-	CAN_cmd_RC1(RC_CH0,RC_CH1,RC_CH2,RC_CH3);
-	CAN_cmd_RC2(RC_S1,RC_S2,RC_SW,RC_Ctrl.kb.key);
+
+		CAN_cmd_RC1(RC_CH0,RC_CH1,RC_CH2,RC_CH3);
+		CAN_cmd_RC2(RC_S1,RC_S2,REF.Renote_Control.kb.key,RC_Ctrl.kb.key);
+	
     if(System.Rc_State ==RC_ERR || System.Imu_State ==IMU_ERR)
   {
     System.System_State = SYSTEM_ERR;
@@ -215,11 +217,11 @@ void Shoot_PC_R(void)
 		}
 			if(System.Flag_State.magazine==0)
 		{
-			__HAL_TIM_SET_COMPARE(&htim3,TIM_CHANNEL_2,750);
+			__HAL_TIM_SET_COMPARE(&htim3,TIM_CHANNEL_2,1380);
 		}
 		else
 		{
-			__HAL_TIM_SET_COMPARE(&htim3,TIM_CHANNEL_2,1800);
+			__HAL_TIM_SET_COMPARE(&htim3,TIM_CHANNEL_2,750);
 		}	
 }
 

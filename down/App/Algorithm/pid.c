@@ -75,11 +75,6 @@ float PID_Position(PID_Loop_t *pid, float target, float actual)
   */
 void PID_clear(PID_Loop_t *pid)
 {
-    if (pid == NULL)
-    {
-        return;
-    }
-
     pid->Err = 0.0f;
     pid->PID_Output = pid->PID_P_Out = pid->PID_I_Out = pid->PID_D_Out = 0.0f;
     pid->Target = pid->Actual = 0.0f;
@@ -139,7 +134,7 @@ void MF_9028_Balance_1(PID_Loop_t *str)
   str->I_Limit_Max = 0;
   str->PID_I_Out_Max = 8000; 
   str->PID_P_Out_Max = 16000;
-  str->PID_Output_Max = 8000;
+  str->PID_Output_Max = 16000;
   str->PID_Err_Dead = 0;
 }
 /**
@@ -152,7 +147,7 @@ void MF_9028_Balance_2(PID_Loop_t *str)
   str->I_Limit_Max = 60;
   str->PID_I_Out_Max = 2500; 
   str->PID_P_Out_Max = 16000;
-  str->PID_Output_Max = 5000;
+  str->PID_Output_Max = 16000;
   str->PID_Err_Dead = 0;
 }
 /**
@@ -164,9 +159,9 @@ void MF_9028_Balance_Kp(PID_Loop_t *str)
 {
   /* 这里只针对速度环 */
   str->I_Limit_Max = 10000;
-  str->PID_I_Out_Max = 8000; 
+  str->PID_I_Out_Max = 15000; 
   str->PID_P_Out_Max = 16000;
-  str->PID_Output_Max = 5000;
+  str->PID_Output_Max = 16000;
   str->PID_Err_Dead = 0;
 }
 
@@ -180,7 +175,7 @@ void MF_9028_Balance_Kd(PID_Loop_t *str)
   str->I_Limit_Max = 10000;
   str->PID_I_Out_Max = 0; 
   str->PID_P_Out_Max = 16000;
-  str->PID_Output_Max = 5000;
+  str->PID_Output_Max = 16000;
   str->PID_Err_Dead = 0;
 }
 
@@ -194,7 +189,7 @@ void MF_9028_PID_56(PID_Loop_t *str)
   str->I_Limit_Max = 2000;
   str->PID_I_Out_Max = 0; 
   str->PID_P_Out_Max = 16000;
-  str->PID_Output_Max = 500;
+  str->PID_Output_Max = 5000;
   str->PID_Err_Dead = 5;
 }
 /**

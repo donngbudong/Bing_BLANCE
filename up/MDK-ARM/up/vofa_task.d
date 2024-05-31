@@ -27,6 +27,7 @@ up\vofa_task.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_can.h
 up\vofa_task.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash.h
 up\vofa_task.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash_ex.h
 up\vofa_task.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash_ramfunc.h
+up\vofa_task.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_iwdg.h
 up\vofa_task.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr.h
 up\vofa_task.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h
 up\vofa_task.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h
@@ -47,3 +48,10 @@ up\vofa_task.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 up\vofa_task.o: ../App/Driver/drv_usart.h
 up\vofa_task.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 up\vofa_task.o: ../App/Algorithm/crc.h
+up\vofa_task.o: ../App/Header/Device.h
+up\vofa_task.o: ../App/Device/remote_control.h
+up\vofa_task.o: ../App/Task/system_task.h
+up\vofa_task.o: ../App/Task/gimbal_task.h
+up\vofa_task.o: ../App/Task/shoot_task.h
+up\vofa_task.o: ../App/Task/vision_task.h
+up\vofa_task.o: ../App/Task/referee.h

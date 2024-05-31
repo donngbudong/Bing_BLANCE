@@ -360,14 +360,36 @@ typedef __packed struct
 	uint16_t target_robot_id;
 }map_command_t;
 /* ID: 0x0304  Byte:  12 	键鼠遥控数据 */
-typedef __packed struct
+typedef  struct
 {
 	int16_t mouse_x;
 	int16_t mouse_y;
 	int16_t mouse_z;
 	int8_t left_button_down;
 	int8_t right_button_down;
-	uint16_t keyboard_value;
+//	uint16_t keyboard_value;
+		union {
+    uint16_t key;
+    struct
+    {
+      uint16_t W : 1;
+      uint16_t S : 1;
+      uint16_t A : 1;
+      uint16_t D : 1;
+      uint16_t SHIFT : 1;
+      uint16_t CTRL : 1;
+      uint16_t Q : 1;
+      uint16_t E : 1;
+      uint16_t R : 1;
+      uint16_t F : 1;
+      uint16_t G : 1;
+      uint16_t Z : 1;
+      uint16_t X : 1;
+      uint16_t C : 1;
+      uint16_t V : 1;
+      uint16_t B : 1;
+    } bit;
+  } kb;
 	uint16_t reserved;
 }remote_control_t;
 
@@ -478,7 +500,8 @@ typedef struct judge_info_struct
 	shoot_data_t										Shoot_Data;								// 0x0207         实时射击信息(射频  射速  子弹信息)
 	projectile_allowance_t					Projectile_allowance;			// 0x0208	        允许发弹量
 	rfid_status_t										Rfid_Status;							// 0x0209	        机器人 RFID 状态
-	
+	remote_control_t								Renote_Control;						//0x0304					键鼠（图传链路）
+
 	ext_interact_id_t								ids;								//与本机交互的机器人id
 	uint16_t                        self_client;        //本机客户端
 //	bool	 		IF_REF_ONL;

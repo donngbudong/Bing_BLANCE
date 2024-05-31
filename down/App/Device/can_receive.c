@@ -80,7 +80,7 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 			case 0x520:
 				RC_Ctrl.rc.s1 = ((uint8_t)(rx_data[0]));
 				RC_Ctrl.rc.s2 = ((uint8_t)(rx_data[1]));
-				RC_Ctrl.rc.sw = ((int16_t)(rx_data[2] << 8 	| rx_data[3]));
+				REF.Renote_Control.kb.key= ((int16_t)(rx_data[2] << 8 | rx_data[3]));
 				RC_Ctrl.kb.key = ((int16_t)(rx_data[4] << 8 | rx_data[5]));
 				break;
 			default: {break;}	
@@ -151,7 +151,7 @@ int Cacapacitance_Rong(void)
 */
 void referee_data_send(int16_t ch0,int16_t ch1,int16_t ch2,int16_t ch3)
 {
-    down_tx_message.StdId = 0x567;
+    down_tx_message.StdId = 0x666;
     down_tx_message.IDE = CAN_ID_STD;
     down_tx_message.RTR = CAN_RTR_DATA;
     down_tx_message.DLC = 0x08;
@@ -174,3 +174,4 @@ void referee_data_send(int16_t ch0,int16_t ch1,int16_t ch2,int16_t ch3)
 	}
 	}
 }
+

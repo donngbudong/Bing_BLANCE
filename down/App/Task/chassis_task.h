@@ -19,7 +19,7 @@
 
 #define Diameter_weel 			0.190f
 
-#define CHASSIS_FOLLOW_GIMBAL_ANGLE_ZERO 75
+#define CHASSIS_FOLLOW_GIMBAL_ANGLE_ZERO 5710
 
 
 /* 底盘电机枚举 */
@@ -56,32 +56,34 @@ typedef struct
 
 	float follow_gimbal_zero;									//正方向
 
-	float speed_x,target_speed_x;									//速度、目标速度
-	float pose_x,target_pose_x;										//位移、目标位移
-	float Pitch;													//前倾角
-	float Yaw;														//
+	float speed_x,target_speed_x;							//速度、目标速度
+	float pose_x,target_pose_x;								//位移、目标位移
+	float Pitch;															//前倾角
+	float Yaw;																//航向角
 	float angle_z;
-	float Gyo_y;													//???????????
-	float Gyo_z;													//????????????
+	float Gyo_y;															//底盘倾斜角速度
+	float Gyo_z;															//底盘旋转角速度
 
-	float GIM_Yaw;												//????????????yaw??6020???
-	float GIM_Yaw_t;												//????????????yaw??6020???
+	float GIM_Yaw;														//????????????yaw??6020???
+	float GIM_Yaw_t;													//????????????yaw??6020???
 
-	float omega_z;													//????????????
+	float omega_z;														//底盘旋转线速度
 
-	float X_Speed_k ,Y_Speed_k,Z_Speed_k; 							//???->??? ?仯????????????
-	float X_Target,Y_Target,Z_Target;								//??????
+	float X_Speed_k ,Y_Speed_k,Z_Speed_k; 					//速度系数
+	float X_Target,Y_Target,Z_Target;								//
 
-	uint8_t chassis_direction;										//??????????(CHASSIS_FRONT,CHASSIS_BACK)
+	uint8_t chassis_direction;								//底盘正方向(CHASSIS_FRONT,CHASSIS_BACK)
+	float move_speed,move_direction;						//底盘平移速度，平移方向
+	
+	uint8_t ctrl_mode;												//底盘模式
+	uint8_t ctrl_mode_last;										//上次底盘模式
+	
+	float torque_speed;												//前进动力相应转矩
+	float torque_balance;											//旋转动力相应转矩
+	float torque_revolve;											//平衡动力相应转矩
+	float iqControl[2];												//底盘电机目标电流
 
-	float move_speed,move_direction;								//?????????????????
-
-	float torque_speed;												//??????????
-	float torque_balance;											//????????
-	float torque_revolve;											//??????????
-	float iqControl[2];												//?????????
-
-uint8_t flag_clear_pose;											//里程计停止清零标志(0,清零;1,停止清零)
+	uint8_t flag_clear_pose;											//里程计停止清零标志(0,清零;1,停止清零)
 
 }CHASSIS_Date_t;
 
@@ -89,6 +91,18 @@ uint8_t flag_clear_pose;											//里程计停止清零标志(0,清零;1,停止清零)
 
 
 extern CHASSIS_Date_t Chassis;
+typedef enum
+{
+	MODE_STATIC 		= 0,
+	MODE_NORMAL 		= 1,
+	MODE_WEAK 			= 2,
+	MODE_STOP 			= 3,
+	MODE_BALANCE 		= 4,
+	MODE_BALANCE_SPEED = 5,
+	MODE_SLIPPED		= 6,
+}chassis_mode_e;
+
+void mode_switch_chassis(uint8_t mode);
 
 
 void Chassis_Task(void);
@@ -96,6 +110,7 @@ void Chassis_Static(void);
 
 void Chassis_Balance(void);
 void Chassis_Normal(void);
+void Chassis_Normal_Speed(void);
 void Chassis_Normal_s(void);
 void Chassis_Normal_z(void);
 

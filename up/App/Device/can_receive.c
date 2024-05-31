@@ -62,13 +62,15 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 				case GIM_YAW_ID:
 					CAN_Date_Decode(&Gimbal.YAW.Motor_Data.CAN_GetData, rx_data); 
 				break;
+				case 0x666:
+				REF.Robot_Status.shooter_barrel_heat_limit = ((int16_t)(rx_data[0] << 8	| rx_data[1])); 
+				REF.Power_Heat_Data.shooter_17mm_1_barrel_heat = ((int16_t)(rx_data[2] << 8 | rx_data[3]));
+				break;
 				default: {break;}	
 
 			}
 		}
 }
-
-
 /**
  * @brief CAN2_YAW电机发送
 */
@@ -82,6 +84,7 @@ void CAN_cmd_gimbal_yaw(int16_t yaw)
     gimbal_can_send_data[0] = yaw >> 8;
     gimbal_can_send_data[1] = yaw;
 
+	
 	//找到空的发送邮箱，把数据发送出去
 	if(HAL_CAN_AddTxMessage(&hcan2, &gimbal_tx_message,gimbal_can_send_data, (uint32_t*)CAN_TX_MAILBOX0) != HAL_OK) //
 	{
@@ -93,32 +96,8 @@ void CAN_cmd_gimbal_yaw(int16_t yaw)
 }
 
 
-///**
-// * @brief CAN2_PITCH发送
-//*/
-
-//void CAN_cmd_gimbal_pitch(int16_t pitch)
-//{
-//    gimbal_tx_message.StdId = GIMBAL_ALL_ID;
-//    gimbal_tx_message.IDE = CAN_ID_STD;
-//    gimbal_tx_message.RTR = CAN_RTR_DATA;
-//    gimbal_tx_message.DLC = 0x08;
-//    
-//    gimbal_can_send_data[2] = pitch >> 8;
-//    gimbal_can_send_data[3] = pitch;
-
-//	//找到空的发送邮箱，把数据发送出去
-//	if(HAL_CAN_AddTxMessage(&hcan1, &gimbal_tx_message,gimbal_can_send_data, (uint32_t*)CAN_TX_MAILBOX0) != HAL_OK) //
-//	{
-//	if(HAL_CAN_AddTxMessage(&hcan1, &gimbal_tx_message,gimbal_can_send_data, (uint32_t*)CAN_TX_MAILBOX1) != HAL_OK) //
-//	{
-//		HAL_CAN_AddTxMessage(&hcan1, &gimbal_tx_message,gimbal_can_send_data, (uint32_t*)CAN_TX_MAILBOX2);
-//	}
-//	}
-//}
-
 /**
- * @brief CAN2_SHOOT发送
+ * @brief CAN1_SHOOT发送
 */
 void CAN_cmd_shoot( int16_t shoot1,int16_t shoot2)
 {
@@ -132,42 +111,18 @@ void CAN_cmd_shoot( int16_t shoot1,int16_t shoot2)
 		shoot_can_send_data[2] = shoot2 >> 8;
     shoot_can_send_data[3] = shoot2;
 	//找到空的发送邮箱，把数据发送出去
-	if(HAL_CAN_AddTxMessage(&hcan1, &shoot_tx_message,shoot_can_send_data, (uint32_t*)CAN_TX_MAILBOX0) != HAL_OK) //
-	{
-	if(HAL_CAN_AddTxMessage(&hcan1, &shoot_tx_message,shoot_can_send_data, (uint32_t*)CAN_TX_MAILBOX1) != HAL_OK) //
-	{
-		HAL_CAN_AddTxMessage(&hcan1, &shoot_tx_message,shoot_can_send_data, (uint32_t*)CAN_TX_MAILBOX2);
-	}
-	}
+		if(HAL_CAN_AddTxMessage(&hcan1, &shoot_tx_message,shoot_can_send_data, (uint32_t*)CAN_TX_MAILBOX0) != HAL_OK) //
+		{
+		if(HAL_CAN_AddTxMessage(&hcan1, &shoot_tx_message,shoot_can_send_data, (uint32_t*)CAN_TX_MAILBOX1) != HAL_OK) //
+		{
+			HAL_CAN_AddTxMessage(&hcan1, &shoot_tx_message,shoot_can_send_data, (uint32_t*)CAN_TX_MAILBOX2);
+		}
+		}
 }
 
-///**
-// * @brief CAN2_PITCH_DRIVERf发送
-//*/
-
-//void CAN_cmd_shoot_driver(int16_t driver)
-//{
-//    gimbal_tx_message.StdId = 0X1FF;
-//    gimbal_tx_message.IDE = CAN_ID_STD;
-//    gimbal_tx_message.RTR = CAN_RTR_DATA;
-//    gimbal_tx_message.DLC = 0x08;
-//   
-//		gimbal_can_send_data[4] = driver >> 8;
-//		gimbal_can_send_data[5] = driver;
-
-//	//找到空的发送邮箱，把数据发送出去
-//	if(HAL_CAN_AddTxMessage(&hcan1, &gimbal_tx_message,gimbal_can_send_data, (uint32_t*)CAN_TX_MAILBOX0) != HAL_OK) //
-//	{
-//	if(HAL_CAN_AddTxMessage(&hcan1, &gimbal_tx_message,gimbal_can_send_data, (uint32_t*)CAN_TX_MAILBOX1) != HAL_OK) //
-//	{
-//		HAL_CAN_AddTxMessage(&hcan1, &gimbal_tx_message,gimbal_can_send_data, (uint32_t*)CAN_TX_MAILBOX2);
-//	}
-//	}
-//}
-
-
-
-
+/**
+ * @brief CAN1_PITCH发送
+*/
 void CAN_cmd_gimbal_pitch(int16_t pitch,int16_t driver)
 {
     uint32_t send_mail_box;

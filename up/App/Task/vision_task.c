@@ -35,6 +35,18 @@ struct SolveTrajectoryParams st;
 
 void Visual_Task(void)
 {
+	if(KEY_Q == 1)
+	{
+		st.bias_time = 5;
+	}
+	if(KEY_E == 1)
+	{
+		st.bias_time = 100;
+	}
+	if(KEY_SHIFT == 1)
+	{st.z_bias = st.z_bias + 0.001;}
+	if(KEY_CTRL == 1)
+	{st.z_bias = st.z_bias - 0.001;}
 	AUTO_AIM_Ctrl();
 	VISION_SendData();
 	RM_Vision_Init();
@@ -53,7 +65,11 @@ void Visual_Task(void)
 void AUTO_AIM_Ctrl(void)	
 {	
 	//发送
-	Vision_cj.VisionRTx.AutoAim_Tx.Packet.TxData.detect_color = 0x00;// 0-red 1-blue
+//	if(REF.Robot_Status.robot_id < 10)// 0-red 1-blue
+//	{	Vision_cj.VisionRTx.AutoAim_Tx.Packet.TxData.detect_color = 0x01;
+//	}
+//	else{Vision_cj.VisionRTx.AutoAim_Tx.Packet.TxData.detect_color = 0x00;}
+	Vision_cj.VisionRTx.AutoAim_Tx.Packet.TxData.detect_color = 0x01;
   Vision_cj.VisionRTx.AutoAim_Tx.Packet.TxData.roll = IMU_Get_Data.IMU_Eular[1]*PI/180;
   Vision_cj.VisionRTx.AutoAim_Tx.Packet.TxData.pitch = -IMU_Get_Data.IMU_Eular[0]*PI/180;
 	Vision_cj.VisionRTx.AutoAim_Tx.Packet.TxData.yaw = IMU_Get_Data.IMU_Eular[2]*PI/180;
@@ -85,9 +101,6 @@ void RM_Vision_Init(void)
 	st.armor_num = Vision_cj.VisionRTx.AutoAim_Rx.Packet.RxData.armors_num;
 	
 }
-
-
-
 /**
  *	@brief	cj读取视觉通信数据
  *	@note		USB中IRQ调用
@@ -151,9 +164,16 @@ float monoDirectionalAirResistanceModel(float s, float v, float angle)
     float z;
     //t为给定v与angle时的飞行时间
     t = (float)((exp(st.k * s) - 1) / (st.k * v * cos(angle)));
+		if(t < 0)
+				{
+						//由于严重超出最大射程，计算过程中浮点数溢出，导致t变成负数
+//						printf("[WRAN]: Exceeding the maximum range!\n");
+						//重置t，防止下次调用会出现nan
+						t = 0;
+						return 0;
+				}	
     //z为给定v与angle时的高度
-    z               
-	= (float)(v * sin(angle) * t - GRAVITY * t * t / 2);
+    z = (float)(v * sin(angle) * t - GRAVITY * t * t / 2);
     return z;
 }
 
@@ -172,17 +192,36 @@ float pitchTrajectoryCompensation(float s, float z, float v)
     int i = 0;
     z_temp = z;
     // iteration
-    for (i = 0; i < 20; i++)
-    {
-        angle_pitch = atan2(z_temp, s); // rad
-        z_actual = monoDirectionalAirResistanceModel(s, v, angle_pitch);
-        dz = 0.3f*(z - z_actual);
-        z_temp = z_temp + dz;
-        if (fabsf(dz) < 0.00001f)
-        {
-            break;
-        }
-    }
+//    for (i = 0; i < 20; i++)
+//    {
+//        angle_pitch = atan2(z_temp, s); // rad
+//        z_actual = monoDirectionalAirResistanceModel(s, v, angle_pitch);
+//        dz = 0.3f*(z - z_actual);
+//        z_temp = z_temp + dz;
+//        if (fabsf(dz) < 0.00001f)
+//        {
+//            break;
+//        }
+//    }
+			for (i = 0; i < 20; i++)
+				{
+						angle_pitch = atan2(z_temp, s); // rad
+						z_actual = monoDirectionalAirResistanceModel(s, v, angle_pitch);
+						if(z_actual == 0)
+						{
+								angle_pitch = 0;
+								break;
+						}
+						dz = 0.3*(z - z_actual);
+						z_temp = z_temp + dz;
+//						printf("iteration num %d: angle_pitch %f, temp target z:%f, err of z:%f, s:%f\n",
+//								i + 1, angle_pitch * 180 / PI, z_temp, dz,s);
+						if (fabsf(dz) < 0.00001)
+						{
+								break;
+						}
+				}
+		
     return angle_pitch;
 }
 
@@ -260,28 +299,28 @@ void autoSolveTrajectory(float *pitch, float *yaw, float *aim_x, float *aim_y, f
             //2.计算距离最近的装甲板
 
             //计算距离最近的装甲板
-//        	float dis_diff_min = sqrt(tar_position[0].x * tar_position[0].x + tar_position[0].y * tar_position[0].y);
-//        	int idx = 0;
-//        	for (i = 1; i<4; i++)
-//        	{
-//        		float temp_dis_diff = sqrt(tar_position[i].x * tar_position[0].x + tar_position[i].y * tar_position[0].y);
-//        		if (temp_dis_diff < dis_diff_min)
-//        		{
-//        			dis_diff_min = temp_dis_diff;
-//        			idx = i;
-//        		}
-//        	}
+        	float dis_diff_min = sqrt(tar_position[0].x * tar_position[0].x + tar_position[0].y * tar_position[0].y);
+        	int idx = 0;
+        	for (i = 1; i<4; i++)
+        	{
+        		float temp_dis_diff = sqrt(tar_position[i].x * tar_position[0].x + tar_position[i].y * tar_position[0].y);
+        		if (temp_dis_diff < dis_diff_min)
+        		{
+        			dis_diff_min = temp_dis_diff;
+        			idx = i;
+        		}
+        	}
 
             //计算枪管到目标装甲板yaw最小的那个装甲板
-        float yaw_diff_min = fabsf(*yaw - tar_position[0].yaw);
-        for (i = 1; i<4; i++) {
-            float temp_yaw_diff = fabsf(*yaw - tar_position[i].yaw);
-            if (temp_yaw_diff < yaw_diff_min)
-            {
-                yaw_diff_min = temp_yaw_diff;
-                idx = i;
-            }
-        }
+//        float yaw_diff_min = fabsf(*yaw - tar_position[0].yaw);
+//        for (i = 1; i<4; i++) {
+//            float temp_yaw_diff = fabsf(*yaw - tar_position[i].yaw);
+//            if (temp_yaw_diff < yaw_diff_min)
+//            {
+//                yaw_diff_min = temp_yaw_diff;
+//                idx = i;
+//            }
+//        }
 
     }
 
@@ -289,9 +328,15 @@ void autoSolveTrajectory(float *pitch, float *yaw, float *aim_x, float *aim_y, f
     *aim_x = tar_position[idx].x + st.vxw * timeDelay;
     *aim_y = tar_position[idx].y + st.vyw * timeDelay;
     //这里符号给错了
-    *pitch = pitchTrajectoryCompensation(sqrt((*aim_x) * (*aim_x) + (*aim_y) * (*aim_y)) - st.s_bias,
+//    *pitch = pitchTrajectoryCompensation(sqrt((*aim_x) * (*aim_x) + (*aim_y) * (*aim_y)) - st.s_bias,
+//            *aim_z + st.z_bias, st.current_v);
+//    *yaw = (float)(atan2(*aim_y, *aim_x));
+    float temp_pitch = pitchTrajectoryCompensation(sqrt((*aim_x) * (*aim_x) + (*aim_y) * (*aim_y)) - st.s_bias,
             *aim_z + st.z_bias, st.current_v);
-    *yaw = (float)(atan2(*aim_y, *aim_x));
+    if(temp_pitch)
+        *pitch = temp_pitch;
+    if(*aim_x || *aim_y)
+        *yaw = (float)(atan2(*aim_y, *aim_x));
 }
 
 

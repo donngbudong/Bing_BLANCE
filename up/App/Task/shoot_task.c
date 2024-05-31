@@ -140,8 +140,8 @@ int16_t Shoot_pid_out;//²¦ÅÌcan_out
  */
 void Shoot_RC_Ctrl(void)
 {
-	Shoot_Ctrl_FRIC_L(&Shoot.Motor_Data[FRIC_L],6800);
-	Shoot_Ctrl_FRIC_R(&Shoot.Motor_Data[FRIC_R],-6800);
+	Shoot_Ctrl_FRIC_L(&Shoot.Motor_Data[FRIC_L],7400);
+	Shoot_Ctrl_FRIC_R(&Shoot.Motor_Data[FRIC_R],-7400);
 	Shoot_Ctrl_DRIVER(&Shoot.Motor_Data[DRIVER]);
 
 		if(RC_SW == 660)
@@ -164,8 +164,8 @@ void Shoot_RC_Ctrl(void)
 void Shoot_KEY_Ctrl(void)
 {
 	Shoot_KEY_F();
-	Shoot_Ctrl_FRIC_L(&Shoot.Motor_Data[FRIC_L],6800);
-	Shoot_Ctrl_FRIC_R(&Shoot.Motor_Data[FRIC_R],-6800);
+	Shoot_Ctrl_FRIC_L(&Shoot.Motor_Data[FRIC_L],7400);
+	Shoot_Ctrl_FRIC_R(&Shoot.Motor_Data[FRIC_R],-7400);
 	Shoot_Ctrl_DRIVER(&Shoot.Motor_Data[DRIVER]);
 	Shoot_KEY_Fire();
 
@@ -190,7 +190,7 @@ void Shoot_Ctrl_DRIVER(Shoot_Motor_t *str)
 		str->Motor_Data.PID_Speed_target = 5000;
 	}
 	else{
-		str->Motor_Data.PID_Speed_target = -5000;
+		str->Motor_Data.PID_Speed_target = -4500;
 	}
 	str->Motor_Data.PID_Speed = str->Motor_Data.CAN_GetData.Motor_Speed;
 }

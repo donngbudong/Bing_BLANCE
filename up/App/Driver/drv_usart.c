@@ -1,14 +1,15 @@
 #include "drv_usart.h"
 #include "Device.h"
 #include "system.h"
+#include "iwdg.h"
 
 #define    VISION_BUFFER_LEN         50u
 
+uint8_t Judge_Buffer[100] = {0};
 uint8_t Dbus_Buffer[2][SBUS_RX_BUF_NUM];
 uint8_t Vision_Buffer[ VISION_BUFFER_LEN ] = {0};	//视觉发过来的数据暂存在这里
-
 uint8_t IMU_Buffer  [128];
-uint8_t DIY_Bing[4];
+uint8_t diy_control[128];
 
 
 extern UART_HandleTypeDef huart1;/*裁判系统*/
@@ -32,7 +33,7 @@ void USART_Init(void)
 {
 	Remote_Control_Init();//Remote_Control
 	IMU_Init();//
-//	__HAL_UART_ENABLE_IT(&huart1,UART_IT_IDLE);//Referee_System
+	__HAL_UART_ENABLE_IT(&huart1,UART_IT_IDLE);//Referee_System
 	__HAL_UART_ENABLE_IT(&huart2,UART_IT_IDLE);//DBUS
 	__HAL_UART_ENABLE_IT(&huart4,UART_IT_IDLE);//VISUAL	
 	__HAL_UART_ENABLE_IT(&huart5,UART_IT_IDLE);//IMU
@@ -88,6 +89,17 @@ void RC_Init(uint8_t *rx1_buf, uint8_t *rx2_buf, uint16_t dma_buf_num)
  uint16_t rx_len = 0;
 void UART_IRQHandler_IT(UART_HandleTypeDef *huart)
 {
+	if(huart==&huart1)//Referee_System
+	{
+		if(__HAL_UART_GET_FLAG(&huart1,UART_FLAG_IDLE)!=RESET) 
+		{
+			__HAL_UART_CLEAR_IDLEFLAG(&huart1);
+			HAL_UART_DMAStop(&huart1);
+			HAL_UART_Receive_DMA(&huart1,Judge_Buffer,128);
+			Referee_Decode(Judge_Buffer);
+			memset(Judge_Buffer, 0, 128);//清除接收缓存
+		}
+	}
 	if(huart==&huart2)//Remote_Control
 	{
 		if(huart2.Instance->SR & UART_FLAG_RXNE)//接收到数据
@@ -144,15 +156,13 @@ void UART_IRQHandler_IT(UART_HandleTypeDef *huart)
 	{
 		if(__HAL_UART_GET_FLAG(&huart4,UART_FLAG_IDLE)!=RESET) 
 		{
-			if(__HAL_UART_GET_FLAG(&huart4,UART_FLAG_IDLE)!=RESET) 
-			{
-				__HAL_UART_CLEAR_IDLEFLAG(&huart4);
-				HAL_UART_DMAStop(&huart4);
-				VISION_ReadData(Vision_Buffer);
-//				Vision_read_data(Vision_Buffer);								//读取视觉数据
-				HAL_UART_Receive_DMA(&huart4,Vision_Buffer,VISION_BUFFER_LEN);
-	//			memset(Visual_Buffer, 0, 16);
-			}
+		{
+			__HAL_UART_CLEAR_IDLEFLAG(&huart4);
+			HAL_UART_DMAStop(&huart4);
+			HAL_UART_Receive_DMA(&huart4,diy_control,128);
+			Referee_Decode(diy_control);
+			memset(diy_control, 0, 128);//清除接收缓
+		}
 		}
 	}
 	else if(huart==&huart5)//Imu
@@ -167,6 +177,7 @@ void UART_IRQHandler_IT(UART_HandleTypeDef *huart)
 			}
 			HAL_UART_Receive_DMA(huart,IMU_Buffer,128);	
 			memset(IMU_Buffer, 0, 128);
+			HAL_IWDG_Refresh(&hiwdg);	//喂狗
 			Imu_time=micros() + 30000;
 		}
 	}
@@ -177,7 +188,6 @@ void UART_IRQHandler_IT(UART_HandleTypeDef *huart)
 			__HAL_UART_CLEAR_IDLEFLAG(&huart6);                    		 //清楚空闲中断标志（否则会一直不断进入中断）
 			HAL_UART_DMAStop(&huart6);
 
-			HAL_UART_Receive_DMA(&huart6,DIY_Bing,4);	
 //			memset(DIY_Bing, 0, 128);
 		}
 	}

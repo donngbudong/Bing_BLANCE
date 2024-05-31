@@ -50,9 +50,10 @@
 /* USER CODE END Variables */
 osThreadId defaultTaskHandle;
 osThreadId system_state_taHandle;
-osThreadId chassis_taskHandle;
 osThreadId imu_taskHandle;
 osThreadId judge_taskHandle;
+osThreadId ChassisControlHandle;
+osThreadId ChassisSwitchHandle;
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
@@ -61,9 +62,10 @@ osThreadId judge_taskHandle;
 
 void StartDefaultTask(void const * argument);
 void SYSTEM_STATE_TASK(void const * argument);
-void CHASSIS_TASK(void const * argument);
 void IMU_TASK(void const * argument);
 extern void JUDGE_TASK(void const * argument);
+extern void ChassisControl_Task(void const * argument);
+extern void ChassisSwitch_Task(void const * argument);
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
@@ -118,10 +120,6 @@ void MX_FREERTOS_Init(void) {
   osThreadDef(system_state_ta, SYSTEM_STATE_TASK, osPriorityRealtime, 0, 256);
   system_state_taHandle = osThreadCreate(osThread(system_state_ta), NULL);
 
-  /* definition and creation of chassis_task */
-  osThreadDef(chassis_task, CHASSIS_TASK, osPriorityHigh, 0, 256);
-  chassis_taskHandle = osThreadCreate(osThread(chassis_task), NULL);
-
   /* definition and creation of imu_task */
   osThreadDef(imu_task, IMU_TASK, osPriorityRealtime, 0, 128);
   imu_taskHandle = osThreadCreate(osThread(imu_task), NULL);
@@ -129,6 +127,14 @@ void MX_FREERTOS_Init(void) {
   /* definition and creation of judge_task */
   osThreadDef(judge_task, JUDGE_TASK, osPriorityHigh, 0, 256);
   judge_taskHandle = osThreadCreate(osThread(judge_task), NULL);
+
+  /* definition and creation of ChassisControl */
+  osThreadDef(ChassisControl, ChassisControl_Task, osPriorityHigh, 0, 256);
+  ChassisControlHandle = osThreadCreate(osThread(ChassisControl), NULL);
+
+  /* definition and creation of ChassisSwitch */
+  osThreadDef(ChassisSwitch, ChassisSwitch_Task, osPriorityHigh, 0, 256);
+  ChassisSwitchHandle = osThreadCreate(osThread(ChassisSwitch), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -165,30 +171,24 @@ void SYSTEM_STATE_TASK(void const * argument)
 {
   /* USER CODE BEGIN SYSTEM_STATE_TASK */
   /* Infinite loop */
+	vTaskDelay(100);
+	int32_t cnt=0;
   for(;;)
   {
-    osDelay(1);
+		//向上板发送裁判系统数据
+		if(cnt % 20 == 0)
+		{
+			referee_data_send(REF.Robot_Status.shooter_barrel_heat_limit
+											 ,REF.Power_Heat_Data.shooter_17mm_1_barrel_heat
+											 ,0,0
+										);
+		}
+
+		vTaskDelay(1);
+		cnt++;
+		if(cnt>=1000)cnt=0;
   }
   /* USER CODE END SYSTEM_STATE_TASK */
-}
-
-/* USER CODE BEGIN Header_CHASSIS_TASK */
-/**
-* @brief Function implementing the chassis_task thread.
-* @param argument: Not used
-* @retval None
-*/
-/* USER CODE END Header_CHASSIS_TASK */
-void CHASSIS_TASK(void const * argument)
-{
-  /* USER CODE BEGIN CHASSIS_TASK */
-  /* Infinite loop */
-  for(;;)
-  {
-		Chassis_Task();
-    osDelay(1);
-  }
-  /* USER CODE END CHASSIS_TASK */
 }
 
 /* USER CODE BEGIN Header_IMU_TASK */

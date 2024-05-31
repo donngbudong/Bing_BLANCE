@@ -30,6 +30,7 @@ up\vision_task.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_can.h
 up\vision_task.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash.h
 up\vision_task.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash_ex.h
 up\vision_task.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash_ramfunc.h
+up\vision_task.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_iwdg.h
 up\vision_task.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr.h
 up\vision_task.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h
 up\vision_task.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h
@@ -52,6 +53,7 @@ up\vision_task.o: ../App/Task/system_task.h
 up\vision_task.o: ../App/Task/gimbal_task.h
 up\vision_task.o: ../App/Task/shoot_task.h
 up\vision_task.o: ../App/Task/vofa_task.h
+up\vision_task.o: ../App/Task/referee.h
 up\vision_task.o: ../Core/Inc/usart.h
 up\vision_task.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 up\vision_task.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h

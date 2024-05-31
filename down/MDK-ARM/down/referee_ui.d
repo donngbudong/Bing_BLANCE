@@ -35,6 +35,24 @@ down\referee_ui.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h
 down\referee_ui.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h
 down\referee_ui.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
 down\referee_ui.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
+down\referee_ui.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+down\referee_ui.o: ../App/Task/chassis_task.h
+down\referee_ui.o: ../App/Header/Device.h
+down\referee_ui.o: ../Core/Inc/main.h
+down\referee_ui.o: ../App/Device/HI229.h
+down\referee_ui.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+down\referee_ui.o: ../App/Device/packet.h
+down\referee_ui.o: ../App/Header/System.h
+down\referee_ui.o: ../App/Driver/drv_usart.h
+down\referee_ui.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+down\referee_ui.o: ../App/Referee/referee.h
+down\referee_ui.o: ../App/Header/System.h
+down\referee_ui.o: ../App/Device/remote_control.h
+down\referee_ui.o: ../App/Device/can_receive.h
+down\referee_ui.o: ../App/Algorithm/pid.h
+down\referee_ui.o: ../App/Task/system_task.h
+down\referee_ui.o: ../App/Task/chassis_task.h
+down\referee_ui.o: ../App/Task/vofa_task.h
 down\referee_ui.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
 down\referee_ui.o: ../Core/Inc/FreeRTOSConfig.h
 down\referee_ui.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h

@@ -260,6 +260,5 @@ void UI_PushUp_String(UI_String_t *String, uint8_t RobotID);
 void UI_PushUp_Delete(UI_Delete_t *Delete, uint8_t RobotID);
 										
 										
-#endif /* __REFEREE_H__ */
-										
+#endif
 										

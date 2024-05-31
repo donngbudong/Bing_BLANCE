@@ -54,3 +54,17 @@ down\chassiscontrol_task.o: ../App/Task/chassis_task.h
 down\chassiscontrol_task.o: ../App/Task/vofa_task.h
 down\chassiscontrol_task.o: ../App/Referee/referee_UI.h
 down\chassiscontrol_task.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+down\chassiscontrol_task.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
+down\chassiscontrol_task.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
+down\chassiscontrol_task.o: ../Core/Inc/FreeRTOSConfig.h
+down\chassiscontrol_task.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h
+down\chassiscontrol_task.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h
+down\chassiscontrol_task.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h
+down\chassiscontrol_task.o: ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F/portmacro.h
+down\chassiscontrol_task.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h
+down\chassiscontrol_task.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h
+down\chassiscontrol_task.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h
+down\chassiscontrol_task.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h
+down\chassiscontrol_task.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h
+down\chassiscontrol_task.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h
+down\chassiscontrol_task.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h

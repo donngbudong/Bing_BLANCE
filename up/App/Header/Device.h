@@ -21,6 +21,8 @@
 #include "shoot_task.h"
 #include "vision_task.h"
 #include "vofa_task.h"
+#include "referee.h"
+
 
 
 

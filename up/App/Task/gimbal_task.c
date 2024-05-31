@@ -164,6 +164,7 @@ void RC_Ctrl_YAW(Gimbal_Info_t *str)
 		{/* 第一次进入模式 */
 			YAW_prev_pid_type = Gimbal.PID_Type;
 			Gimbal_FirstYawAngle(&Gimbal.YAW);
+			Gimbal_FirstPitchAngle(&Gimbal.PITCH);
 		}
 	
 	str->RC_Move.Angle_Inc = str->RC_Move.Angle_k * (-RC_CH0);
@@ -233,13 +234,14 @@ void KEY_Ctrl_YAW(Gimbal_Info_t *str)
 		{/* 第一次进入模式 */
 			YAW_prev_pid_type = Gimbal.PID_Type;
 			Gimbal_FirstYawAngle(&Gimbal.YAW);
+			Gimbal_FirstPitchAngle(&Gimbal.PITCH);
 		}
-	if(MOUSE_RIGH == 0)
+	if(MOUSE_RIGH == 0 || RC_S1 != RC_SW_DOWN)
 	{		
 		str->KEY_Move.Angle_Inc = str->KEY_Move.Angle_k * (MOUSE_X_MOVE_SPEED);
 		str->Motor_Data.PID_Angle_target -= str->KEY_Move.Angle_Inc;
 	}
-	else/*开启自瞄*/
+	else if(MOUSE_RIGH == 1 || RC_S1 == RC_SW_DOWN)/*开启自瞄*/
 	{
 		if(Vision_cj.VisionRTx.AutoAim_Rx.Packet.RxData.tracking == 0)
 		{
@@ -248,7 +250,7 @@ void KEY_Ctrl_YAW(Gimbal_Info_t *str)
 		}
 		else if(Vision_cj.VisionRTx.AutoAim_Rx.Packet.RxData.tracking == 1)
 		{
-			str->Motor_Data.PID_Angle_target = st.yaw;
+			str->Motor_Data.PID_Angle_target = st.yaw; //- st.v_yaw * 10;
 		}
 
 	}
@@ -269,12 +271,12 @@ void KEY_Ctrl_PITCH(Gimbal_Info_t *str)
 		YAW_prev_pid_type = Gimbal.PID_Type;
 		Gimbal_FirstPitchAngle(&Gimbal.PITCH);
 	}
-	if(MOUSE_RIGH == 0)
+	if(MOUSE_RIGH == 0 || RC_S1 != RC_SW_DOWN)
 	{
 		str->RC_Move.Angle_Inc = str->RC_Move.Angle_k * MOUSE_Y_MOVE_SPEED;
 		str->Motor_Data.PID_Angle_target -= str->RC_Move.Angle_Inc;
 	}
-	else/*开启自瞄*/
+	else if(MOUSE_RIGH == 1 || RC_S1 == RC_SW_DOWN)/*开启自瞄*/
 	{
 		if(Vision_cj.VisionRTx.AutoAim_Rx.Packet.RxData.tracking == 0)
 		{

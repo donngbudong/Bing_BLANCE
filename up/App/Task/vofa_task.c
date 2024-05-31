@@ -1,27 +1,52 @@
 #include "vofa_task.h"
 #include "usart.h"
 #include "can_receive.h"
+#include "Device.h"
 
 static uint8_t tail[4] = {0x00, 0x00, 0x80, 0x7f};
 
 
 
 
-//void Motor_Date(CAN_GET_DATA_t *str)
-//{
-//	
-//}
+Vofa_Date yaw_actual;
+Vofa_Date yaw_target;
 
 
-void VOFA_SendDate(void)
+Vofa_Date pitch_actual;
+Vofa_Date pitch_target;
+
+void vofa_SendDate(void)
 {
+	uint16_t i=0;
+
+	yaw_actual.receive = Gimbal.YAW.Motor_Data.PID_Angle;
+	yaw_target.receive = Gimbal.YAW.Motor_Data.PID_Angle_target;
+	pitch_actual.receive = Gimbal.PITCH.Motor_Data.PID_Angle;
+	pitch_target.receive = Gimbal.PITCH.Motor_Data.PID_Angle_target;
 	
-	
-	/*֡帧头*/
- 	for(uint8_t i; i<4; i++){
-		HAL_UART_Transmit(&huart6,&tail[i],1,100);
+	for(i = 0; i<4; i++)	
+	{
+		HAL_UART_Transmit(&huart4,&yaw_actual.send[i],1,100);
 	}
-//	HAL_UART_Transmit(&huart6,&tail[0],1,100);
+	for(i = 0; i<4; i++)	
+	{
+		HAL_UART_Transmit(&huart4,&yaw_target.send[i],1,100);
+	}
+	for(i = 0; i<4; i++)	
+	{
+		HAL_UART_Transmit(&huart4,&pitch_actual.send[i],1,100);
+	}
+	for(i = 0; i<4; i++)	
+	{
+		HAL_UART_Transmit(&huart4,&pitch_target.send[i],1,100);
+	}
+	
+	
+	/*֡帧尾*/
+ 	for(uint8_t i=0; i<4; i++){
+		HAL_UART_Transmit(&huart4,&tail[i],1,100);
+	}
+//	HAL_UART_Transmit(&huart4,&tail[0],1,100);
 //	HAL_UART_Transmit(&huart6,&tail[1],1,100);
 //	HAL_UART_Transmit(&huart6,&tail[2],1,100);
 //	HAL_UART_Transmit(&huart6,&tail[3],1,100);

@@ -8,8 +8,35 @@
 #define PI 3.14159265358979f
 #endif
 
+//轮子直径
+#define Diameter_weel 			0.190f
+//定速控制
+#define SPEED_LIMIT_60  		10.0f
+#define SPEED_LIMIT_80  		15.0f
+#define SPEED_LIMIT_100 		20.0f
+#define SPEED_UNLIMIT 	 		6600.0f
 
 
+//功率限制结构体
+typedef struct
+{
+	float* control_obj;								//控制对象
+	float no_limit;										//无限制允许输出
+	float base_limit;									//基础限制允许输出
+	float add_limit;									//增益限制允许输出
+	float warning_buffer;							//缓冲能量预警值
+	
+}chassis_power_t;
+
+extern chassis_power_t PowerLimit_speed;
+extern chassis_power_t PowerLimit_balance;
+extern chassis_power_t PowerLimit_k5;
+
+/**
+  * @brief  裁判系统功率限制
+  * @param  调节对象指针
+  */
+void Chassis_RefereePowerControl(chassis_power_t *power_obj);
 /**
   * @brief  死区限制
   * @param  输入信号;死区
@@ -54,7 +81,7 @@ float speed_control(float speed_in,float direction);
   * @brief  速度灵敏度调节
   * @retval 速度灵敏度
   */
-//float speed_sen_adjust();
+float speed_sen_adjust(void);
 
 /**
   * @brief  底盘方向偏差获取

@@ -22,16 +22,31 @@ Dialog DLL:      TCM.DLL V1.53.0.0
  
 <h2>Project:</h2>
 D:\Users\Dong\Desktop\Robot_Code\Bing_BLANCE\up\MDK-ARM\up.uvprojx
-Project File Date:  04/08/2024
+Project File Date:  05/15/2024
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 7 (build 960)', folder: 'D:\Program Files\Keil_v5\ARM\ARMCC\Bin'
 Build target 'up'
-compiling main.c...
+compiling vision_task.c...
+..\App\Task\vision_task.c(47): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  	{st.z_bias = st.z_bias + 0.001;}
+..\App\Task\vision_task.c(49): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  	{st.z_bias = st.z_bias - 0.001;}
+..\App\Task\vision_task.c(100): warning:  #188-D: enumerated type mixed with another type
+  	st.armor_id = Vision_cj.VisionRTx.AutoAim_Rx.Packet.RxData.id;
+..\App\Task\vision_task.c(101): warning:  #188-D: enumerated type mixed with another type
+  	st.armor_num = Vision_cj.VisionRTx.AutoAim_Rx.Packet.RxData.armors_num;
+..\App\Task\vision_task.c(215): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  						dz = 0.3*(z - z_actual);
+..\App\Task\vision_task.c(219): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  						if (fabsf(dz) < 0.00001)
+..\App\Task\vision_task.c(303): warning:  #550-D: variable "idx"  was set but never used
+          	int idx = 0;
+..\App\Task\vision_task.c: 7 warnings, 0 errors
 linking...
-Program Size: Code=44620 RO-data=2008 RW-data=2104 ZI-data=27552  
+Program Size: Code=45924 RO-data=2008 RW-data=2096 ZI-data=27864  
 FromELF: creating hex file...
-"up\up.axf" - 0 Error(s), 0 Warning(s).
+"up\up.axf" - 0 Error(s), 7 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -55,7 +70,7 @@ Package Vendor: Keil
 
    * Component: ARM::CMSIS:CORE:5.5.0
       Include file:  CMSIS\Core\Include\tz_context.h
-Build Time Elapsed:  00:00:03
+Build Time Elapsed:  00:00:04
 </pre>
 </body>
 </html>

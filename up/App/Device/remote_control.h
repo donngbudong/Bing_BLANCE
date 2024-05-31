@@ -98,6 +98,8 @@ extern uint64_t Remote_time ;//Ò£¿ØÆ÷
 #define RC_SW_DOWN ((uint16_t)2)
 #define RC_SW_ERR ((uint16_t)4)
 /* -----------------------PC Key-------------------------------- */
+#define CONTROL 1
+#if(CONTROL == 1)
 #define KEY_W               RC_Ctrl.kb.bit.W		
 #define KEY_S               RC_Ctrl.kb.bit.S		
 #define KEY_A               RC_Ctrl.kb.bit.A		
@@ -122,11 +124,37 @@ extern uint64_t Remote_time ;//Ò£¿ØÆ÷
 #define    MOUSE_Y_MOVE_SPEED    (RC_Ctrl.mouse.y)
 #define    MOUSE_Z_MOVE_SPEED    (RC_Ctrl.mouse.z)
 /* ¼ì²âÊó±ê°´¼ü×´Ì¬ */
-#define    MOUSE_LEFT    (RC_Ctrl.mouse.press_l )
-#define    MOUSE_RIGH    (RC_Ctrl.mouse.press_r )
+#define    MOUSE_LEFT    				(RC_Ctrl.mouse.press_l )
+#define    MOUSE_RIGH    				(RC_Ctrl.mouse.press_r )
 /* ----------------------- Internal Functions ----------------------------------- */
+#elif(CONTROL == 2)
+#define KEY_W               REF.Renote_Control.kb.bit.W	
+#define KEY_S               REF.Renote_Control.kb.bit.W		
+#define KEY_A               REF.Renote_Control.kb.bit.W		
+#define KEY_D               REF.Renote_Control.kb.bit.W	
+#define KEY_SHIFT           REF.Renote_Control.kb.bit.SHIFT	
+#define KEY_CTRL            REF.Renote_Control.kb.bit.CTRL		
+#define KEY_Q               REF.Renote_Control.kb.bit.Q		
+#define KEY_E               REF.Renote_Control.kb.bit.E		
+#define KEY_R               REF.Renote_Control.kb.bit.R		
+#define KEY_F               REF.Renote_Control.kb.bit.F		
+#define KEY_G               REF.Renote_Control.kb.bit.G		
+#define KEY_Z               REF.Renote_Control.kb.bit.Z		
+#define KEY_X               REF.Renote_Control.kb.bit.X		
+#define KEY_C               REF.Renote_Control.kb.bit.C		
+#define KEY_V               REF.Renote_Control.kb.bit.V		
+#define KEY_B               REF.Renote_Control.kb.bit.B		
 
+#define KEY_ALL_CODE        RC_Ctrl.kb.key_code
 
+/*Êó±êÈýÖáµÄÒÆ¶¯ËÙ¶È*/
+#define    MOUSE_X_MOVE_SPEED    (REF.Renote_Control.mouse_x)
+#define    MOUSE_Y_MOVE_SPEED    (REF.Renote_Control.mouse_y)
+#define    MOUSE_Z_MOVE_SPEED    (REF.Renote_Control.mouse_z)
+/* ¼ì²âÊó±ê°´¼ü×´Ì¬ */
+#define    MOUSE_LEFT    				(REF.Renote_Control.left_button_down)
+#define    MOUSE_RIGH    				(REF.Renote_Control.right_button_down)
+#endif
 void sbus_to_rc(volatile const uint8_t *sbus_buf, RC_Ctrl_t *RC_Ctrl);
 
 
